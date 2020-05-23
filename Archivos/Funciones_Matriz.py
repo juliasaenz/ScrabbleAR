@@ -2,22 +2,25 @@
 matriz=[] #no existen vectores en python (solo con libreria numpy x ej),por esto
           # hice la matriz con dos listas una dentro de otra
           
-def IniciarMatriz(): #Inicia la matriz en None/tmb sirve para borrar todos los datos inregsados en la misma
+def IniciarMatriz():
+    ''' Inicia//Reinicia la matríz en _'''
     global matriz
     for z in range(15):
         matriz.append([])           
         for x in range(15):     
-            matriz[z].append(None)
+            matriz[z].append('_')
 
-def RecorrerMatriz():#imprime toda la matriz 
+def RecorrerMatriz():
+    ''' Imprime la matriz '''
     global matriz
     for x in range(15):
         for z in range(15):
             print(matriz[x][z], end=" ")
         print()
 
-def Vertical_Arriba(palabra,base,altura): #carga los datos en su sentido, si sobrepasan el limite, carga hasta donde puede
-    contador=0                            #informa que sobrepasa y borra los datos q cargo 
+def Vertical_Arriba(palabra,base,altura):
+    ''' Carga los datos en sentido Vertical-Arriba hasta donde le permita la dimensión de la raiz'''
+    contador=0                            #informa que sobrepasa y borra los datos q cargo
     if((altura+1)>=len(palabra)):               #Usa(RecorrerMatriz, para mostrar el progreso)
         while(contador<len(palabra)):
             matriz[altura][base]=palabra[contador]
@@ -38,7 +41,8 @@ def Vertical_Arriba(palabra,base,altura): #carga los datos en su sentido, si sob
             altura=altura-1
     RecorrerMatriz()
     
-def Vertical_Abajo(palabra,base,altura):#carga los datos en su sentido, si sobrepasan el limite, carga hasta donde puede
+def Vertical_Abajo(palabra,base,altura):
+    ''' Carga los datos en sentido Vertical-Abajo hasta donde le permita la dimensión de la raiz'''
     contador=0                          #informa que sobrepasa y borra los datos q cargo
     if((15-altura)>=len(palabra)):          #Usa(RecorrerMatriz, para mostrar el progreso)
         while(contador < len(palabra)):
@@ -61,7 +65,8 @@ def Vertical_Abajo(palabra,base,altura):#carga los datos en su sentido, si sobre
             altura=altura+1
     RecorrerMatriz()
         
-def Horizontal(palabra,base,altura):    #carga los datos en su sentido, si sobrepasan el limite, carga hasta donde puede
+def Horizontal(palabra,base,altura):
+    ''' Carga los datos en sentido Horizontal hasta donde le permita la dimensión de la raiz'''
     contador=0                          #informa que sobrepasa y borra los datos q cargo
     if((15-base)>=len(palabra)):            #Usa(RecorrerMatriz, para mostrar el progreso)
         while(contador<len(palabra)):
@@ -85,7 +90,8 @@ def Horizontal(palabra,base,altura):    #carga los datos en su sentido, si sobre
 
 
     
-def ImprimirPalabra():              #carga en la matriz la cadena-de-caracteres que le digas, desde ,la ubicacion que le digas, en el sentido que le indiques 
+def ImprimirPalabra():
+    ''' Carga la cadena de caracteres en la matriz, en la posicion y sentido dichos''''
     print("Ingrese una palabra")    #Usa las funciones(Horizontal y Verticales)
     palabra=input()
     while(7<=len(palabra)):
