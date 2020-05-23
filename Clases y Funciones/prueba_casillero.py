@@ -7,5 +7,4 @@ diccionario = json.load(archivo)
 print(diccionario)
 
 tabla = Tablero()
-tabla.dibujar_tablero()
 tabla.imprimir_tablero()

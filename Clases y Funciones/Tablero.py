@@ -5,7 +5,7 @@ class Tablero:
     '''Arma el tablero
     Propiedades:
         - dimensiones: por default 15x15
-        - matriz: guarda los datos'''
+        - matriz: el tablero'''
 
     #Constructor
     def __init__(self):
