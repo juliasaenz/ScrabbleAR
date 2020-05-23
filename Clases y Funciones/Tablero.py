@@ -29,12 +29,12 @@ class Tablero:
 
     def dibujar_tablero(self):
         '''Dibuja el tablero con PySimpleGUI'''
-        bt = {'size':(3,1), 'font':('Franklin Gothic Book', 10), 'button_color':("black","#F8F8F8")}
+        bt = {'size':(2,1), 'font':('Franklin Gothic Book', 10), 'button_color':("black","#F8F8F8")}
         layout=[]
         for z in range(self.dimensiones):
             layout.append([])
             for x in range(self.dimensiones):
-                layout[z].append(sg.Button(" ",**bt))
+                layout[z].append(sg.Button(self.matriz[x][z].devolver_estado(),**bt))
 
         window = sg.Window("ScrabbleAR").Layout(layout)
         button, values = window.Read()
