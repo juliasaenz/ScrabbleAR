@@ -10,7 +10,6 @@ class Tablero:
     #Constructor
     def __init__(self):
         self.matriz = []
-        self.layout = []
         self.dimensiones = 15
         self.armar_tablero()
         self.dibujar_tablero()
@@ -30,11 +29,14 @@ class Tablero:
 
     def dibujar_tablero(self):
         '''Dibuja el tablero con PySimpleGUI'''
+        bt = {'size':(3,1), 'font':('Franklin Gothic Book', 10), 'button_color':("black","#F8F8F8")}
+        layout=[]
         for z in range(self.dimensiones):
-            self.layout.append([])
+            layout.append([])
             for x in range(self.dimensiones):
-                self.layout[z].append(sg.Button(self.matriz[x][z].devolver_estado()))
-        window = sg.Window("ScrabbleAR").Layout(self.layout)
+                layout[z].append(sg.Button(" ",**bt))
+
+        window = sg.Window("ScrabbleAR").Layout(layout)
         button, values = window.Read()
 
     def imprimir_tablero(self):
