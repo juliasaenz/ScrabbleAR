@@ -91,7 +91,7 @@ def Horizontal(palabra,base,altura):
 
     
 def ImprimirPalabra():
-    ''' Carga la cadena de caracteres en la matriz, en la posicion y sentido dichos''''
+    ''' Carga la cadena de caracteres en la matriz, en la posicion y sentido dichos'''
     print("Ingrese una palabra")    #Usa las funciones(Horizontal y Verticales)
     palabra=input()
     while(7<=len(palabra)):
