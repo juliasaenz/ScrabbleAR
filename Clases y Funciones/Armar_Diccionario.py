@@ -1,7 +1,7 @@
 import json
 
 ''' Creamos el diccionario y lo guardamos en un txt'''
-diccionario = open("diccionario","w",encoding='utf-8')
+diccionario = open("diccionario", "w", encoding='utf-8')
 
 #Diccionario
 dicc = {"a": 1, "e": 1, "i": 1, "o": 1, "u": 1, "s": 1, "n": 1, "l": 1, "r": 1, "t": 1,
