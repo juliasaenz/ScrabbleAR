@@ -10,7 +10,7 @@ class Casillero:
     def __init__(self,tipo_):
         self.tipo = tipo_
         self.ocupada = False
-        self.letra = None
+        self.letra = " "
         self.palabra = None
 
     #Métodos
@@ -46,7 +46,7 @@ class Casillero:
         if(self.ocupada):
             return self.letra
         else:
-            return False
+            return ' '
 
     #Casilleros Especiales
     def doble_letra(self,diccionario):
