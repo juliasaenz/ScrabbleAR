@@ -9,9 +9,9 @@ class Casillero:
     #Constructor
     def __init__(self,tipo_):
         self.tipo = tipo_
-        ocupada = False
-        letra = None
-        palabra = None
+        self.ocupada = False
+        self.letra = None
+        self.palabra = None
 
     #Métodos
     def ocupar_casillero (self,letra_):
