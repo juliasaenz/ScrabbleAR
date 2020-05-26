@@ -1,4 +1,5 @@
 from pattern.es import parse, split
+from pattern.es import lexicon, spelling
 from random import randrange
 
 ''' Funciones para chequear palabras dependiendo del nivel'''

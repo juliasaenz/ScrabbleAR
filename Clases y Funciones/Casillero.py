@@ -8,77 +8,77 @@ class Casillero:
 
     #Constructor
     def __init__(self,tipo_):
-        self.tipo = tipo_
-        self.ocupada = False
-        self.letra = " "
-        self.palabra = None
+        self._tipo = tipo_
+        self._ocupada = False
+        self._letra = " "
+        self._palabra = None
 
     #Métodos
     def ocupar_casillero (self,letra_):
         '''Cuando se ocupa un casillero guarda el valor y pasa a estar ocupada'''
-        self.ocupada = True
-        self.letra = letra_
+        self._ocupada = True
+        self._letra = letra_
 
     def guardar_palabra(self,palabra_):
         '''Guarda la palabra correspondiente al caracter del casillero'''
-        self.palabra = palabra_
+        self._palabra = palabra_
 
     def devolver_puntos(self,diccionario):
         '''Depende del tipo de casillero devuelve los puntos correspondientes'''
-        if(self.tipo == "doble_letra"):
+        if(self._tipo == "doble_letra"):
             return self.doble_letra(self,diccionario)
-        elif (self.tipo == "triple_letra"):
+        elif (self._tipo == "triple_letra"):
             return self.triple_letra(self,diccionario)
-        elif (self.tipo == "doble_palabra"):
+        elif (self._tipo == "doble_palabra"):
             return self.doble_palabra(self,diccionario)
-        elif (self.tipo == "triple_palabra"):
+        elif (self._tipo == "triple_palabra"):
             return self.triple_palabra(self,diccionario)
-        elif (self.tipo == "menos_uno"):
+        elif (self._tipo == "menos_uno"):
             return self.menos_uno(self,diccionario)
-        elif (self.tipo == "menos_dos"):
+        elif (self._tipo == "menos_dos"):
             return self.menos_dos(self,diccionario)
-        elif (self.tipo == "menos_tres"):
+        elif (self._tipo == "menos_tres"):
             return self.menos_tres()
         else:
-            return diccionario[self.letra]
+            return diccionario[self._letra]
 
     def devolver_estado(self):
-        if(self.ocupada):
-            return self.letra
+        if(self._ocupada):
+            return self._letra
         else:
             return ' '
 
     #Casilleros Especiales
     def doble_letra(self,diccionario):
         ''' Devuelve el doble puntaje de la letra'''
-        return diccionario[self.letra]*2
+        return diccionario[self._letra]*2
 
     def triple_letra(self, diccionario):
         ''' Devuelve el triple puntaje de la letra'''
-        return diccionario[self.letra] * 3
+        return diccionario[self._letra] * 3
 
     def doble_palabra(self,diccionario):
         ''' Devuelve el doble puntaje de la palabra'''
         puntos = 0
-        for letra in self.palabra:
+        for letra in self._palabra:
             puntos = puntos + diccionario[letra]
         return puntos*2
 
     def triple_palabra(self,diccionario):
         ''' Devuelve el triple puntaje de la palabra'''
         puntos = 0
-        for letra in self.palabra:
+        for letra in self._palabra:
             puntos = puntos + diccionario[letra]
         return puntos*3
 
     def menos_uno(self,diccionario):
         ''' Resta 1 a la letra'''
-        return diccionario[self.letra] -1
+        return diccionario[self._letra] -1
 
     def menos_dos(self,diccionario):
         ''' Resta 2 a la letra'''
-        return diccionario[self.letra] -2
+        return diccionario[self._letra] -2
 
     def menos_tres(self,diccionario):
         ''' Resta 3 a la letra'''
-        return diccionario[self.letra] -3
+        return diccionario[self._letra] -3
