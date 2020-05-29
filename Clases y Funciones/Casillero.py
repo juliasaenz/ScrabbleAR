@@ -18,6 +18,8 @@ class Casillero:
         '''Cuando se ocupa un casillero guarda el valor y pasa a estar ocupada'''
         self._ocupada = True
         self._letra = letra_
+        if(letra_ == ""):
+            self._ocupada = False
 
     def vaciar_casillero (self):
         '''Cuando se ocupa un casillero guarda el valor y pasa a estar ocupada'''
