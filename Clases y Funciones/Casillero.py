@@ -19,6 +19,11 @@ class Casillero:
         self._ocupada = True
         self._letra = letra_
 
+    def vaciar_casillero (self):
+        '''Cuando se ocupa un casillero guarda el valor y pasa a estar ocupada'''
+        self._ocupada = False
+        self._letra = " "
+
     def guardar_palabra(self,palabra_):
         '''Guarda la palabra correspondiente al caracter del casillero'''
         self._palabra = palabra_

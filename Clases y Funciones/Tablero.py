@@ -12,7 +12,7 @@ class Tablero:
         self._matriz = []
         self._dimensiones = 15
         self.armar_tablero()
-        self.dibujar_tablero()
+        #self.dibujar_tablero()
 
     #Métodos
     def armar_tablero(self):
@@ -21,6 +21,7 @@ class Tablero:
             self._matriz.append([])
             for y in range(self._dimensiones):
                 self._matriz[x].append(self.agregar_casillero())
+
 
     def agregar_casillero(self):
         '''Crea un casillero'''
