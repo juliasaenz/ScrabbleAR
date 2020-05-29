@@ -24,6 +24,9 @@ class Casillero:
         self._ocupada = False
         self._letra = " "
 
+    def esta_vacia(self):
+        return self._ocupada
+
     def guardar_palabra(self,palabra_):
         '''Guarda la palabra correspondiente al caracter del casillero'''
         self._palabra = palabra_

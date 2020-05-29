@@ -15,8 +15,9 @@ class Interfaz:
         for z in range(self._tam):
             matriz.append([])
             for x in range(self._tam):
-                #matriz[z].append(sg.Button(self._matriz[z].devolver_estado(), **self.bt, key=clave))
-                matriz[z].append(sg.Button(self._matriz._matriz[z][x].devolver_estado(), **self.bt, key=clave))
+                prueba = (clave,z,x)
+                print(prueba)
+                matriz[z].append(sg.Button(self._matriz._matriz[z][x].devolver_estado(), **self.bt, key= prueba))
                 #matriz[z].append(sg.Button("", **self.bt, key=clave))
                 clave = clave + 1
 
@@ -62,10 +63,13 @@ class Interfaz:
             window = sg.Window("ScrabbleAR").Layout(tablero)
             while True:
                 event, values = window.read()
+                print(event)
                 if (event == None):
                     break
-                if (event in boton):
+                if (event[0] in boton):
                     window.FindElement(event).Update(letra_act)
+                    self._matriz._matriz[event[1]][event[2]].ocupar_casillero(letra_act)
                     letra_act = ""
                 else:
                     letra_act = event
+            print(self._matriz._matriz[1][1].esta_vacia())
