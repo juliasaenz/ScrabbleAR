@@ -3,6 +3,8 @@ from Casillero import Casillero
 from Tablero import Tablero
 from Interfaz import Interfaz
 
+
+
 archivo = open("diccionario","r")
 diccionario = json.load(archivo)
 print(diccionario)

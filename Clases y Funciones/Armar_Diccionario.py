@@ -1,5 +1,7 @@
 import json
 
+# -*- coding: utf-8 -*-
+
 ''' Creamos el diccionario y lo guardamos en un txt'''
 diccionario = open("diccionario", "w", encoding='utf-8')
 

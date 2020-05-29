@@ -47,6 +47,9 @@ class Interfaz:
         tutorial = [[sg.Frame(layout=interfaz, title="Tutorial")]]
         return tutorial
 
+    def crear_configuracion(self):
+        ''' Configuración'''
+
     def mostrar_interfaz(self):
         letra_act = ""
         boton = list(range(15 * 15))
