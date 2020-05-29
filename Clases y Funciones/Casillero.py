@@ -19,12 +19,12 @@ class Casillero:
         self._ocupada = True
         self._letra = letra_
         if(letra_ == ""):
-            self._ocupada = False
+           self.vaciar_casillero()
 
     def vaciar_casillero (self):
         '''Cuando se ocupa un casillero guarda el valor y pasa a estar ocupada'''
         self._ocupada = False
-        self._letra = " "
+        self._letra = ""
 
     def esta_vacia(self):
         return self._ocupada
