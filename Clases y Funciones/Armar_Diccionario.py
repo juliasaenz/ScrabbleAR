@@ -14,5 +14,5 @@ dicc = {"a": 1, "e": 1, "i": 1, "o": 1, "u": 1, "s": 1, "n": 1, "l": 1, "r": 1, 
         "k": 8, "ñ": 8, "z": 8,
         "q": 10, "w": 10, "x": 10}
 
-json.dump(dicc,diccionario)
+json.dump(dicc,diccionario,ensure_ascii=False)
 diccionario.close()
