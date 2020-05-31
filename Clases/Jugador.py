@@ -49,6 +49,6 @@ class Jugador:
         atril = []
         lista = []
         for letra in self._atril:
-            lista.append(sg.Button(letra,key=letra,**estilo.bt))
+            lista.append(sg.Button(letra,key=letra,**estilo.bs))
         atril.append(lista)
         return atril

@@ -36,9 +36,9 @@ class Tablero:
         for z in range(self._dimensiones):
             tablero.append([])
             for x in range(self._dimensiones):
-                clave = (num, z, x)
+                clave = ( z, x)
                 tablero[z].append(self._matriz[z][x].dibujar(clave))
-                num = num +1
+
         return tablero
 
     def imprimir_tablero(self):

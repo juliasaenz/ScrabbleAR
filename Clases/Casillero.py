@@ -65,7 +65,7 @@ class Casillero:
             return ' '
 
     def dibujar(self,clave):
-        return sg.Button(self._letra, **estilo.bt,key=clave)
+        return sg.Button(self._letra, **estilo.bt,key=clave, disabled=True)
 
     #Casilleros Especiales
     def doble_letra(self,puntos):
