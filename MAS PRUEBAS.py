@@ -17,7 +17,7 @@ for letra in config["cantidad"].keys():
 
 #abro el tutorial
 tutorial = tutorial()
-window = sg.Window("Reacomodar todo...").Layout(tutorial)
+window = sg.Window("ScrabbleAR").Layout(tutorial)
 event, values = window.read()
 
 jugador = Jugador("Julia",bolsa)
@@ -37,7 +37,7 @@ if event == "Ok":
                      [sg.Frame(layout=jugador.dibujar(),key=jugador.get_nombre(), title="Atril de "+jugador.get_nombre()),sg.Ok("Terminar Turno")]
                      ]
 
-    window = sg.Window("Reacomodar todo...").Layout(ventana_juego)
+    window = sg.Window("ScrabbleAR").Layout(ventana_juego)
     #Mientras Juego:
 
     #aca guardo letra actual, las pos de los casilleros, etc
