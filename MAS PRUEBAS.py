@@ -180,23 +180,6 @@ def bloqueo_desbloqueo_horientacion(event, event_ant):
 # ---------------------------------------------------------------------- #
 # ---------------------------------------------------------------------- #
 
-
-# ---------------------------------------------------------------------- #
-#                           Funciones Ayudantes                          #
-# ---------------------------------------------------------------------- #
-def is_empty(data_structure):
-    """Retorna True si la estructura esta vacia, o False en caso contrario"""
-    if data_structure:
-        return False
-    else:
-        return True
-# ---------------------------------------------------------------------- #
-# ---------------------------------------------------------------------- #
-
-
-
-
-
 window = sg.Window("ScrabbleAR").Layout(ventana_juego)
 
 while True:
@@ -204,7 +187,7 @@ while True:
     if (event == None):
         break
 
-    if event in diccionario and is_empty(letras_usadas):
+    if event in diccionario and len(letras_usadas)== 0:
         letra_act = event
         desbloquear_tablero()
         empezar = False
@@ -221,7 +204,7 @@ while True:
                 window.FindElement(event).Update(letra_act)
                 matrix[event[0]][event[1]] = None
                 event_ant = event
-                if (is_empty(letras_usadas)):
+                if (letras_usadas == 0):
                     desbloquear_tablero()
 
         else:
