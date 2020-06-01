@@ -52,6 +52,7 @@ class Jugador:
     def dibujar(self):
         atril = []
         lista = []
+        int = 0
         for letra in self._atril:
             lista.append(sg.Button(letra,key=letra,**estilo.bt))
         atril.append(lista)

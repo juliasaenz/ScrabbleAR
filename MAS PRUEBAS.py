@@ -17,7 +17,7 @@ for letra in config["cantidad"].keys():
 
 #abro el tutorial
 tutorial = tutorial()
-window = sg.Window("ScrabbleAR").Layout(tutorial)
+window = sg.Window("Reacomodar todo...").Layout(tutorial)
 event, values = window.read()
 
 jugador = Jugador("Julia",bolsa)
@@ -41,7 +41,7 @@ if event == "Ok":
     #Mientras Juego:
 
     #aca guardo letra actual, las pos de los casilleros, etc
-    turno = Turno()
+    turno = Turno(jugador.get_atril())
 
     while True:
         event, values = window.read()
@@ -83,8 +83,17 @@ if event == "Ok":
         if (event == "Terminar Turno"):
             #reponer el atril del jugador
             jugador.reponer_atril(bolsa)
+            # actualizar atril
+            i = 0
+            for dato in jugador.get_atril():
+                #ARREGLAR no se actualizan las keys
+                window.FindElement(turno.get_atril()[i]).Update(dato, disabled=False)
+                i = i + 1
             #fin de turno
             print(turno.get_palabra(), " es valida?: ",
                   palabra_es_valida(turno.get_palabra, diccionario, config["tipos"]))
             if(palabra_es_valida(turno.get_palabra, diccionario, config["tipos"])):
                 turno.fin_turno(tabla.get_matriz(),config["puntos"],"h")
+
+            #PROVISORIO: Esto esta aca para poder probar turnos consecutivos nomas
+            window.FindElement("Terminar Turno").Update(disabled=False)

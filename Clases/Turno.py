@@ -1,10 +1,11 @@
 from Funciones.funciones_palabras import palabra_es_valida
 class Turno:
 
-    def __init__(self):
+    def __init__(self,atril_):
         self._casilleros_usados = set()
         self._palabra = ""
         self._letra_actual = ""
+        self._atril = atril_.copy()
 
     def get_casilleros_usdos(self):
         return self._casilleros_usados
@@ -17,6 +18,9 @@ class Turno:
 
     def get_letra_actual(self):
         return self._letra_actual
+
+    def get_atril(self):
+        return self._atril
 
     def set_letra_actual(self,letra):
         self._letra_actual = letra
