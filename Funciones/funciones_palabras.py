@@ -25,7 +25,7 @@ def existe_palabra(palabra,diccionario):
     else:
         return False
 
-def palabra_es_valida(palabra,diccionario,*args):
+def palabra_es_valida(palabra,diccionario,tipos):
     ''' Se ingresa la palabra y la cantidad de categorias para chequear
     nivel fácil = ingresar 1,2,3
     nivel medio = ingresar 1,2  //  1,3  //  2,3
@@ -34,11 +34,11 @@ def palabra_es_valida(palabra,diccionario,*args):
     lista_verbos = ['VB', 'VBP', 'VBZ', 'VBG', 'VBD', 'VBN','MD']
     if(existe_palabra(palabra,diccionario)):
         p = parse(diccionario[palabra]).split()
-        if(1 in args):
+        if(1 in tipos):
             es = es or (p[0][0][1] == 'NN')
-        if(2 in args):
+        if(2 in tipos):
             es = es or (p[0][0][1] == 'JJ')
-        if(3 in args):
+        if(3 in tipos):
             es = es or (p[0][0][1] in lista_verbos)
     return es
 

@@ -61,7 +61,7 @@ class Interfaz:
         boton = list(range(15 * 15))
         # ejecución
         tutorial = self.crear_tutorial()
-        window = sg.Window("ScrabbleAR").Layout(tutorial)
+        window = sg.Window("01-06-mio").Layout(tutorial)
         event, values = window.read()
         if event == None:
             window.close()
@@ -69,7 +69,7 @@ class Interfaz:
             window.close()
             sg.theme("DarkTeal4")
             tablero = self.dibujar_tablero()
-            window = sg.Window("ScrabbleAR").Layout(tablero)
+            window = sg.Window("01-06-mio").Layout(tablero)
             while True:
                 event, values = window.read()
                 print(event)

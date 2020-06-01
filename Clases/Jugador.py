@@ -8,6 +8,7 @@ class Jugador:
         self._puntaje = 0
         self._nombre = nom
         self._atril = []
+        self._casilleros = []
         self.reponer_atril(bolsa)
 
 
@@ -39,6 +40,9 @@ class Jugador:
     def sacar_ficha(self,ficha):
         self._atril.remove(ficha)
 
+    def agregar_ficha(self,ficha):
+        self._atril.append(ficha)
+
     def imprimir_atril(self):
         print(self._atril)
 
@@ -49,6 +53,6 @@ class Jugador:
         atril = []
         lista = []
         for letra in self._atril:
-            lista.append(sg.Button(letra,key=letra,**estilo.bs))
+            lista.append(sg.Button(letra,key=letra,**estilo.bt))
         atril.append(lista)
         return atril

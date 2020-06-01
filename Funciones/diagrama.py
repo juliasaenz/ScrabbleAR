@@ -10,7 +10,13 @@ def tutorial():
                 [sg.Text("el puntaje de cada palabra se debe a dos factores:")],
                 [sg.Text("1-El puntaje individual de cada letra")],
                 [sg.Text("2-Los efectos de cada casilla ")],
-                [sg.Text("Presiona Jugar para ir a la interfaz el juego:"), sg.Button("Jugar")]
+                [sg.Text("Presiona Jugar para ir a la interfaz el juego:"), sg.Button("Ok")]
                 ]
     tutorial = [[sg.Frame(layout=interfaz, title="Tutorial")]]
     return tutorial
+
+def inicio():
+    '''El inicio'''
+    interfaz = [[sg.InputText("Tu nombre")],[sg.Button("Jugar")]]
+    inicio = [[sg.Frame(layout=interfaz,title="Inicio")]]
+    return inicio

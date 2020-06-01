@@ -1,14 +1,6 @@
-import json
-import sys
-from Clases.Tablero import Tablero
-from Clases.Jugador import Jugador
-from Funciones.funciones_palabras import palabra_es_valida, palabras_sin_tilde
-from Funciones.diagrama import tutorial
-import PySimpleGUI as sg
+from importaciones import *
 
-estado = "inicio"
-
-# INICIO
+#____________________INICIO_____________________________#
 
 # armo el diccionario de palabras válidas
 diccionario = palabras_sin_tilde()
@@ -23,206 +15,76 @@ for letra in config["cantidad"].keys():
     for veces in range(config["cantidad"][letra]):
         bolsa.append(letra)
 
-# abro el tutorial
-# tutorial = tutorial()
-# window = sg.Window("ScrabbleAR").Layout(tutorial)
-# event, values = window.read()
+#abro el tutorial
+tutorial = tutorial()
+window = sg.Window("Reacomodar todo...").Layout(tutorial)
+event, values = window.read()
 
-jugador = Jugador("Julia", bolsa)
+jugador = Jugador("Julia",bolsa)
 
-# paso a juego
-# if event == None:
-#    window.close()
-# if event == "Jugar":
-#   window.close()
-tabla = Tablero()
+#paso a juego
+if event == None:
+    window.close()
+if event == "Ok":
+    window.close()
+    tabla = Tablero()
+    boton = tabla.referencia_a_botones()
 
+# ____________________JUEGO_____________________________#
+    #Ventana Juego
+    ventana_juego = [[sg.Frame(layout=tabla.dibujar(), title="Tablero")],
+                     [],
+                     [sg.Frame(layout=jugador.dibujar(),key=jugador.get_nombre(), title="Atril de "+jugador.get_nombre()),sg.Ok("Terminar Turno")]
+                     ]
 
-def crear_boton():
-    boton = []
-    for x in range(15):
-        for y in range(15):
-            boton.append((x, y))
-    return boton
+    window = sg.Window("Reacomodar todo...").Layout(ventana_juego)
+    #Mientras Juego:
 
+    #aca guardo letra actual, las pos de los casilleros, etc
+    turno = Turno()
 
-# variables
-
-
-elegir_direccion = True
-movimientos = 0
-letras_usadas = []
-empezar = True
-letra_act = " "
-boton = crear_boton()
-event_ant = None
-matrix = []
-x = 15
-y = 15
-for i in range(x):
-    matrix.append([])
-    for j in range(y):
-        matrix[i].append(None)
-
-# JUGAR
-ventana_juego = [[sg.Frame(layout=tabla.dibujar(), title="Tablero")],
-                 [],
-                 [sg.Frame(layout=jugador.dibujar(), title="Atril de " + jugador.get_nombre())]
-                 ]
-
-
-# -------------------------------------------------------------------------------------------------------------------- #
-#                                               Funciones                                                              #
-# -------------------------------------------------------------------------------------------------------------------- #
-
-
-# ---------------------------------------------------------------------- #
-#                           Funciones Atril                              #
-# ---------------------------------------------------------------------- #
-def bloquear_atril(letra):  #
-    """Bloquea la letra enviada del atril"""
-    window.FindElement(letra[0]).Update(button_color=("black", "grey"))
-    window.FindElement(letra[0]).Update(disabled=True)
-
-def desbloquear_atril(letra):
-    """Desbloquea la letra enviada del atril"""
-    window.FindElement(letra[0]).Update(button_color=("black", "white"))
-    window.FindElement(letra[0]).Update(disabled=False)
-
-def intercambio():
-    """Intercambia matrix, intercambia bloqueo y desbloqueo de atril, intercambia letras_usadas y intercambia tablero"""
-    global matrix, event, letras_usadas, letra_act, event_ant
-    if letra_act != " ":
-        letras_usadas.remove(matrix[event[0]][event[1]])
-        desbloquear_atril(matrix[event[0]][event[1]])
-        bloquear_atril(letra_act)
-        matrix[event[0]][event[1]] = letra_act
-        letras_usadas.append(letra_act)
-        window.FindElement(event).Update(letra_act)
-        letra_act = " "
-        event_ant = event
-# --------------------------------------------------------------------- #
-# --------------------------------------------------------------------- #
-
-
-# ---------------------------------------------------------------------- #
-#                           Funciones Tableros Simples                   #
-# ---------------------------------------------------------------------- #
-def bloquear_casilla(event):
-    """Bloquea la casilla mandada"""
-    if event != " ":
-        window.FindElement(event).Update(button_color=("black", "grey"))
-        window.FindElement(event).Update(disabled=True)
-
-def desbloquear_casilla(event):
-    """Desbloquea la casilla mandada"""
-    if event != " ":
-        window.FindElement(event).Update(button_color=("black", "green4"))
-        window.FindElement(event).Update(disabled=False)
-
-def desbloquear_tablero():
-    """Desbloquea_todo el tablero"""
-    for x in range(15):
-        for y in range(15):
-            window.FindElement((x, y)).Update(disabled=False)
-            window.FindElement((x, y)).Update(button_color=("black", "white"))
-
-def bloquear_tablero(event):
-    """Bloquea_todo el tablero a excepcion de la posicion enviada, la cual modifica su color a verde"""
-    for x in range(15):
-        for y in range(15):
-            if (x, y) != event:
-                window.FindElement((x, y)).Update(disabled=True)
-                window.FindElement((x, y)).Update(button_color=("black", "grey"))
-    window.FindElement(event).Update(button_color=("black", "green4"))
-# --------------------------------------------------------------------- #
-# --------------------------------------------------------------------- #
-
-
-# ---------------------------------------------------------------------- #
-#                           Funciones Tableros Complejas                 #
-# ---------------------------------------------------------------------- #
-def desbloquear_adyacentes(event):
-    """Desbloquea las casillas adyacentes a la posicion enviada, para que el usuario elija una orientacion"""
-    if event[1] < 14:
-        window.FindElement((event[0], event[1] + 1)).Update(disabled=False)
-        window.FindElement((event[0], event[1] + 1)).Update(button_color=("black", "green4"))
-    if event[0] < 14:
-        window.FindElement((event[0] + 1, event[1])).Update(disabled=False)
-        window.FindElement((event[0] + 1, event[1])).Update(button_color=("black", "green4"))
-    if event[0] > 0:
-        window.FindElement((event[0] - 1, event[1])).Update(disabled=False)
-        window.FindElement((event[0] - 1, event[1])).Update(button_color=("black", "green4"))
-
-def bloqueo_desbloqueo_horientacion(event, event_ant):
-    """Bloquea y Desbloquea los casilleros, segun la orientacion que se elija"""
-    if event[0] == event_ant[0] - 1:  #
-        if event_ant[1] < 14:  #
-            bloquear_casilla((event_ant[0], event_ant[1] + 1))  #
-        if event_ant[0] < 14:  #
-            bloquear_casilla((event_ant[0] + 1, event_ant[1]))  #
-        if event[0] > 0:  #
-            desbloquear_casilla((event[0] - 1, event[1]))  #
-    if event[0] == event_ant[0] + 1:  #
-        if event_ant[0] > 0:  #
-            bloquear_casilla((event_ant[0] - 1, event_ant[1]))  #
-        if event_ant[1] < 14:  #
-            bloquear_casilla((event_ant[0], event_ant[1] + 1))  #
-        if event[0] < 14:  #
-            desbloquear_casilla((event[0] + 1, event[1]))  #
-    if event[1] == event_ant[1] + 1:  #
-        if event_ant[0] > 0:  #
-            bloquear_casilla((event_ant[0] - 1, event_ant[1]))  #
-        if event_ant[0] < 14:  #
-            bloquear_casilla((event_ant[0] + 1, event_ant[1]))  #
-        if event[1] < 14:  #
-            desbloquear_casilla((event[0], event[1] + 1))  #
-# ---------------------------------------------------------------------- #
-# ---------------------------------------------------------------------- #
-
-window = sg.Window("ScrabbleAR").Layout(ventana_juego)
-
-while True:
-    event, values = window.read()
-    if (event == None):
-        break
-
-    if event in diccionario and len(letras_usadas)== 0:
-        letra_act = event
-        desbloquear_tablero()
-        empezar = False
-    if event in diccionario and empezar == False:
-        letra_act = event
-
-    if (event in boton):
-        if matrix[event[0]][event[1]] in letras_usadas:
-            if letra_act != " ":
-                intercambio()
+    while True:
+        event, values = window.read()
+        print("event: ",event)
+        print("letra actual: ",turno.get_letra_actual())
+        # que boton toque?
+        if (event == None):
+            break
+        if (event in boton):
+            #estructura
+            if(not tabla.casillero_ocupado(event)):
+                try:
+                    #ocupa en la matriz tablero
+                    tabla.ocupar_casillero(turno.get_letra_actual(),event)
+                    #saca del atril
+                    jugador.sacar_ficha(turno.get_letra_actual())
+                    #agrega a usados
+                    turno.agregar_casillero(event)
+                    #esto actualiza la ventana
+                    window.FindElement(event).Update(turno.get_letra_actual())
+                except(ValueError):
+                    print("ESA YA LA USASTE!")
             else:
-                letras_usadas.remove(matrix[event[0]][event[1]])
-                desbloquear_atril(matrix[event[0]][event[1]])
-                window.FindElement(event).Update(letra_act)
-                matrix[event[0]][event[1]] = None
-                event_ant = event
-                if (letras_usadas == 0):
-                    desbloquear_tablero()
-
+                #desocupa en la matriz tablero
+                letra_vieja = tabla.vaciar_casillero(event)
+                #agrega al atril
+                jugador.agregar_ficha(turno.get_letra_actual())
+                #saca de usados
+                turno.sacar_casillero(event)
+                #esto actualiza la ventana
+                window.FindElement(letra_vieja).Update(disabled = False)
+                window.FindElement(event).Update(turno.get_letra_actual())
+            #actualiza la letra actual
+            turno.set_letra_actual("")
         else:
-            if elegir_direccion and event_ant != None and letra_act != " ":
-                bloqueo_desbloqueo_horientacion(event, event_ant)
-                matrix[event[0]][event[1]] = letra_act
-                window.FindElement(event).Update(letra_act)
-                letras_usadas.append(letra_act)
-                bloquear_atril(letra_act)
-                event_ant = event
-                letra_act = " "
-
-            if event_ant is None and letra_act != " ":
-                window.FindElement(event).Update(letra_act)
-                matrix[event[0]][event[1]] = letra_act
-                bloquear_tablero(event)
-                desbloquear_adyacentes(event)
-                letras_usadas.append(letra_act)
-                bloquear_atril(letra_act)
-                event_ant = event
-                letra_act = " "
+            turno.set_letra_actual(event[0])
+            window.FindElement(event).Update(disabled = True)
+            print(jugador.get_atril())
+        if (event == "Terminar Turno"):
+            #reponer el atril del jugador
+            jugador.reponer_atril(bolsa)
+            #fin de turno
+            print(turno.get_palabra(), " es valida?: ",
+                  palabra_es_valida(turno.get_palabra, diccionario, config["tipos"]))
+            if(palabra_es_valida(turno.get_palabra, diccionario, config["tipos"])):
+                turno.fin_turno(tabla.get_matriz(),config["puntos"],"h")

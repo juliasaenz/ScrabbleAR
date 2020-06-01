@@ -48,7 +48,7 @@ tablero=[]
 
 #ejecución
 tutorial = crear_tutorial()
-window = sg.Window("ScrabbleAR").Layout(tutorial)
+window = sg.Window("01-06-mio").Layout(tutorial)
 
 event, values=window.read()
 if event==None:
@@ -57,7 +57,7 @@ if event=="Jugar":
     window.close()
     sg.theme("DarkTeal4")
     tablero = dibujar_tablero()
-    window = sg.Window("ScrabbleAR").Layout(tablero)
+    window = sg.Window("01-06-mio").Layout(tablero)
     while True:
         event, values = window.read()
         if (event == None):
