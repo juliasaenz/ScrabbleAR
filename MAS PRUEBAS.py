@@ -88,14 +88,14 @@ ventana_juego = [[sg.Frame(layout=tabla.dibujar(), title="Tablero")],
 # ---------------------------------------------------------------------- #
 def bloquear_atril(letra):
     """Bloquea la letra enviada del atril"""
-    window.FindElement(letra[0]).Update(button_color=("black", "grey"))
-    window.FindElement(letra[0]).Update(disabled=True)
+    window.FindElement(letra).Update(button_color=("black", "grey"))
+    window.FindElement(letra).Update(disabled=True)
 
 
 def desbloquear_atril(letra):
     """Desbloquea la letra enviada del atril"""
-    window.FindElement(letra[0]).Update(button_color=("black", "white"))
-    window.FindElement(letra[0]).Update(disabled=False)
+    window.FindElement(letra).Update(button_color=("black", "white"))
+    window.FindElement(letra).Update(disabled=False)
 
 
 def intercambio():
@@ -253,7 +253,7 @@ def Inicio():
 
 def Cargar_primera_letra():
     global letra_act, event_ant, segunda_letra, primera_letra
-    window.FindElement(event).Update(letra_act)  # pone letra en boton
+    window.FindElement(event).Update(letra_act[0])  # pone letra en boton
     matrix[event[0]][event[1]] = letra_act  # guarda en que poscion esta esa letra
     bloquear_tablero_con_excepcion(event)
     desbloquear_adyacentes(event)  # desbloqueo los adyacentes para elegir orientacion con la segunda letra
@@ -267,11 +267,9 @@ def Cargar_primera_letra():
 
 def Cargar_segunda_letra():
     global event_ant, letra_act, segunda_letra, orientacion
-    print("Ingreso a bloqueo_desbloqueo")
     orientacion = bloqueo_desbloqueo_orientacion(event, event_ant,orientacion)  # compara posicion de primera letra con segunda, asi se sabe orientacion
-    print("salgo de bloqueo_desbloqueo")
     matrix[event[0]][event[1]] = letra_act  # guarda en que poscion esta esa letra
-    window.FindElement(event).Update(letra_act)  # pone letra en boton
+    window.FindElement(event).Update(letra_act[0])  # pone letra en boton
     letras_usadas.append(letra_act)  # nueva letra usada
     bloquear_atril(letra_act)
     event_ant = event
@@ -282,7 +280,7 @@ def Cargar_segunda_letra():
 def Cargar_letra():  # a partir de la 2da letra, ya se la orientacion, por lo q se me ahce mas facil avanzar y agregar letras sin problemas
     global letra_act, event_ant
     matrix[event[0]][event[1]] = letra_act
-    window.FindElement(event).Update(letra_act)
+    window.FindElement(event).Update(letra_act[0])
     if orientacion == "vertical_arriba":
         if event[0] > 0:
             desbloquear_casilla((event[0] - 1, event[1]))
@@ -312,12 +310,13 @@ while True:
 
         # --- Cuando es la primera letra del turno --- #
     if event[0] in diccionario and primera_letra:
-        letra_act = event[0]
+        letra_act = event
         desbloquear_tablero()
 
     # --- Si toco una letra y no es la primera del turno --- #
     if event[0] in diccionario and primera_letra == False:
-        letra_act = event[0]
+        letra_act = event
+
 
     # --- Si toco un Casillero  --- #
     if (event in boton):
@@ -336,31 +335,52 @@ while True:
                 # si es la segunda letra de la palabra -> (se vuelve a elegir orientacion)
                 else:
                     if matrix[event[0]][event[1]] == letras_usadas[1]:
-
                         if orientacion == "horizontal":
                             for a in range(len(letras_usadas)):
-                                bloquear_casilla((event[0], event[1] + a))
                                 matrix[event[0]][event[1]] = None
                                 if letras_usadas[a] != letras_usadas[0]:
                                     desbloquear_atril(letras_usadas[a])
-                                window.FindElement((event[0], event[1] + a)).Update(" ")
-
-                            desbloquear_adyacentes((event[0], event[1] - 1))
+                                if event[1] < 14:
+                                    bloquear_casilla((event[0], event[1] + a))
+                                    window.FindElement((event[0], event[1] + a)).Update(" ")
+                                window.FindElement(event).Update(" ")
+                                desbloquear_adyacentes((event[0], event[1] - 1))
                             event_ant=  (event[0], event[1] - 1)
                             segunda_letra = True
-                            print("volvemos a elegir orientacion")
 
                         else:
                             if orientacion == "vertical_arriba":
-                                print("vertical arriba")
+                                for a in range(len(letras_usadas)):
+                                    matrix[event[0]][event[1]] = None
+                                    if letras_usadas[a] != letras_usadas[0]:
+                                        desbloquear_atril(letras_usadas[a])
+                                        letras_usadas.remove(letras_usadas[a])
+                                    if event[0] > 0:
+                                        bloquear_casilla((event[0]-a, event[1]))
+                                        window.FindElement((event[0]-a, event[1])).Update(" ")
+                                    window.FindElement(event).Update(" ")
+                                    desbloquear_adyacentes((event[0]+1, event[1]))
+                                event_ant = (event[0]+1, event[1])
+                                segunda_letra = True
                             else:
                                 if orientacion == "vertical_abajo":
-                                    print("vertical abajo")
+                                    for a in range(len(letras_usadas)):
+                                        matrix[event[0]][event[1]] = None
+                                        if letras_usadas[a] != letras_usadas[0]:
+                                            desbloquear_atril(letras_usadas[a])
+                                        if event[0] < 14:
+                                            bloquear_casilla((event[0] + a, event[1]))
+                                            window.FindElement((event[0] + a, event[1])).Update(" ")
+                                        window.FindElement(event).Update(" ")
+                                        desbloquear_adyacentes((event[0] - 1, event[1]))
+                                    event_ant = (event[0] + 1, event[1])
+                                    segunda_letra = True
+
                     # si es tercera o + ->(solo se borra, se habilita el atril, se actualiza letras_usadas y matrix)
                     else:
                         letras_usadas.remove(matrix[event[0]][event[1]])
                         desbloquear_atril(matrix[event[0]][event[1]])
-                        window.FindElement(event).Update(letra_act)
+                        window.FindElement(event).Update(letra_act[0])
                         bloquear_casilla((event[0],event[1]+1))
                         matrix[event[0]][event[1]] = None
                         event_ant = event
@@ -375,6 +395,7 @@ while True:
                 if segunda_letra and letra_act != " ":
                     print("cargar segunda letra")
                     Cargar_segunda_letra()
+                    print("orientacion: ", orientacion)
                 else:
                     # si se eligió letra y la orientacion ya fue marcada con las dos primeras letras
                     if letra_act != " ":
