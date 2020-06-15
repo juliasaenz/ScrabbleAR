@@ -1,5 +1,5 @@
-Trabajo Final del Seminario de Python 2020
+ScrabbleAR
 
-Alumnos:
+Trabajo final de seminario de Python 2020
 
-Felipe Parrillo y Julia Saenz
+Alumnos: Parrillo Felipe y Saenz Julia

@@ -1,103 +1,125 @@
 import PySimpleGUI as sg
 import estilo
 class Casillero:
-    '''Define un casillero del tablero.
-        Propiedades:
-            tipo: el tipo de casillero que es, por default en normal
-            ocupada: un boolean que dice si el casillero está o no ocupado por una letra
-            letra: el caracter que se encuentra en el casillero, por default vacio
-            palabra: la palabra que corresponde a la letra del casillero, por default vacio'''
 
-    #Constructor
-    def __init__(self,tipo_):
+    '''
+    VARIABLES DE INTANCIA
+
+    _tipo: str → el tipo de casillero que es
+    _bloqueada: bool → si el casillero se usó en otro turno es True
+    _letra: str → La letra que lo ocupa
+
+    MÉTODOS
+
+    set_letra: cambia el valor de letra
+    get_letra: devuelve el valor de la letra → str
+    get_tipo:devuelve el tipo del casillero → str
+    bloquear: variable bloquear se vuelve true
+    esta_bloqueado: devuelve si está bloqueado → bool
+    devolver_puntos: devuelve los puntos del casillero → int
+        doble_letra → int
+        triple_letra → int
+        doble_palabra → int
+        triple_palabra → int
+        menos_uno → int
+        menos_dos → int
+        menos_tres → int
+    dibujar → dibuja el botón → sg.Button
+    '''
+
+
+    def __init__(self,tipo_ = "normal"):
         self._tipo = tipo_
-        self._ocupada = False
-        self._letra = " "
-        self._palabra = ""
-
-    #Métodos
-    def ocupar_casillero (self,letra_):
-        '''Cuando se ocupa un casillero guarda el valor y pasa a estar ocupada'''
-        self._ocupada = True
-        self._letra = letra_
-        if(letra_ == ""):
-           self.vaciar_casillero()
-
-    def vaciar_casillero (self):
-        '''Cuando se ocupa un casillero guarda el valor y pasa a estar ocupada'''
-        self._ocupada = False
         self._letra = ""
+        self._bloqueado = False
 
-    def esta_vacia(self):
-        return self._ocupada
-
-    def set_palabra(self,palabra_):
-        '''Guarda la palabra correspondiente al caracter del casillero'''
-        self._palabra = palabra_
-
-    def get_palabra(self):
-        return self._palabra
-
-    def devolver_puntos(self,puntos,palabra_):
-        '''Depende del tipo de casillero devuelve los puntos correspondientes'''
-        self.set_palabra(palabra_)
-        if(self._tipo == "doble_letra"):
-            return self.doble_letra(self,puntos)
+    #Dibujar
+    def dibujar(self, clave):
+        if (self._tipo == "doble_letra"):
+            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#6DBE45"))
         elif (self._tipo == "triple_letra"):
-            return self.triple_letra(self,puntos)
+            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","yellow"))
         elif (self._tipo == "doble_palabra"):
-            return self.doble_palabra(self,puntos)
+            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","orange"))
         elif (self._tipo == "triple_palabra"):
-            return self.triple_palabra(self,puntos)
+            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","red"))
         elif (self._tipo == "menos_uno"):
-            return self.menos_uno(self,puntos)
+            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#50A1D9"))
         elif (self._tipo == "menos_dos"):
-            return self.menos_dos(self,puntos)
+            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#5553A3"))
         elif (self._tipo == "menos_tres"):
-            return self.menos_tres()
+            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#883694"))
         else:
-            return puntos[self._letra]
+            return sg.Button(self._letra, key=clave, **estilo.bt,button_color=("black","#FAFAFA"))
 
-    def devolver_estado(self):
-        if(self._ocupada):
-            return self._letra
-        else:
-            return ' '
+    #Tipo
+    def get_tipo(self):
+        return self._tipo
 
-    def dibujar(self,clave):
-        return sg.Button(self._letra, **estilo.bt,key=clave, disabled=True)
+    #Bloquear
+    def bloquear(self):
+        self._bloqueado = True
+    def esta_bloqueado(self):
+        return self._bloqueado
 
-    #Casilleros Especiales
-    def doble_letra(self,puntos):
+    #Letra
+    def set_letra(self,letra):
+        self._letra = letra
+    def get_letra(self):
+        return self._letra
+
+    # Casilleros Especiales
+    def doble_letra(self, puntos):
         ''' Devuelve el doble puntaje de la letra'''
-        return puntos[self._letra]*2
+        return puntos[self._letra] * 2
 
     def triple_letra(self, puntos):
         ''' Devuelve el triple puntaje de la letra'''
         return puntos[self._letra] * 3
 
-    def doble_palabra(self,puntos):
+    def doble_palabra(self, puntos, pal):
         ''' Devuelve el doble puntaje de la palabra'''
         puntaje = 0
-        for letra in self._palabra:
+        for letra in pal:
             puntaje = puntaje + puntos[letra]
-        return puntaje*2
+        return puntaje * 2
 
-    def triple_palabra(self,puntos):
+    def triple_palabra(self, puntos, pal):
         ''' Devuelve el triple puntaje de la palabra'''
         puntaje = 0
-        for letra in self._palabra:
+        for letra in pal:
             puntaje = puntaje + puntos[letra]
-        return puntaje*3
+        return puntaje * 3
 
-    def menos_uno(self,puntos):
+    def menos_uno(self, puntos):
         ''' Resta 1 a la letra'''
-        return puntos[self._letra] -1
+        return puntos[self._letra] - 1
 
-    def menos_dos(self,puntos):
+    def menos_dos(self, puntos):
         ''' Resta 2 a la letra'''
-        return puntos[self._letra] -2
+        return puntos[self._letra] - 2
 
-    def menos_tres(self,puntos):
+    def menos_tres(self, puntos):
         ''' Resta 3 a la letra'''
-        return puntos[self._letra] -3
+        return puntos[self._letra] - 3
+
+    #Puntos
+    def devolver_puntos(self, puntos, palabra_):
+        '''Depende del tipo de casillero devuelve los puntos correspondientes'''
+        if (self._tipo == "doble_letra"):
+            return self.doble_letra(puntos)
+        elif (self._tipo == "triple_letra"):
+            return self.triple_letra(puntos)
+        elif (self._tipo == "doble_palabra"):
+            return self.doble_palabra(puntos,palabra_)
+        elif (self._tipo == "triple_palabra"):
+            return self.triple_palabra(puntos,palabra_)
+        elif (self._tipo == "menos_uno"):
+            return self.menos_uno(puntos)
+        elif (self._tipo == "menos_dos"):
+            return self.menos_dos(puntos)
+        elif (self._tipo == "menos_tres"):
+            return self.menos_tres()
+        else:
+            return puntos[self._letra]
+
