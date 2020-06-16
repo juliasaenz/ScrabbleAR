@@ -23,9 +23,14 @@ if event == "Ok":
     event, values = window.read()
     if (event == "Jugar"):
         window.close()
-
+        print("values: ",values)
         #NIVEL----
-        nivel = open("Archivos/nivel1", "r")
+        if(len(values[1]) == 0 or values[1][0] == "Nivel 1"):
+            nivel = open("Archivos/nivel1", "r")
+        elif(values[1][0] == "Nivel 2"):
+            nivel = open("Archivos/nivel1", "r")
+        elif (values[1][0] == "Nivel 3"):
+            nivel = open("Archivos/nivel1", "r")
         config = json.load(nivel)
         #DICCIONARIO----
         diccionario = palabras_sin_tilde()
