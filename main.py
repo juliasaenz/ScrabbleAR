@@ -50,7 +50,7 @@ if event == "Ok":
                          [],
                          [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
                                    title="Atril de " + jugador.get_nombre()),
-                          sg.Button("Shuffle"), sg.Ok("Terminar Turno"),sg.Text("Puntaje: "+ str(compu.get_puntaje()),key = "p_jugador")]
+                          sg.Button("Shuffle"),sg.Button("Limpiar"), sg.Ok("Terminar Turno"),sg.Text("Puntaje: "+ str(compu.get_puntaje()),key = "p_jugador")]
                          ]
         window = sg.Window("ScrabbleAR").Layout(ventana_juego)
 
@@ -83,6 +83,13 @@ if event == "Ok":
                     turno.set_letra_actual(jugador.get_atril()[int(event)])
                     turno.set_pos_actual(event)
                     print("Letra actual: ",turno.get_letra_actual())
+                elif (event == "Limpiar"):
+                    for pos in turno.get_casilleros_usados():
+                        window.FindElement(pos).Update("")
+                    tabla.limpiar_matriz()
+                    turno.limpiar()
+                    for i in range(7):
+                        window.FindElement(str(i)).Update(disabled=False)
                 elif (event == "Shuffle"):
                     #esto se puede hacer solo tres veces en la partida
                     if( jugador.shuffle() >= 0):
