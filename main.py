@@ -53,7 +53,7 @@ if event == "Ok":
         while True:
             event, values = window.read()
             # ----- SI ES EL TURNO DEL USUARIO -----
-            if(turno.es_turno_usuario()):
+            if(jugador.get_cant_bolsa() != 0 and turno.es_turno_usuario()):
                 # CUENTA REGRESIVA
                 #turno.countdown()
                 print("event: ",event)
@@ -121,7 +121,7 @@ if event == "Ok":
                         print("Muy bien! Palabra correcta!")
 
             # ------- SI YA NO ES EL TURNO DEL USUARIO ---------- #
-            else:
+            elif(jugador.get_cant_bolsa() != 0 and not turno.es_turno_usuario()):
                 print("Es el turno de la compu")
                 # -- Arma la palabra
                 compu.armar_palabra(diccionario, config["palabras"])
@@ -140,5 +140,13 @@ if event == "Ok":
                 turno.reinicio()
                 for i in range(7):
                     window.FindElement(str(i)).Update(disabled=False)
+            elif (jugador.get_cant_bolsa() == 0):
+                ganador = max(jugador.get_puntaje(),compu.get_puntaje())
+                if(jugador.get_puntaje() > compu.get_puntaje()):
+                    nom = jugador.get_nombre()
+                else:
+                    nom = compu.get_nombre()
+                sg.Popup("Se terminó la partida y ganó ",nom)
+                window.close()
 
 
