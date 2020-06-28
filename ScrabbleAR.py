@@ -65,15 +65,17 @@ if event == "Ok":
 
 
 
-    ventana_juego = [[sg.Button("Reglas", button_color=("black","#FAFAFA")),sg.Button("Pausar Partida",key="pausa", button_color=("black","#FAFAFA"))],
-                         [sg.Frame(layout=compu.dibujar(),key = compu.get_nombre(),
-                                   title = "Atril de " + compu.get_nombre()),sg.Text("Puntaje: "),sg.Text("  0  ",key = "p_compu")],
-                        [sg.Frame(layout=tabla.dibujar(), title="Tablero"),sg.Text('Tiempo: {}'.format(config["tiempo"]), key = "tiempo")],
-                         [],
-                         [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
-                                   title="Atril de " + jugador.get_nombre()),
-                          sg.Button("Shuffle"),sg.Button("Limpiar"), sg.Ok("Terminar Turno"),sg.Text("Puntaje: "),sg.Text("  0  ",key = "p_jugador")]
-                         ]
+    ventana_juego = [[sg.Button("Reglas", button_color=("black","#FAFAFA")),sg.Button("Top Ten Puntajes",key="top", button_color=("black","#FAFAFA")),sg.Button("Pausar Partida",key="pausa", button_color=("black","#FAFAFA"))
+                    ,sg.Button("Configuracion",key="configuracion", button_color=("black","#FAFAFA"))],
+                    [sg.Frame(layout=compu.dibujar(),key = compu.get_nombre(),
+                        title = "Atril de " + compu.get_nombre()),sg.Text("Puntaje: "),sg.Text("  0  ",key = "p_compu")],
+                    [sg.Frame(layout=tabla.dibujar(), title="Tablero"),sg.Text('Tiempo: {}'.format(config["tiempo"]), key = "tiempo")],
+                    [],
+                    [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
+                        title="Atril de " + jugador.get_nombre()),
+                        sg.Button("Shuffle"),sg.Button("Limpiar"), sg.Ok("Terminar Turno"),sg.Text("Puntaje: "),sg.Text("  0  ",key = "p_jugador")]
+        ]
+
     window = sg.Window("ScrabbleAR",ventana_juego, grab_anywhere=True)
 
     # bloquear las usadas
@@ -121,6 +123,7 @@ def turno_compu():
     turno.reinicio()
     for i in range(7):
         window.FindElement(str(i)).Update(disabled=False)
+    tiempo = config["tiempo"] * 100
 def limpiar():
     ''' Saca las fichas del tablero y las vuelve a activar en el atril '''
     for pos in turno.get_casilleros_usados():
@@ -203,11 +206,37 @@ def terminar_turno(event):
         #         SI YA NO ES EL TURNO DEL USUARIO
         # -------
         turno_compu()
+def configurar_dificultad():
+    lista = ["facil", "medio", "dificil"]
 
-#-------------
+    configurar = [[sg.Text("Tiempo: "), sg.Combo(lista)],
+                  [sg.Text("Dificultad Computadora: "), sg.Combo(lista)],
+                  [sg.Text("Puntaje fichas: "), sg.Combo(lista)],
+                  [sg.Text("Cantidad fichas: "), sg.Combo(lista)],
+                  [sg.Text("Tablero: "), sg.Combo(lista)]
+                  ]
+
+    c_layout = [[sg.Text("Esta parte aun no funciona")],
+                [sg.Text("Seleccionar nivel: "), sg.Combo(["nivel1", "nivel2", "nivel3"])],
+              [sg.Frame(layout=configurar, title="Configuración manual")],
+              [sg.Ok("Confirmar cambios"), sg.Cancel("Cancelar")]
+              ]
+
+    c_window = sg.Window("Configuración",c_layout)
+    while True:
+        event2, values2 = c_window.Read()
+        if(event2 == sg.WIN_CLOSED or event2 == "Confirmar Cambios"):
+            c_window.Close()
+            ventana_config = False
+        window.UnHide()
+        break
+
+    #-------------
 #          JUEGO
 #-------------
 
+#Config
+ventana_config = False
 while True:
     timer()
     event, values = window.read(timeout=10)
@@ -241,6 +270,12 @@ while True:
             sg.Popup("Reglas")
         elif (event == "pausa"):
             pausar()
+        elif (event == "top"):
+            sg.popup("El top 10 de puntajes")
+        elif (event == "configuracion"):
+            ventana_config = True
+            window.Hide()
+            configurar_dificultad()
     if(tiempo == 0):
         limpiar()
         turno_compu()
@@ -253,5 +288,5 @@ while True:
             nom = jugador.get_nombre()
         else:
             nom = compu.get_nombre()
-        sg.popup("Se terminó la partida y ganó ", nom)
+        sg.Popup("Se terminó la partida y ganó ", nom)
         window.close()

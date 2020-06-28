@@ -22,7 +22,7 @@ cantidad = {"a": 12, "e": 12, "i": 6, "o": 9, "u": 5,
                }
 categorias_palabras = [1,2,3]
 tipos = ["normal","normal","normal","normal","normal","normal","normal","normal","normal","normal",
-    "triple_palabra","doble_palabra","triple_letra","doble_letra"]
+    "triple_palabra","doble_palabra","triple_letra","doble_letra","menos_uno","menos_dos","menos_tres"]
 datos_n1 = { "puntos": puntos,
              "tiempo": tiempo_turno,
              "cantidad": cantidad,
@@ -52,7 +52,7 @@ cantidad = {"a": 12, "e": 12, "i": 6, "o": 9, "u": 5,
                }
 categorias_palabras = [1,2,3]
 tipos = ["normal","normal","normal","normal","normal","normal","normal","normal","normal","normal",
-    "triple_palabra","doble_palabra","triple_letra","doble_letra"]
+    "triple_palabra","doble_palabra","triple_letra","doble_letra","menos_uno","menos_dos","menos_tres"]
 datos_n2 = { "puntos": puntos,
              "tiempo": tiempo_turno,
              "cantidad": cantidad,
@@ -81,7 +81,7 @@ cantidad = {"a": 12, "e": 12, "i": 6, "o": 9, "u": 5,
                }
 categorias_palabras = [1,2,3]
 tipos = ["normal","normal","normal","normal","normal","normal","normal","normal","normal","normal",
-    "triple_palabra","doble_palabra","triple_letra","doble_letra"]
+    "triple_palabra","doble_palabra","triple_letra","doble_letra","menos_uno","menos_dos","menos_tres"]
 datos_n3 = { "puntos": puntos,
              "tiempo": tiempo_turno,
              "cantidad": cantidad,
