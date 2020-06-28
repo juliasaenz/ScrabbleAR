@@ -74,7 +74,7 @@ if event == "Ok":
                                    title="Atril de " + jugador.get_nombre()),
                           sg.Button("Shuffle"),sg.Button("Limpiar"), sg.Ok("Terminar Turno"),sg.Text("Puntaje: "),sg.Text("  0  ",key = "p_jugador")]
                          ]
-    window = sg.Window("ScrabbleAR").Layout(ventana_juego)
+    window = sg.Window("ScrabbleAR",ventana_juego, grab_anywhere=True)
 
     # bloquear las usadas
     window.Read(timeout=0)
