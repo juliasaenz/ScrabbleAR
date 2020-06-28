@@ -19,7 +19,7 @@ def inicio():
     '''El inicio'''
     interfaz = [[sg.InputText("Tu nombre")],
                 [sg.Listbox(values=(('Nivel 1',"Nivel 2","Nivel 3")), size=(30, 3))],
-                [sg.Button("Jugar")]
+                [sg.Button("Nueva Partida"),sg.Button("Continuar")]
                 ]
     inicio = [[sg.Frame(layout=interfaz,title="Inicio")]]
     return inicio

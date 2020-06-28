@@ -27,6 +27,7 @@ class Computadora(Jugador):
     def __init__(self):
         self._palabra = ""
         self._casilleros = []
+        self._atril_usadas = []
         super().__init__("Computadora")
 
     def dibujar(self):
@@ -34,9 +35,34 @@ class Computadora(Jugador):
         atril = []
         lista = []
         for letra in self._atril:
-            lista.append(sg.Button(letra, key = "compu", **estilo.bt,button_color=("black","#FAFAFA"),disabled= True))
+            lista.append(sg.Button(" ", key = "compu", **estilo.bt,button_color=("black","#FAFAFA"),disabled= True))
         atril.append(lista)
         return atril
+
+    def reponer_atril(self):
+        while (len(Jugador.bolsa) > 0 and len(self._atril) < 7):
+            cual = randrange(len(Jugador.bolsa))
+            self._atril.append(Jugador.bolsa[cual - 1])
+            Jugador.bolsa.pop(cual - 1)
+
+    def sacar_y_reponer_atril(self):
+        self.sacar_fichas()
+        self.reponer_atril()
+        self._palabra = ""
+
+    def sacar_fichas(self):
+        #print("asi estaba el atril: ", self.get_atril())
+        for letra in self._palabra:
+            try:
+                self._atril.remove(letra)
+            except(ValueError):
+                print("esta letra me esta causando problemas: ",letra)
+        #print("asi esta el atril: ",self._atril)
+
+    def get_palabra(self):
+        return self._palabra
+
+    # ------ Armar palabras
 
     def armar_palabra(self,diccionario,tipos):
         ''' Devuelve la palabra más larga que puede formar con el atril'''
@@ -49,9 +75,6 @@ class Computadora(Jugador):
                 if(len(i) > len(self._palabra)):
                     self._palabra = i
         palabras.clear()
-
-    def get_palabra(self):
-        return self._palabra
 
     #Busca donde guardar la palabra de la compu
     def ubicar_palabra(self,matriz):
@@ -83,16 +106,6 @@ class Computadora(Jugador):
         print("puntaje: ", puntaje)
         return puntaje
 
-    def sacar_y_reponer_atril(self):
-        self.sacar_fichas()
-        self.reponer_atril()
-        self._palabra = ""
-
-    def sacar_fichas(self):
-        #print("asi estaba el atril: ", self.get_atril())
-        for letra in self._palabra:
-            try:
-                self._atril.remove(letra)
-            except(ValueError):
-                print("esta letra me esta causando problemas: ",letra)
-        #print("asi esta el atril: ",self._atril)
+    def jugada(self,matriz,diccionario,nivel):
+        self.armar_palabra(diccionario,nivel["palabras"])
+        self.ubicar_palabra(matriz)

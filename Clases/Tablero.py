@@ -90,3 +90,20 @@ class Tablero:
             self._matriz[pos[0]][pos[1]].bloquear()
     def esta_bloqueado(self,pos):
         return self._matriz[pos[0]][pos[1]].esta_bloqueado()
+
+    # Pausar Partida
+    def pausar_partida(self):
+        p_matriz = []
+        for x in range(self._dimension):
+            p_matriz.append([])
+            for y in range(self._dimension):
+                p_matriz[x].append(self.get_casillero((x,y)))
+        return p_matriz
+
+    #continuar
+    def continuar_partida(self,arreglo):
+        for x in range(self._dimension):
+            for y in range(self._dimension):
+                if(arreglo[x][y] != ""):
+                    self._matriz[x][y].set_letra(arreglo[x][y])
+                    self._matriz[x][y].bloquear()

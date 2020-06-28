@@ -1,5 +1,6 @@
 import time
 from Funciones.funciones_palabras import palabra_es_valida
+from Clases.Computadora import Computadora
 class Turno:
 
     '''
@@ -37,10 +38,10 @@ class Turno:
     '''
 
     def __init__(self):
-        self._tiempo = 12
         self._letras = ""
         self._casilleros_usados = set()
         self._letra_actual = ""
+        self._atril_usadas = []
         self._pos_actual = ""
         self._palabra = ""
         self._orientacion = ""
@@ -111,6 +112,7 @@ class Turno:
     def limpiar(self):
         self._palabra = ""
         self._letras = ""
+        self._atril_usadas = []
         self._letra_actual = ""
         self._orientacion = ""
         self._casilleros_usados.clear()
@@ -125,17 +127,11 @@ class Turno:
     def get_letras(self):
         return self._letras
 
-    #Tiempo
-    def countdown(self):
-        while self._tiempo > 0:
-            print("tiempo: ",self._tiempo)
-            self._tiempo = self._tiempo - 1
-            time.sleep(1)
-        if(self._tiempo == 0):
-            print("TIMES UP")
-            self.reinicio()
-    def get_tiempo(self):
-        return self._tiempo
+    #Usadas atril
+    def add_atril_usada(self,num):
+        self._atril_usadas.append(num)
+    def get_atril_usadas(self):
+        return self._atril_usadas
 
     #Turno
     def es_turno_usuario(self):
@@ -160,3 +156,4 @@ class Turno:
     #Fin de turno
     def fin(self):
         print("palabra: ",self._palabra)
+
