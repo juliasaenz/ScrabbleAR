@@ -11,6 +11,7 @@ class Turno:
     _casilleros_usados: set tuple → guarda las posiciones de los casilleros usados
     _letra_actual: str → guarda el valor de la letra actual
     _pos_actual: str → el último valor del atril presionado
+    _atril_usadas: array int → las claves del atril usadas
     _orientacion: str → la orientación de la palabra
     _turno_usuario_: bool → True si es el turno del usuario
 

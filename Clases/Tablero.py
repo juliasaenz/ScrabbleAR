@@ -24,6 +24,8 @@ class Tablero:
     bloquear_casillero: bloquear en el casillero indicado pasa a True
     esta_bloqueado: devuelve si el casillero está bloqueado → bool
     dibujar: dibuja el tablero de botones → array sg.Button
+    pausar_partida: guarda en un arreglo los caracteres ocupados
+    continuar: actualiza la matriz con los valores en el archivo
 
     ACLARACIÓN IMPORTANTE
     Todos los cambios a Casilleros, hacerlo mediante métodos de Tablero

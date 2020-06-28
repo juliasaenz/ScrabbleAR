@@ -24,7 +24,9 @@ class Jugador():
     get_posicion_letra: como el arreglo va de 0 a 6, se le pasa la letra y devuelve la posición en la que está
     shuffle: cambia todas las letras del atril y resta la cantidad de cambios posibles
     get_cambios: devuelve _cambios → int
-    dibujar → dibuja el atril con keys de 0 a 6 → array sg.Button
+    dibujar: dibuja el atril con keys de 0 a 6 → array sg.Button
+    pausar_turno: guarda los valores de las variables de instancia en un diccionario → diccionario
+    continuar: actualiza las variables de instancia con los valores pasados por parametro
     '''
 
     bolsa = []
