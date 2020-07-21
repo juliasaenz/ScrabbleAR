@@ -6,7 +6,7 @@ from Clases.Computadora import Computadora
 from Clases.Turno import Turno
 from Funciones.funciones_palabras import palabras_sin_tilde
 from Funciones.Ventanas_extra import tutorial, inicio
-from Funciones.Niveles import actualizar_todo_dicc
+from Funciones.Configuracion import actualizar_todo_dicc
 import PySimpleGUI as sg
 
 # ------ TUTORIAL
@@ -247,23 +247,26 @@ def terminar_turno():
         turno_compu()
 
 
-
 def configurar_dificultad():
-    lista = ["", "fácil", "medio", "difícil"]
+    lista = ['', "fácil", "medio", "difícil"]
 
-    configurar = [[sg.Text("Dificultad Computadora: ", **estilo.tt), sg.Combo(lista, **estilo.tt)],
-                  [sg.Text("Puntaje fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt), sg.Button("Configurar "
-                                                                                                     "individualmente", key ="config_1", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
-                  [sg.Text("Cantidad fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt), sg.Button("Configurar "
-                                                                                                      "individualmente", key ="config_2", **estilo.tt,  button_color=("#FAFAFA", "#151514"))],
-                  [sg.Text("Tablero: ", **estilo.tt), sg.Combo(lista, **estilo.tt)]
+    configurar = [[sg.Text("Dificultad Computadora: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
+                  [sg.Text("Puntaje fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None),
+                   sg.Button("Configurar "
+                             "individualmente", key="config_1", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
+                  [sg.Text("Cantidad fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None),
+                   sg.Button("Configurar "
+                             "individualmente", key="config_2", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
+                  [sg.Text("Tablero: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)]
                   ]
 
     c_layout = [
-                [sg.Text("Seleccionar nivel: ", **estilo.tt), sg.Combo(["fácil", "medio", "difícil"],**estilo.tt)],
-                [sg.Frame(layout=configurar, title="Configuración manual")],
-                [sg.Ok("Confirmar cambios", **estilo.tt,  button_color=("#FAFAFA", "#151514")), sg.Cancel("Cancelar", **estilo.tt,  button_color=("#FAFAFA", "#151514"))]
-                ]
+        [sg.Text("Seleccionar nivel: ", **estilo.tt),
+         sg.Combo(['', "fácil", "medio", "difícil"], **estilo.tt, default_value=None)],
+        [sg.Frame(layout=configurar, title="Configuración manual")],
+        [sg.Ok("Confirmar cambios", **estilo.tt, button_color=("#FAFAFA", "#151514")),
+         sg.Cancel("Cancelar", **estilo.tt, button_color=("#FAFAFA", "#151514"))]
+    ]
 
     c_window = sg.Window("Configuración", c_layout, **estilo.tt)
     while True:
@@ -272,14 +275,17 @@ def configurar_dificultad():
         if event2 == sg.WIN_CLOSED or event2 == "Cancelar":
             c_window.Close()
         elif event2 == "Confirmar cambios":
-            if values2[0] is not None or values2[0] != "":
-                actualizar_todo_dicc(config, niveles, values2[0])
-            if values2[1] is not None or values2[1] != "":
-                config["compu"] = niveles["compu"][values2[1]]
-            if values2[2] is not None or values2[2] != "":
-                config["puntos"] = niveles["compu"][values2[2]]
-            if values2[3] is not None or values2[3] != "":
-                config["cantidad"] = niveles["letras"][values2[3]]
+            try:
+                if len(values2[0]) > 0:
+                    actualizar_todo_dicc(config, niveles, values2[0])
+                if len(values2[1]) > 0:
+                    config["compu"] = niveles["compu"][values2[1]]
+                if len(values2[2]) > 0:
+                    config["puntos"] = niveles["compu"][values2[2]]
+                if len(values2[3]) > 0:
+                    config["cantidad"] = niveles["letras"][values2[3]]
+            except KeyError:
+                print("El error tiene que estar por aca: ", values2)
             c_window.Close()
         elif event2 == "config_1":
             sg.popup("HELLO")
@@ -340,7 +346,7 @@ if tiempo != -1:
                 ventana_config = True
                 window.Hide()
                 configurar_dificultad()
-                print("nivel: ",config["compu"])
+                print("nivel: ", config["compu"])
         # ------
         #       Condición de fin: si no hay mas fichas
         # ------
