@@ -4,7 +4,6 @@ from Funciones.funciones_palabras import palabra_es_valida
 class Turno:
     """
     VARIABLES
-    _tiempo: int → el tiempo de cada turno
     _letras: str → letras usadas en el turno (sin orden)
     _palabra: str → la palabra que se forma
     _casilleros_usados: set tuple → guarda las posiciones de los casilleros usados
@@ -46,6 +45,8 @@ class Turno:
         self._palabra = ""
         self._orientacion = ""
         self._turno_usuario = True
+        self._lista_palabras = []
+        self._puntaje = 0
 
     # Letra Actual
     def set_letra_actual(self, letra):
@@ -102,6 +103,7 @@ class Turno:
         puntaje = 0
         for pos in self._casilleros_usados:
             puntaje = puntaje + matriz[pos[0]][pos[1]].devolver_puntos(puntos, self._palabra)
+        self._puntaje = puntaje
         return puntaje
 
     # -- Cuando termina el turno evalua si la palabra es válida y devuelve el puntaje
@@ -145,18 +147,32 @@ class Turno:
     def es_turno_usuario(self):
         return self._turno_usuario
 
-    def set_turno_usuario(self):
-        self._turno_usuario = True
+    def set_turno_usuario(self, va):
+        self._turno_usuario = va
+
+    def set_puntaje(self,p):
+        self._puntaje = p
+
+    # Lista de palabras
+    def add_lista_palabras(self, palabra, puntos):
+        dato = palabra + ": " + str(puntos)
+        self._lista_palabras.append(dato)
+
+    def get_lista_palabras(self):
+        datos = '\n'.join(self._lista_palabras)
+        return datos
 
     # ReiniciarValores
     def reinicio(self):
-        self._tiempo = 100
+        if len(self._palabra) > 0:
+            self.add_lista_palabras(self._palabra, self._puntaje)
         self._palabra = ""
         self._letras = ""
         self._letra_actual = ""
         self._orientacion = ""
         self._casilleros_usados.clear()
         self._casilleros_usados = set()
+        self._puntaje = 0
         if self._turno_usuario:
             self._turno_usuario = False
         else:

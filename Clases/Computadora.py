@@ -29,6 +29,7 @@ class Computadora(Jugador):
         self._palabra = ""
         self._casilleros = []
         self._atril_usadas = []
+        self._puntos = 0
         super().__init__("Computadora")
 
     def dibujar(self):
@@ -50,6 +51,7 @@ class Computadora(Jugador):
         self.sacar_fichas()
         self.reponer_atril()
         self._palabra = ""
+        self._puntos = 0
 
     def sacar_fichas(self):
         # print("asi estaba el atril: ", self.get_atril())
@@ -61,6 +63,9 @@ class Computadora(Jugador):
 
     def get_palabra(self):
         return self._palabra
+
+    def get_puntaje_palabra(self):
+        return self._puntos
 
     # ------ Armar palabras
 
@@ -105,6 +110,7 @@ class Computadora(Jugador):
         for pos in self._casilleros:
             puntaje = puntaje + matriz[pos[0]][pos[1]].devolver_puntos(puntos, self._palabra)
         print("puntaje: ", puntaje)
+        self._puntos = puntaje
         return puntaje
 
     def jugada(self, matriz, diccionario, nivel):

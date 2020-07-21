@@ -1,5 +1,6 @@
 import json
 import estilo
+import random
 from Clases.Tablero import Tablero
 from Clases.Jugador import Jugador
 from Clases.Computadora import Computadora
@@ -77,22 +78,31 @@ try:
         compu.continuar_turno(partida["compu"])
         tabla.continuar_partida(partida["tablero"])
 
-    ventana_juego = [[sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt),
-                      sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt),
-                      sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt),
-                      sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
-                                **estilo.tt)],
+    col = [[sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+           [sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+           [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+           [sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
+                      **estilo.tt)],
+           [sg.Button("Palabras Jugadas", key="palabras", button_color=("#FAFAFA", "#151514"),
+                      **estilo.tt)],
+           [sg.Text('\n')], [sg.Text('\n')],
+           [sg.Frame(layout=[[sg.Text('{}'.format(config["tiempo"]), key="tiempo", **estilo.tp)]],
+                     title="Tiempo", key="tiempo_f", **estilo.tt)],
+           [sg.Text('\n')], [sg.Text('\n')], [sg.Text('\n')],
+           [sg.Button("Shuffle", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+           [sg.Button("Limpiar", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+           [sg.Ok("Terminar Turno", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+           [sg.Ok("Terminar Partida", button_color=("#FAFAFA", "#151514"), **estilo.tt)]
+           ]
+
+    ventana_juego = [
                      [sg.Frame(layout=compu.dibujar(), key=compu.get_nombre(),
                                title="Atril de " + compu.get_nombre(), **estilo.tt), sg.Text("Puntaje: ", **estilo.tt),
                       sg.Text("  0  ", key="p_compu", **estilo.tt)],
-                     [sg.Frame(layout=tabla.dibujar(), title="Tablero", **estilo.tt),
-                      sg.Text('Tiempo: {}'.format(config["tiempo"]), key="tiempo", **estilo.tt)],
+                     [sg.Column(col), sg.Frame(layout=tabla.dibujar(), title="Tablero", **estilo.tt)],
                      [],
                      [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
                                title="Atril de " + jugador.get_nombre(), **estilo.tt),
-                      sg.Button("Shuffle", button_color=("#FAFAFA", "#151514"), **estilo.tt),
-                      sg.Button("Limpiar", button_color=("#FAFAFA", "#151514"), **estilo.tt),
-                      sg.Ok("Terminar Turno", button_color=("#FAFAFA", "#151514"), **estilo.tt),
                       sg.Text("Puntaje: ", **estilo.tt),
                       sg.Text("  0  ", key="p_jugador", **estilo.tt)]
                      ]
@@ -123,7 +133,7 @@ def timer():
     global tiempo
     tiempo = tiempo - 1
     # --------- Display timer in window --------
-    window["tiempo"].update('Tiempo: {}'.format(int(tiempo / 100)))
+    window["tiempo"].update('{}'.format(int(tiempo / 100)))
 
 
 def letra_actual():
@@ -149,6 +159,8 @@ def turno_compu():
     compu.actualizar_puntaje(compu.definir_puntos(tabla.get_matriz(), config["puntos"]))
     print("puntaje compu: ", str(compu.get_puntaje()))
     window.FindElement("p_compu").Update(str(compu.get_puntaje()))
+    turno.set_palabra(compu.get_palabra())
+    turno.set_puntaje(compu.get_puntaje())
     compu.sacar_y_reponer_atril()
     turno.reinicio()
     for i in range(7):
@@ -241,20 +253,18 @@ def terminar_turno():
         for i in range(7):
             window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
         turno.reinicio()
-        # -------
-        #         SI YA NO ES EL TURNO DEL USUARIO
-        # -------
-        turno_compu()
 
 
-    # -------------
 
+# -------------------------------------------
+#                  JUEGO
+# -------------------------------------------
 
-#          JUEGO
-# -------------
-
-# Config
+# Ventana de configuración
 ventana_config = False
+
+#Quien empieza
+turno.set_turno_usuario(bool(random.getrandbits(1)))
 
 # Tiempo es -1 cuando se cerro la ventana de Tutorial o Inicio
 if tiempo != -1:
@@ -262,44 +272,52 @@ if tiempo != -1:
         timer()
         event, values = window.read(timeout=10)
         # ----- SI ES EL TURNO DEL USUARIO Y NO TERMINO LA PARTIDA
-        if jugador.get_cant_bolsa() != 0 and turno.es_turno_usuario() and tiempo != 0:
-            if event != "__TIMEOUT__":
-                print("event: ", event)
-            if event is None:
-                break
-            # --- si toco un boton del tablero
-            elif event in tabla.get_posiciones():
-                if turno.get_letra_actual() != "":
-                    # si el casillero no esta bloqueado
-                    if not tabla.esta_bloqueado(event):
-                        # si el casillero esta vacio
-                        if tabla.get_casillero(event) == "":
-                            poner_ficha()
-                    # actualizo letra actual
-                    turno.set_letra_actual("")
-                    turno.set_pos_actual("")
-            # --- si toco un boton del atril
-            elif event in "0123456":
-                letra_actual()
-            elif event == "Limpiar":
-                limpiar()
-            elif event == "Shuffle":
-                shuffle()
-            elif event == "Terminar Turno":
-                terminar_turno()
-            elif event == "Reglas":
-                sg.Popup("Reglas")
-            elif event == "pausa":
-                if sg.popup_ok_cancel('¿Pausar partida?') == "OK":
-                    pausar()
-            elif event == "top":
-                sg.popup("El top 10 de puntajes")
-            elif event == "configuracion":
-                ventana_config = True
-                window.Hide()
-                configurar_dificultad(config, niveles)
-                window.UnHide()
-                print("nivel: ", config["compu"])
+        if jugador.get_cant_bolsa() != 0 and tiempo != 0:
+            if turno.es_turno_usuario():
+                if event != "__TIMEOUT__":
+                    print("event: ", event)
+                if event is None:
+                    break
+                # --- si toco un boton del tablero
+                elif event in tabla.get_posiciones():
+                    if turno.get_letra_actual() != "":
+                        # si el casillero no esta bloqueado
+                        if not tabla.esta_bloqueado(event):
+                            # si el casillero esta vacio
+                            if tabla.get_casillero(event) == "":
+                                poner_ficha()
+                        # actualizo letra actual
+                        turno.set_letra_actual("")
+                        turno.set_pos_actual("")
+                # --- si toco un boton del atril
+                elif event in "0123456":
+                    letra_actual()
+                elif event == "Limpiar":
+                    limpiar()
+                elif event == "Shuffle":
+                    shuffle()
+                elif event == "Terminar Turno":
+                    terminar_turno()
+                elif event == "Reglas":
+                    sg.Popup("Reglas")
+                elif event == "pausa":
+                    if sg.popup_ok_cancel('¿Pausar partida?') == "OK":
+                        pausar()
+                elif event == "top":
+                    sg.popup("El top 10 de puntajes")
+                elif event == "configuracion":
+                    ventana_config = True
+                    window.Hide()
+                    configurar_dificultad(config, niveles)
+                    window.UnHide()
+                    print("nivel: ", config["compu"])
+                elif event == "palabras":
+                    sg.Popup(turno.get_lista_palabras(), **estilo.tt)
+            elif not turno.es_turno_usuario():
+                # -------
+                #         SI YA NO ES EL TURNO DEL USUARIO
+                # -------
+                turno_compu()
         # ------
         #       Condición de fin: si no hay mas fichas
         # ------
