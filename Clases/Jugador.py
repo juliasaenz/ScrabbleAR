@@ -2,9 +2,9 @@ from random import randrange
 import estilo
 import PySimpleGUI as sg
 
-class Jugador():
 
-    '''
+class Jugador:
+    """
     VARIABLES DE CLASE
     bolsa: array str → todas las letras a usar en el juego
 
@@ -27,49 +27,52 @@ class Jugador():
     dibujar: dibuja el atril con keys de 0 a 6 → array sg.Button
     pausar_turno: guarda los valores de las variables de instancia en un diccionario → diccionario
     continuar: actualiza las variables de instancia con los valores pasados por parametro
-    '''
+    """
 
     bolsa = []
 
-    def __init__(self,nom):
+    def __init__(self, nom):
         self._nombre = nom
         self._puntaje = 0
         self._atril = []
         self._cambios = 3
         self.armar_atril()
 
-    #DIBUJAR
+    # DIBUJAR
     def dibujar(self):
         atril = []
         lista = []
         i = 0
         for letra in self._atril:
-            lista.append(sg.Button(letra, key = str(i),**estilo.bt,button_color=("black","white")))
+            lista.append(sg.Button(letra, key=str(i), **estilo.bt, button_color=("black", "white")))
             i = i + 1
         atril.append(lista)
         return atril
 
-    #Nombre
+    # Nombre
     def get_nombre(self):
         return self._nombre
 
-    #Puntaje
-    def set_puntaje(self,pun):
+    # Puntaje
+    def set_puntaje(self, pun):
         self._puntaje = pun
-    def actualizar_puntaje(self,pun):
+
+    def actualizar_puntaje(self, pun):
         self._puntaje = self._puntaje + pun
+
     def get_puntaje(self):
         return self._puntaje
 
-    #Atril
+    # Atril
     def armar_atril(self):
-        while (len(Jugador.bolsa) > 0 and len(self._atril) < 7):
+        while len(Jugador.bolsa) > 0 and len(self._atril) < 7:
             cual = randrange(len(Jugador.bolsa))
             self._atril.append(Jugador.bolsa[cual - 1])
             Jugador.bolsa.pop(cual - 1)
-    def reponer_atril(self,usadas):
+
+    def reponer_atril(self, usadas):
         for usada in usadas:
-            if(len(Jugador.bolsa) > 0):
+            if len(Jugador.bolsa) > 0:
                 cual = randrange(len(Jugador.bolsa))
                 self._atril[int(usada)] = Jugador.bolsa[cual - 1]
                 Jugador.bolsa.pop(cual - 1)
@@ -85,48 +88,51 @@ class Jugador():
 
     def get_atril(self):
         return self._atril
-    def get_posicion_letra(self,letra):
+
+    def get_posicion_letra(self, letra):
         return str(self._atril.index(letra))
 
-    #Ficha
-    def sacar_fichas(self,fichas):
+    # Ficha
+    def sacar_fichas(self, fichas):
         for ficha in fichas:
             self._atril.remove(ficha)
-    def get_ficha(self,pos):
+
+    def get_ficha(self, pos):
         try:
             return self._atril[pos]
-        except(IndexError):
-            print("ERROR: en esta posicion ",pos)
+        except IndexError:
+            print("ERROR: en esta posicion ", pos)
 
-    #Shuffle
+    # Shuffle
     def shuffle(self):
-        if (self._cambios >= 0):
+        if self._cambios >= 0:
             for letra in self._atril:
                 Jugador.bolsa.append(letra)
-            self.reponer_atril([0,1,2,3,4,5,6])
+            self.reponer_atril([0, 1, 2, 3, 4, 5, 6])
             self._cambios = self._cambios - 1
         return self._cambios
+
     def get_cambios(self):
         return self._cambios
 
-    #Bolsa
+    # Bolsa
     def get_cant_bolsa(self):
         return len(self.bolsa)
 
-    #Fin de turno
-    def fin_de_turno(self,puntos,usadas):
+    # Fin de turno
+    def fin_de_turno(self, puntos, usadas):
         self.actualizar_puntaje(puntos)
-        #self.sacar_fichas(letras)
+        # self.sacar_fichas(letras)
         self.reponer_atril(usadas)
 
-    #Pausar Turno
+    # Pausar Turno
     def pausar_turno(self):
-        d_jugador = { "nombre": self._nombre,
-        "puntaje": self._puntaje, "atril": self._atril,
-        "cambios": self._cambios }
+        d_jugador = {"nombre": self._nombre,
+                     "puntaje": self._puntaje, "atril": self._atril,
+                     "cambios": self._cambios}
         return d_jugador
 
-    def continuar_turno(self,datos):
+    def continuar_turno(self, datos):
         self._atril = datos["atril"]
         self._cambios = datos["cambios"]
         self._puntaje = datos["puntaje"]

@@ -1,8 +1,9 @@
 import PySimpleGUI as sg
 import estilo
-class Casillero:
 
-    '''
+
+class Casillero:
+    """
     VARIABLES DE INTANCIA
 
     _tipo: str → el tipo de casillero que es
@@ -25,101 +26,101 @@ class Casillero:
         menos_dos → int
         menos_tres → int
     dibujar → dibuja el botón → sg.Button
-    '''
+    """
 
-
-    def __init__(self,tipo_ = "normal"):
+    def __init__(self, tipo_="normal"):
         self._tipo = tipo_
         self._letra = ""
         self._bloqueado = False
 
-    #Dibujar
+    # Dibujar
     def dibujar(self, clave):
-        if (self._tipo == "doble_letra"):
-            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#6DBE45"))
-        elif (self._tipo == "triple_letra"):
-            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","yellow"))
-        elif (self._tipo == "doble_palabra"):
-            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","orange"))
-        elif (self._tipo == "triple_palabra"):
-            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","red"))
-        elif (self._tipo == "menos_uno"):
-            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#50A1D9"))
-        elif (self._tipo == "menos_dos"):
-            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#5553A3"))
-        elif (self._tipo == "menos_tres"):
-            return sg.Button(self._letra, key=clave,**estilo.bt,button_color=("black","#883694"))
+        if self._tipo == "doble_letra":
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#7CDC64"))
+        elif self._tipo == "triple_letra":
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#1DCBB1"))
+        elif self._tipo == "doble_palabra":
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#0F7B96"))
+        elif self._tipo == "triple_palabra":
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#234E78"))
+        elif self._tipo == "menos_uno":
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#EFD934"))
+        elif self._tipo == "menos_dos":
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#EDA30F"))
+        elif self._tipo == "menos_tres":
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#F35F2B"))
         else:
-            return sg.Button(self._letra, key=clave, **estilo.bt,button_color=("black","#FAFAFA"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#FAFAFA"))
 
-    #Tipo
+    # Tipo
     def get_tipo(self):
         return self._tipo
 
-    #Bloquear
+    # Bloquear
     def bloquear(self):
         self._bloqueado = True
+
     def esta_bloqueado(self):
         return self._bloqueado
 
-    #Letra
-    def set_letra(self,letra):
+    # Letra
+    def set_letra(self, letra):
         self._letra = letra
+
     def get_letra(self):
         return self._letra
 
     # Casilleros Especiales
     def doble_letra(self, puntos):
-        ''' Devuelve el doble puntaje de la letra'''
+        """ Devuelve el doble puntaje de la letra"""
         return puntos[self._letra] * 2
 
     def triple_letra(self, puntos):
-        ''' Devuelve el triple puntaje de la letra'''
+        """ Devuelve el triple puntaje de la letra"""
         return puntos[self._letra] * 3
 
     def doble_palabra(self, puntos, pal):
-        ''' Devuelve el doble puntaje de la palabra'''
+        """ Devuelve el doble puntaje de la palabra"""
         puntaje = 0
         for letra in pal:
             puntaje = puntaje + puntos[letra]
         return puntaje * 2
 
     def triple_palabra(self, puntos, pal):
-        ''' Devuelve el triple puntaje de la palabra'''
+        """ Devuelve el triple puntaje de la palabra"""
         puntaje = 0
         for letra in pal:
             puntaje = puntaje + puntos[letra]
         return puntaje * 3
 
     def menos_uno(self, puntos):
-        ''' Resta 1 a la letra'''
+        """ Resta 1 a la letra"""
         return puntos[self._letra] - 1
 
     def menos_dos(self, puntos):
-        ''' Resta 2 a la letra'''
+        """ Resta 2 a la letra"""
         return puntos[self._letra] - 2
 
     def menos_tres(self, puntos):
-        ''' Resta 3 a la letra'''
+        """ Resta 3 a la letra"""
         return puntos[self._letra] - 3
 
-    #Puntos
+    # Puntos
     def devolver_puntos(self, puntos, palabra_):
-        '''Depende del tipo de casillero devuelve los puntos correspondientes'''
-        if (self._tipo == "doble_letra"):
+        """Depende del tipo de casillero devuelve los puntos correspondientes"""
+        if self._tipo == "doble_letra":
             return self.doble_letra(puntos)
-        elif (self._tipo == "triple_letra"):
+        elif self._tipo == "triple_letra":
             return self.triple_letra(puntos)
-        elif (self._tipo == "doble_palabra"):
-            return self.doble_palabra(puntos,palabra_)
-        elif (self._tipo == "triple_palabra"):
-            return self.triple_palabra(puntos,palabra_)
-        elif (self._tipo == "menos_uno"):
+        elif self._tipo == "doble_palabra":
+            return self.doble_palabra(puntos, palabra_)
+        elif self._tipo == "triple_palabra":
+            return self.triple_palabra(puntos, palabra_)
+        elif self._tipo == "menos_uno":
             return self.menos_uno(puntos)
-        elif (self._tipo == "menos_dos"):
+        elif self._tipo == "menos_dos":
             return self.menos_dos(puntos)
-        elif (self._tipo == "menos_tres"):
+        elif self._tipo == "menos_tres":
             return self.menos_tres()
         else:
             return puntos[self._letra]
-
