@@ -47,6 +47,23 @@ class Turno:
         self._turno_usuario = True
         self._lista_palabras = []
         self._puntaje = 0
+        self._primer_turno = True
+
+    # Primer Turno
+    def get_primer_turno(self):
+        return self._primer_turno
+
+    def jugue_primer_turno(self):
+        self._primer_turno = False
+
+    def validar_turno(self):
+        if self._primer_turno:
+            if (7, 7) in self._casilleros_usados:
+                return True
+            else:
+                return False
+        else:
+            return True
 
     # Letra Actual
     def set_letra_actual(self, letra):

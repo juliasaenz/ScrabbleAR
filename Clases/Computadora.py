@@ -84,7 +84,7 @@ class Computadora(Jugador):
     # Busca donde guardar la palabra de la compu
     def ubicar_palabra(self, matriz):
         """ Devuelve un arreglo de posiciones en los que entra la palabra"""
-        pos = (randrange(15), randrange(15))
+        pos = (7, 7)
         casilleros = []
         # Se elije una posición al azar en el tablero y se busca si los adyacentes estan disponibles
         while len(casilleros) != len(self._palabra):

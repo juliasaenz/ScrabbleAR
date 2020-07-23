@@ -6,8 +6,7 @@ from Clases.Jugador import Jugador
 from Clases.Computadora import Computadora
 from Clases.Turno import Turno
 from Funciones.funciones_palabras import palabras_sin_tilde
-from Funciones.Ventanas_extra import tutorial, inicio
-from Funciones.Configuracion import configurar_dificultad
+from Funciones.Ventanas_secundarias import tutorial, inicio, configurar_dificultad, ventana_shuffle
 import PySimpleGUI as sg
 
 # ------ TUTORIAL
@@ -96,16 +95,16 @@ try:
            ]
 
     ventana_juego = [
-                     [sg.Frame(layout=compu.dibujar(), key=compu.get_nombre(),
-                               title="Atril de " + compu.get_nombre(), **estilo.tt), sg.Text("Puntaje: ", **estilo.tt),
-                      sg.Text("  0  ", key="p_compu", **estilo.tt)],
-                     [sg.Column(col), sg.Frame(layout=tabla.dibujar(), title="Tablero", **estilo.tt)],
-                     [],
-                     [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
-                               title="Atril de " + jugador.get_nombre(), **estilo.tt),
-                      sg.Text("Puntaje: ", **estilo.tt),
-                      sg.Text("  0  ", key="p_jugador", **estilo.tt)]
-                     ]
+        [sg.Frame(layout=compu.dibujar(), key=compu.get_nombre(),
+                  title="Atril de " + compu.get_nombre(), **estilo.tt), sg.Text("Puntaje: ", **estilo.tt),
+         sg.Text("  0  ", key="p_compu", **estilo.tt)],
+        [sg.Column(col), sg.Frame(layout=tabla.dibujar(), title="Tablero", **estilo.tt)],
+        [],
+        [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
+                  title="Atril de " + jugador.get_nombre(), **estilo.tt),
+         sg.Text("Puntaje: ", **estilo.tt),
+         sg.Text("  0  ", key="p_jugador", **estilo.tt)]
+    ]
 
     window = sg.Window("ScrabbleAR", ventana_juego, grab_anywhere=True)
 
@@ -148,6 +147,8 @@ def turno_compu():
     window.Read(timeout=1)
     # -- Arma la palabra
     compu.jugada(tabla, diccionario, config)
+    if turno.get_primer_turno():
+        turno.jugue_primer_turno()
     # -- Busca donde dibujarla y la dibuja
     i = 0
     for pos in compu.get_casilleros():
@@ -232,28 +233,46 @@ def shuffle():
 def terminar_turno():
     """ Si la palabra es correcta pasa al turno de la compy, sino limpia el tablero"""
     resultado = turno.evaluar_palabra(tabla.get_matriz(), diccionario, config)
-    # si la palabra no es válida
-    if resultado == 100:
-        print("Palabra equivocada!!")
-        sg.popup_timed("No es una palabra válida", background_color="black")
+    if turno.validar_turno():
+        # si la palabra no es válida
+        if resultado == 100:
+            print("Palabra equivocada!!")
+            sg.popup_timed("No es una palabra válida", background_color="black")
+            tabla.limpiar_matriz()
+            for i in range(7):
+                window.FindElement(str(i)).Update(disabled=False)
+            for pos in turno.get_casilleros_usados():
+                window.FindElement(pos).Update("")
+            turno.limpiar()
+        else:
+            # si la palabra es válida
+            for tupla in turno.get_casilleros_usados():
+                window.FindElement(tupla).Update(button_color=("#FAFAFA", "#D92335"))
+            print("Puntaje jugador: ", jugador.get_puntaje())
+            tabla.bloquear_casilleros(turno.get_casilleros_usados())
+            jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas())
+            window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))
+            for i in range(7):
+                window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
+            turno.reinicio()
+            turno.jugue_primer_turno()
+    else:
         tabla.limpiar_matriz()
         for i in range(7):
             window.FindElement(str(i)).Update(disabled=False)
         for pos in turno.get_casilleros_usados():
             window.FindElement(pos).Update("")
+        sg.Popup("Una ficha debe estar en el casillero del medio")
         turno.limpiar()
-    else:
-        # si la palabra es válida
-        for tupla in turno.get_casilleros_usados():
-            window.FindElement(tupla).Update(button_color=("#FAFAFA", "#D92335"))
-        print("Puntaje jugador: ", jugador.get_puntaje())
-        tabla.bloquear_casilleros(turno.get_casilleros_usados())
-        jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas())
-        window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))
-        for i in range(7):
-            window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
-        turno.reinicio()
 
+
+def terminar_partida():
+    jugador.terminar_partida(config["puntos"])
+    compu.terminar_partida(config["puntos"])
+    score = 'PUNTAJE FINAL \n {}: {} puntos \n {}: {} puntos'.format(jugador.get_nombre(), jugador.get_puntaje(),
+                                                                     compu.get_nombre(), compu.get_puntaje())
+    sg.Popup(score)
+    window.close()
 
 
 # -------------------------------------------
@@ -263,7 +282,7 @@ def terminar_turno():
 # Ventana de configuración
 ventana_config = False
 
-#Quien empieza
+# Quien empieza
 turno.set_turno_usuario(bool(random.getrandbits(1)))
 
 # Tiempo es -1 cuando se cerro la ventana de Tutorial o Inicio
@@ -313,6 +332,8 @@ if tiempo != -1:
                     print("nivel: ", config["compu"])
                 elif event == "palabras":
                     sg.Popup(turno.get_lista_palabras(), **estilo.tt)
+                elif event == "Terminar Partida":
+                    terminar_partida()
             elif not turno.es_turno_usuario():
                 # -------
                 #         SI YA NO ES EL TURNO DEL USUARIO
@@ -322,13 +343,5 @@ if tiempo != -1:
         #       Condición de fin: si no hay mas fichas
         # ------
         elif jugador.get_cant_bolsa() == 0 or tiempo == 0:
-            ganador = max(jugador.get_puntaje(), compu.get_puntaje())
-            if jugador.get_puntaje() > compu.get_puntaje():
-                nom = 'Ganó ', jugador.get_nombre(), '. ¡Felicidades!'
-            elif jugador.get_puntaje() > compu.get_puntaje():
-                nom = 'Ganó ', compu.get_nombre(), '. ¡Mejor suerte la próxima!'
-            else:
-                nom = '¡Fue un empate!'
-            sg.Popup(nom)
-            window.close()
+            terminar_partida()
             break

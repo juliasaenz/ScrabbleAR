@@ -136,3 +136,8 @@ class Jugador:
         self._atril = datos["atril"]
         self._cambios = datos["cambios"]
         self._puntaje = datos["puntaje"]
+
+    def terminar_partida(self, puntos):
+        for letra in self._atril:
+            if self._puntaje > 0:
+                self._puntaje = self._puntaje - puntos[letra]
