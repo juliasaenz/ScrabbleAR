@@ -90,7 +90,7 @@ class Jugador:
         return self._atril
 
     def get_posicion_letra(self, letra):
-        return str(self._atril.index(letra))
+        return str(self._atril.index(int(letra)))
 
     # Ficha
     def sacar_fichas(self, fichas):
@@ -104,11 +104,11 @@ class Jugador:
             print("ERROR: en esta posicion ", pos)
 
     # Shuffle
-    def shuffle(self):
+    def shuffle(self, fichas):
         if self._cambios >= 0:
-            for letra in self._atril:
-                Jugador.bolsa.append(letra)
-            self.reponer_atril([0, 1, 2, 3, 4, 5, 6])
+            for letra in fichas:
+                Jugador.bolsa.append(self._atril[int(letra)])
+            self.reponer_atril(fichas)
             self._cambios = self._cambios - 1
         return self._cambios
 

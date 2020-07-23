@@ -213,7 +213,9 @@ def poner_ficha():
 def shuffle():
     """ Cambia todas las fichas del atril y saltea el turno """
     # esto se puede hacer solo tres veces en la partida
-    if jugador.shuffle() >= 0:
+    a_cambiar = ventana_shuffle(jugador.get_atril())
+    if len(a_cambiar) > 0:
+        jugador.shuffle(a_cambiar)
         i = 0
         for dato in jugador.get_atril():
             window.FindElement(str(i)).Update(dato)
@@ -279,9 +281,6 @@ def terminar_partida():
 #                  JUEGO
 # -------------------------------------------
 
-# Ventana de configuración
-ventana_config = False
-
 # Quien empieza
 turno.set_turno_usuario(bool(random.getrandbits(1)))
 
@@ -314,7 +313,9 @@ if tiempo != -1:
                 elif event == "Limpiar":
                     limpiar()
                 elif event == "Shuffle":
+                    window.Hide()
                     shuffle()
+                    window.UnHide()
                 elif event == "Terminar Turno":
                     terminar_turno()
                 elif event == "Reglas":
@@ -325,7 +326,6 @@ if tiempo != -1:
                 elif event == "top":
                     sg.popup("El top 10 de puntajes")
                 elif event == "configuracion":
-                    ventana_config = True
                     window.Hide()
                     configurar_dificultad(config, niveles)
                     window.UnHide()

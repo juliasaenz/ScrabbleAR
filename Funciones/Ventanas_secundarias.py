@@ -83,12 +83,35 @@ def configurar_dificultad(config, niveles):
 
         break
 
-    def ventana_shuffle():
-        v_layout: [
-            sg.Text("shuflle shuffle yay")
-        ]
-        v_window = sg.Window("Da Shuffle", v_layout, **estilo.tt)
-        while True:
-            event3, values3 = v_window.Read()
-            if event3 == sg.WIN_CLOSED or event3 == "Cancelar":
-                c_window.Close()
+
+def ventana_shuffle(atril):
+    lista = []
+    i = 0
+    for letra in atril:
+        lista.append(sg.Button(letra, key=str(i), **estilo.bt, button_color=("black", "white")))
+        i = i + 1
+
+    v_layout = [
+        [sg.Text("Elija qué fichas cambiar", **estilo.tt)], lista, [], [sg.Ok(**estilo.tt), sg.Button("Limpiar", **estilo.tt),
+                                                                        sg.Cancel("Cancelar", **estilo.tt)]
+    ]
+    v_window = sg.Window("Da Shuffle", v_layout, **estilo.tt)
+
+    fichas_a_cambiar = []
+
+    while True:
+        event3, values3 = v_window.Read()
+        if event3 == sg.WIN_CLOSED or event3 == "Cancelar":
+            v_window.Close()
+            return []
+            break
+        elif event3 == "Limpiar":
+            for i in range(7):
+                v_window.FindElement(str(i)).Update(disabled=False)
+            fichas_a_cambiar.clear()
+        elif event3 in "0123456":
+            v_window.FindElement(event3).Update(disabled=True)
+            fichas_a_cambiar.append(event3)
+        elif event3 == "Ok":
+            return fichas_a_cambiar
+            break
