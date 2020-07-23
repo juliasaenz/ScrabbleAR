@@ -167,12 +167,12 @@ class Turno:
     def set_turno_usuario(self, va):
         self._turno_usuario = va
 
-    def set_puntaje(self,p):
+    def set_puntaje(self, p):
         self._puntaje = p
 
     # Lista de palabras
-    def add_lista_palabras(self, palabra, puntos):
-        dato = palabra + ": " + str(puntos)
+    def add_lista_palabras(self, palabra, puntos, nom):
+        dato = nom + " - " + palabra + ": " + str(puntos)
         self._lista_palabras.append(dato)
 
     def get_lista_palabras(self):
@@ -180,9 +180,9 @@ class Turno:
         return datos
 
     # ReiniciarValores
-    def reinicio(self):
+    def reinicio(self,nom):
         if len(self._palabra) > 0:
-            self.add_lista_palabras(self._palabra, self._puntaje)
+            self.add_lista_palabras(self._palabra, self._puntaje,nom)
         self._palabra = ""
         self._letras = ""
         self._letra_actual = ""
