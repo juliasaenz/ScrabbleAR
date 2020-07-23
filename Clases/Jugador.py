@@ -59,6 +59,8 @@ class Jugador:
 
     def actualizar_puntaje(self, pun):
         self._puntaje = self._puntaje + pun
+        if self._puntaje < 0:
+            self._puntaje = 0
 
     def get_puntaje(self):
         return self._puntaje

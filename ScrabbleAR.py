@@ -179,19 +179,22 @@ if tiempo != -1:
                 elif event == "Reglas":
                     sg.Popup("Reglas")
                 elif event == "pausa":
-                    if sg.popup_ok_cancel('¿Pausar partida?') == "OK":
+                    if sg.popup_ok_cancel('¿Pausar partida?', **estilo.tt) == "OK":
                         pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa)
                 elif event == "top":
                     sg.popup("El top 10 de puntajes")
                 elif event == "configuracion":
                     window.Hide()
-                    configurar_dificultad(config, niveles)
+                    t = configurar_dificultad(config, niveles, Jugador.bolsa, tiempo)
+                    if t is not None:
+                        tiempo = t
                     window.UnHide()
-                    print("nivel: ", config["compu"])
+                    print("nivel: ", tiempo)
                 elif event == "palabras":
                     sg.Popup(turno.get_lista_palabras(), **estilo.tt)
                 elif event == "Terminar Partida":
-                    terminar_partida(jugador, compu, window, config)
+                    if sg.popup_ok_cancel('¿Terminar partida?', **estilo.tt) == "OK":
+                        terminar_partida(jugador, compu, window, config)
             elif not turno.es_turno_usuario():
                 # -------
                 #         SI YA NO ES EL TURNO DEL USUARIO

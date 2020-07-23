@@ -20,7 +20,7 @@ def tutorial():
 def inicio():
     """El inicio"""
     interfaz = [[sg.InputText("Tu nombre", **estilo.tt)],
-                [sg.Listbox(values=('fácil', "medio", "difícil"), size=(30, 3), **estilo.tt)],
+                [sg.Listbox(values=('fácil', "medio", "difícil", "customizar"), size=(30, 4), **estilo.tt)],
                 [sg.Button("Nueva Partida", **estilo.tt), sg.Button("Continuar", **estilo.tt)]
                 ]
     inicio = [[sg.Frame(layout=interfaz, title="Inicio", **estilo.bt)]]
@@ -36,17 +36,50 @@ def actualizar_todo_dicc(config, niveles, dificultad):
     config["compu"] = niveles["compu"][dificultad]
 
 
-def configurar_dificultad(config, niveles):
+def configurar_letras(dicc):
+    l = []
+    inp = []
+
+    for letra in dicc.keys():
+        l.append(sg.Text(" " + letra.upper(), **estilo.bt))
+        inp.append(sg.Input(size=(2, 1), pad=(6, 3), default_text=(dicc[letra])))
+
+    extra_layout = [l, inp, [sg.Ok("Listo"), sg.Cancel("Cancelar")]]
+
+    extra_window = sg.Window("Configuración Extra", extra_layout, **estilo.tt)
+    while True:
+        event4, values4 = extra_window.Read()
+        if event4 == sg.WIN_CLOSED or event4 == "Cancelar":
+            extra_window.Close()
+            break
+        if event4 == "Listo":
+            try:
+                values4 = {int(k): int(v) for k, v in values4.items()}
+                if sum(values4.values()) == 0:
+                    sg.Popup("Todas las letras no pueden ser 0")
+                else:
+                    i = 0
+                    for clave in dicc.keys():
+                        dicc[clave] = values4[i]
+                        i = i + 1
+                    extra_window.Close()
+                    break
+            except ValueError:
+                sg.Popup("Por favo solo ingrese números")
+
+
+def configurar_dificultad(config, niveles, bolsa, tiempo):
     lista = ['', "fácil", "medio", "difícil"]
 
     configurar = [[sg.Text("Dificultad Computadora: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
-                  [sg.Text("Puntaje fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None),
-                   sg.Button("Configurar "
-                             "individualmente", key="config_1", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
                   [sg.Text("Cantidad fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None),
                    sg.Button("Configurar "
+                             "individualmente", key="config_1", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
+                  [sg.Text("Puntaje fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None),
+                   sg.Button("Configurar "
                              "individualmente", key="config_2", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
-                  [sg.Text("Tablero: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)]
+                  [sg.Text("Tablero: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
+                  [sg.Text("Tiempo: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)]
                   ]
 
     c_layout = [
@@ -63,6 +96,7 @@ def configurar_dificultad(config, niveles):
         print("event2: ", event2, " values2: ", values2)
         if event2 == sg.WIN_CLOSED or event2 == "Cancelar":
             c_window.Close()
+            break
         elif event2 == "Confirmar cambios":
             try:
                 if len(values2[0]) > 0:
@@ -73,15 +107,30 @@ def configurar_dificultad(config, niveles):
                     config["puntos"] = niveles["compu"][values2[2]]
                 if len(values2[3]) > 0:
                     config["cantidad"] = niveles["letras"][values2[3]]
+                if len(values2[5]) > 0:
+                    t = (niveles["tiempo"][values2[5]]*100 - (config["tiempo"]*100 - tiempo))
+                    config["tiempo"] = niveles["tiempo"][values2[5]]
+                    return t
+                c_window.Close()
+                break
             except KeyError:
                 print("El error tiene que estar por aca: ", values2)
             c_window.Close()
         elif event2 == "config_1":
-            sg.popup("HELLO")
-        elif event2 == "config_2":
-            sg.popup("config")
+            c_window.Hide()
+            configurar_letras(config["cantidad"])
 
-        break
+            # bolsa
+            bolsa.clear()
+            for letra in config["cantidad"].keys():
+                for veces in range(config["cantidad"][letra]):
+                    bolsa.append(letra)
+
+            c_window.UnHide()
+        elif event2 == "config_2":
+            c_window.Hide()
+            configurar_letras(config["puntos"])
+            c_window.UnHide()
 
 
 def ventana_shuffle(atril):
@@ -92,8 +141,9 @@ def ventana_shuffle(atril):
         i = i + 1
 
     v_layout = [
-        [sg.Text("Elija qué fichas cambiar", **estilo.tt)], lista, [], [sg.Ok(**estilo.tt), sg.Button("Limpiar", **estilo.tt),
-                                                                        sg.Cancel("Cancelar", **estilo.tt)]
+        [sg.Text("Elija qué fichas cambiar", **estilo.tt)], lista, [],
+        [sg.Ok(**estilo.tt), sg.Button("Limpiar", **estilo.tt),
+         sg.Cancel("Cancelar", **estilo.tt)]
     ]
     v_window = sg.Window("Da Shuffle", v_layout, **estilo.tt)
 
