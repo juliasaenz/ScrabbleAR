@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 from pattern.es import parse, split
 from pattern.es import lexicon, spelling
 from random import randrange

@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 from Funciones.funciones_palabras import palabra_es_valida
 
 

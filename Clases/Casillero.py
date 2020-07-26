@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 import PySimpleGUI as sg
 import estilo
 

@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 from Clases.Jugador import Jugador
 import PySimpleGUI as sg
 import itertools as it

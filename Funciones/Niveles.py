@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 import json
 
 """Diccionario de elementos que configuran un nivel"""

@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 import PySimpleGUI as sg
 from random import randrange
 from Clases.Casillero import Casillero

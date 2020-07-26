@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 from Funciones.Ventanas_secundarias import ventana_shuffle
 import PySimpleGUI as sg
 import json

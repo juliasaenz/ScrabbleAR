@@ -1,3 +1,5 @@
+""" Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
+
 import estilo
 import random
 from Clases.Tablero import Tablero
