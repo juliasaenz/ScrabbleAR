@@ -28,12 +28,29 @@ def inicio():
 
 
 # Funciones para niveles
-def actualizar_todo_dicc(config, niveles, dificultad):
+def actualizar_todo_dicc(config, niveles, dificultad, tiempo, bolsa, act_config):
     config["puntos"] = niveles["puntos"][dificultad][dificultad]
     config["cantidad"] = niveles["letras"][dificultad][dificultad]
     config["palabras"] = niveles["palabras"][dificultad]
     config["tipos"] = niveles["tipos"][dificultad]
     config["compu"] = niveles["compu"][dificultad]
+
+    # bolsa
+    bolsa.clear()
+    for letra in config["cantidad"].keys():
+        for veces in range(config["cantidad"][letra]):
+            bolsa.append(letra)
+
+    if tiempo in config.keys():
+        t = (niveles["tiempo"][dificultad] * 100 - (config["tiempo"] * 100 - tiempo))
+        config["tiempo"] = niveles["tiempo"][dificultad]
+        return t
+    else:
+        config["tiempo"] = niveles["tiempo"][dificultad]
+
+    act_config.clear()
+    for i in range(7):
+        act_config.append(dificultad)
 
 
 def configurar_letras(dicc):
@@ -68,7 +85,7 @@ def configurar_letras(dicc):
                 sg.Popup("Por favo solo ingrese números")
 
 
-def configurar_dificultad(config, niveles, bolsa, tiempo):
+def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
     lista = ['', "fácil", "medio", "difícil"]
 
     configurar = [[sg.Text("Dificultad Computadora: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
@@ -79,7 +96,8 @@ def configurar_dificultad(config, niveles, bolsa, tiempo):
                    sg.Button("Configurar "
                              "individualmente", key="config_2", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
                   [sg.Text("Tablero: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
-                  [sg.Text("Tiempo: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)]
+                  [sg.Text("Tiempo: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
+                  [sg.Text("Tipos de palabras: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)]
                   ]
 
     c_layout = [
@@ -87,7 +105,8 @@ def configurar_dificultad(config, niveles, bolsa, tiempo):
          sg.Combo(['', "fácil", "medio", "difícil"], **estilo.tt, default_value=None)],
         [sg.Frame(layout=configurar, title="Configuración manual")],
         [sg.Ok("Confirmar cambios", **estilo.tt, button_color=("#FAFAFA", "#151514")),
-         sg.Cancel("Cancelar", **estilo.tt, button_color=("#FAFAFA", "#151514"))]
+         sg.Cancel("Cancelar", **estilo.tt, button_color=("#FAFAFA", "#151514")),
+         sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))]
     ]
 
     c_window = sg.Window("Configuración", c_layout, **estilo.tt)
@@ -97,25 +116,51 @@ def configurar_dificultad(config, niveles, bolsa, tiempo):
         if event2 == sg.WIN_CLOSED or event2 == "Cancelar":
             c_window.Close()
             break
+        elif event2 == "Configuración actual":
+            print("act config: ", act_config)
+            sg.Popup('''Configuración: \n
+     Nivel: {0} \n
+     Dificultad computadora: {1} \n
+     Cantidad de fichas: {2} \n
+     Puntaje de fichas: {3} \n
+     Tablero: {4} \n
+     Tiempo: {5} \n
+     Tipos de palabras: {6} \n'''.format(act_config[0], act_config[1], act_config[2], act_config[3],
+                                         act_config[4], act_config[5], act_config[6]))
         elif event2 == "Confirmar cambios":
-            try:
-                if len(values2[0]) > 0:
-                    actualizar_todo_dicc(config, niveles, values2[0])
-                if len(values2[1]) > 0:
-                    config["compu"] = niveles["compu"][values2[1]]
-                if len(values2[2]) > 0:
-                    config["puntos"] = niveles["compu"][values2[2]]
-                if len(values2[3]) > 0:
-                    config["cantidad"] = niveles["letras"][values2[3]]
-                if len(values2[5]) > 0:
-                    t = (niveles["tiempo"][values2[5]]*100 - (config["tiempo"]*100 - tiempo))
-                    config["tiempo"] = niveles["tiempo"][values2[5]]
-                    return t
-                c_window.Close()
-                break
-            except KeyError:
-                print("El error tiene que estar por aca: ", values2)
             c_window.Close()
+            if len(values2[0]) > 0:
+                return actualizar_todo_dicc(config, niveles, values2[0], tiempo, bolsa, act_config)
+            if len(values2[1]) > 0:
+                config["compu"] = niveles["compu"][values2[1]]
+                act_config[1] = values2[1]
+            if len(values2[2]) > 0:
+                config["cantidad"] = niveles["letras"][values2[2]][values2[2]]
+                act_config[2] = values2[2]
+                # bolsa
+                bolsa.clear()
+                for letra in config["cantidad"].keys():
+                    for veces in range(config["cantidad"][letra]):
+                        bolsa.append(letra)
+            if len(values2[3]) > 0:
+                config["puntos"] = niveles["puntos"][values2[3]][values2[3]]
+                act_config[3] = values2[3]
+            if len(values2[4]) > 0:
+                config["tipos"] = niveles["tipos"][values2[4]]
+                act_config[4] = values2[4]
+            if len(values2[5]) > 0:
+                if "tiempo" in config.keys():
+                    t = (niveles["tiempo"][values2[5]] * 100 - (config["tiempo"] * 100 - tiempo))
+                    config["tiempo"] = niveles["tiempo"][values2[5]]
+                    print("a ver si es esto lo que me esta causando errores: ", niveles["tiempo"][values2[5]])
+                    return t
+                else:
+                    config["tiempo"] = niveles["tiempo"][values2[5]]
+                act_config[5] = values2[15]
+            if len(values2[6]) > 0:
+                config["palabras"] = niveles["palabras"][values2[6]]
+                act_config[6] = values2[6]
+            break
         elif event2 == "config_1":
             c_window.Hide()
             configurar_letras(config["cantidad"])
@@ -164,4 +209,5 @@ def ventana_shuffle(atril):
             fichas_a_cambiar.append(event3)
         elif event3 == "Ok":
             return fichas_a_cambiar
+            v_window.Close()
             break

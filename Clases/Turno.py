@@ -84,7 +84,7 @@ class Turno:
         self._casilleros_usados.add(pos)
         if len(self._casilleros_usados) == 2:
             casilleros = list(self._casilleros_usados)
-            print("los casilleros: ", casilleros[0][0], " ", casilleros[1][0])
+            #print("los casilleros: ", casilleros[0][0], " ", casilleros[1][0])
             if casilleros[0][0] == casilleros[1][0]:
                 self._orientacion = "horizontal"
             elif casilleros[0][1] == casilleros[1][1]:
@@ -127,7 +127,7 @@ class Turno:
     def evaluar_palabra(self, matriz, diccionario, nivel):
         self.definir_palabra(matriz)
         if palabra_es_valida(self._palabra, diccionario, nivel["palabras"]):
-            print("La palabra es válida y es: ", self._palabra)
+            #print("La palabra es válida y es: ", self._palabra)
             return self.definir_puntos(matriz, nivel["puntos"])
         else:
             return 100
@@ -180,9 +180,9 @@ class Turno:
         return datos
 
     # ReiniciarValores
-    def reinicio(self,nom):
+    def reinicio(self, nom):
         if len(self._palabra) > 0:
-            self.add_lista_palabras(self._palabra, self._puntaje,nom)
+            self.add_lista_palabras(self._palabra, self._puntaje, nom)
         self._palabra = ""
         self._letras = ""
         self._letra_actual = ""
@@ -195,6 +195,6 @@ class Turno:
         else:
             self._turno_usuario = True
 
-    # Fin de turno
-    def fin(self):
-        print("palabra: ", self._palabra)
+
+
+

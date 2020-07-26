@@ -7,12 +7,12 @@ def letra_actual(event, turno, jugador):
     """ La letra del atril seleccionada por el usuario """
     turno.set_letra_actual(jugador.get_atril()[int(event)])
     turno.set_pos_actual(event)
-    print("Letra actual: ", turno.get_letra_actual())
+    #print("Letra actual: ", turno.get_letra_actual())
 
 
 def poner_ficha(event, turno, tabla, window):
     """ Ubica una ficha en el tablero """
-    print("Casillero no bloqueado: ", event)
+    #print("Casillero no bloqueado: ", event)
     turno.agregar_casillero(event)
     turno.set_letras(turno.get_letra_actual())
     turno.add_atril_usada(turno.get_pos_actual())
@@ -47,7 +47,7 @@ def turno_compu(turno, tabla, compu, window, config, diccionario):
     """ La computadora elige la mejor palabra posible y la posiciona en un lugar aleatorio"""
     window.Read(timeout=1)
     # -- Arma la palabra
-    compu.jugada(tabla, diccionario, config)
+    compu.jugada(tabla, diccionario, config, turno.get_primer_turno())
     if turno.get_primer_turno():
         turno.jugue_primer_turno()
     # -- Busca donde dibujarla y la dibuja
@@ -58,11 +58,10 @@ def turno_compu(turno, tabla, compu, window, config, diccionario):
         i = i + 1
     # ---
     tabla.bloquear_casilleros(compu.get_casilleros())
-    compu.actualizar_puntaje(compu.definir_puntos(tabla.get_matriz(), config["puntos"]))
-    print("puntaje compu: ", str(compu.get_puntaje()))
+    compu.actualizar_puntaje(compu.definir_puntos(tabla.get_matriz(), config["puntos"], compu.get_casilleros()))
     window.FindElement("p_compu").Update(str(compu.get_puntaje()))
     turno.set_palabra(compu.get_palabra())
-    turno.set_puntaje(compu.get_puntaje())
+    turno.set_puntaje(compu.get_puntaje_palabra())
     compu.sacar_y_reponer_atril()
     turno.reinicio(compu.get_nombre())
     for i in range(7):
@@ -85,7 +84,7 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
     if turno.validar_turno():
         # si la palabra no es válida
         if resultado == 100:
-            print("Palabra equivocada!!")
+            # print("Palabra equivocada!!")
             sg.popup_timed("No es una palabra válida", background_color="black")
             tabla.limpiar_matriz()
             for i in range(7):
@@ -97,7 +96,7 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
             # si la palabra es válida
             for tupla in turno.get_casilleros_usados():
                 window.FindElement(tupla).Update(button_color=("#FAFAFA", "#D92335"))
-            print("Puntaje jugador: ", jugador.get_puntaje())
+            #print("Puntaje jugador: ", jugador.get_puntaje())
             tabla.bloquear_casilleros(turno.get_casilleros_usados())
             jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas())
             window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))

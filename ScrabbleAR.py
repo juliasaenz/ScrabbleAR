@@ -14,6 +14,9 @@ tutorial = tutorial()
 window = sg.Window("ScrabbleAR").Layout(tutorial)
 event, values = window.read()
 
+# ------
+act_config = []
+
 try:
     if event is None:
         window.close()
@@ -29,7 +32,7 @@ try:
         # NIVEL----
         nivel = open("Archivos/nivel", "r", encoding="utf-8")
         niveles = json.load(nivel)
-        if len(values[1]) == 0:
+        if len(values[1]) == 0 or values[1][0] == 'customizar':
             config = {
                 "puntos": niveles["puntos"]["fácil"]["fácil"],
                 "tiempo": niveles["tiempo"]["fácil"],
@@ -38,6 +41,14 @@ try:
                 "tipos": niveles["tipos"]["fácil"],
                 "compu": niveles["compu"]["fácil"]
             }
+
+            for i in range(7):
+                act_config.append("fácil")
+
+            if len(values[1]) != 0 and values[1][0] == 'customizar':
+                t = configurar_dificultad(config, niveles, Jugador.bolsa, 0)
+                if t is not None:
+                    tiempo = t
         else:
             config = {
                 "puntos": niveles["puntos"][values[1][0]][values[1][0]],
@@ -47,6 +58,9 @@ try:
                 "tipos": niveles["tipos"][values[1][0]],
                 "compu": niveles["compu"][values[1][0]]
             }
+
+            for i in range(7):
+                act_config.append(values[1][0])
 
         # DICCIONARIO----
         diccionario = palabras_sin_tilde()
@@ -82,6 +96,7 @@ try:
            [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
                       **estilo.tt)],
+           [sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
            [sg.Button("Palabras Jugadas", key="palabras", button_color=("#FAFAFA", "#151514"),
                       **estilo.tt)],
            [sg.Text('\n')], [sg.Text('\n')],
@@ -131,6 +146,7 @@ def timer():
     """ Actualiza el temporizador """
     global tiempo
     tiempo = tiempo - 1
+    # print("tiempo: ", tiempo)
     # --------- Display timer in window --------
     window["tiempo"].update('{}'.format(int(tiempo / 100)))
 
@@ -140,7 +156,8 @@ def timer():
 # -------------------------------------------
 
 # Quien empieza
-turno.set_turno_usuario(bool(random.getrandbits(1)))
+# turno.set_turno_usuario(bool(random.getrandbits(1)))
+turno.set_turno_usuario(False)
 
 # Tiempo es -1 cuando se cerro la ventana de Tutorial o Inicio
 if tiempo != -1:
@@ -185,11 +202,21 @@ if tiempo != -1:
                     sg.popup("El top 10 de puntajes")
                 elif event == "configuracion":
                     window.Hide()
-                    t = configurar_dificultad(config, niveles, Jugador.bolsa, tiempo)
+                    t = configurar_dificultad(config, niveles, Jugador.bolsa, tiempo, act_config)
                     if t is not None:
                         tiempo = t
                     window.UnHide()
-                    print("nivel: ", tiempo)
+                    print("act config: ", act_config)
+                elif event == "Configuración actual":
+                    sg.Popup('''Configuración: \n
+                        Nivel: {0} \n
+                        Dificultad computadora: {1} \n
+                        Cantidad de fichas: {2} \n
+                        Puntaje de fichas: {3} \n
+                        Tablero: {4} \n
+                        Tiempo: {5} \n
+                        Tipos de palabras: {6} \n'''.format(act_config[0], act_config[1], act_config[2], act_config[3],
+                                                            act_config[4], str(act_config[5]), act_config[6]))
                 elif event == "palabras":
                     sg.Popup(turno.get_lista_palabras(), **estilo.tt)
                 elif event == "Terminar Partida":
