@@ -5,7 +5,7 @@ import estilo
 
 
 def tutorial():
-    """ El tutorial """
+    """ Ventana de tutorial """
     sg.theme("DarkBlack")
     interfaz = [[sg.Text("Bienvenido")],
                 [sg.Text("Para poder conseguir puntos, tienes que armar palabras,")],
@@ -15,8 +15,7 @@ def tutorial():
                 [sg.Text("2-Los efectos de cada casilla ")],
                 [sg.Text("Presiona Jugar para ir a la interfaz el juego:"), sg.Button("Ok", **estilo.tt)]
                 ]
-    tutorial = [[sg.Frame(layout=interfaz, title="Tutorial", **estilo.tt)]]
-    return tutorial
+    return [[sg.Frame(layout=interfaz, title="Tutorial", **estilo.tt)]]
 
 
 def inicio():
@@ -25,24 +24,26 @@ def inicio():
                 [sg.Listbox(values=('fácil', "medio", "difícil", "customizar"), size=(30, 4), **estilo.tt)],
                 [sg.Button("Nueva Partida", **estilo.tt), sg.Button("Continuar", **estilo.tt)]
                 ]
-    inicio = [[sg.Frame(layout=interfaz, title="Inicio", **estilo.bt)]]
-    return inicio
+    return [[sg.Frame(layout=interfaz, title="Inicio", **estilo.bt)]]
 
 
 # Funciones para niveles
+
 def actualizar_todo_dicc(config, niveles, dificultad, tiempo, bolsa, act_config):
+    """ Actualiza los datos de la configuración actual según la nueva dificultad seleccionada """
     config["puntos"] = niveles["puntos"][dificultad][dificultad]
     config["cantidad"] = niveles["letras"][dificultad][dificultad]
     config["palabras"] = niveles["palabras"][dificultad]
     config["tipos"] = niveles["tipos"][dificultad]
     config["compu"] = niveles["compu"][dificultad]
 
-    # bolsa
+    # Actualiza los elementos de la bolsa
     bolsa.clear()
     for letra in config["cantidad"].keys():
         for veces in range(config["cantidad"][letra]):
             bolsa.append(letra)
 
+    # Actualiza el tiempo de la partida
     if tiempo in config.keys():
         t = (niveles["tiempo"][dificultad] * 100 - (config["tiempo"] * 100 - tiempo))
         config["tiempo"] = niveles["tiempo"][dificultad]
@@ -50,20 +51,22 @@ def actualizar_todo_dicc(config, niveles, dificultad, tiempo, bolsa, act_config)
     else:
         config["tiempo"] = niveles["tiempo"][dificultad]
 
+    # Actualiza el arreglo de datos
     act_config.clear()
     for i in range(7):
         act_config.append(dificultad)
 
 
 def configurar_letras(dicc):
-    l = []
+    """ Permite cambiar por letra su cantidad en la bolsa o su puntaje """
+    li = []
     inp = []
 
     for letra in dicc.keys():
-        l.append(sg.Text(" " + letra.upper(), **estilo.bt))
+        li.append(sg.Text(" " + letra.upper(), **estilo.bt))
         inp.append(sg.Input(size=(2, 1), pad=(6, 3), default_text=(dicc[letra])))
 
-    extra_layout = [l, inp, [sg.Ok("Listo"), sg.Cancel("Cancelar")]]
+    extra_layout = [li, inp, [sg.Ok("Listo"), sg.Cancel("Cancelar")]]
 
     extra_window = sg.Window("Configuración Extra", extra_layout, **estilo.tt)
     while True:
@@ -88,6 +91,7 @@ def configurar_letras(dicc):
 
 
 def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
+    """ La configuración de la dificultad: por niveles o personalizada """
     lista = ['', "fácil", "medio", "difícil"]
 
     configurar = [[sg.Text("Dificultad Computadora: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
@@ -121,14 +125,14 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
         elif event2 == "Configuración actual":
             print("act config: ", act_config)
             sg.Popup('''Configuración: \n
-     Nivel: {0} \n
-     Dificultad computadora: {1} \n
-     Cantidad de fichas: {2} \n
-     Puntaje de fichas: {3} \n
-     Tablero: {4} \n
-     Tiempo: {5} \n
-     Tipos de palabras: {6} \n'''.format(act_config[0], act_config[1], act_config[2], act_config[3],
-                                         act_config[4], act_config[5], act_config[6]))
+                Nivel: {0} \n
+                Dificultad computadora: {1} \n
+                Cantidad de fichas: {2} \n
+                Puntaje de fichas: {3} \n
+                Tablero: {4} \n
+                Tiempo: {5} \n
+                Tipos de palabras: {6} \n'''.format(act_config[0], act_config[1], act_config[2], act_config[3],
+                                                    act_config[4], act_config[5], act_config[6]), **estilo.tt)
         elif event2 == "Confirmar cambios":
             c_window.Close()
             if len(values2[0]) > 0:
@@ -151,14 +155,14 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
                 config["tipos"] = niveles["tipos"][values2[4]]
                 act_config[4] = values2[4]
             if len(values2[5]) > 0:
+                act_config[5] = values2[5]
                 if "tiempo" in config.keys():
                     t = (niveles["tiempo"][values2[5]] * 100 - (config["tiempo"] * 100 - tiempo))
                     config["tiempo"] = niveles["tiempo"][values2[5]]
-                    print("a ver si es esto lo que me esta causando errores: ", niveles["tiempo"][values2[5]])
+                    print("a ver si es esto lo que me esta causando errores: ", niveles["tiempo"][values2[5]], t)
                     return t
                 else:
                     config["tiempo"] = niveles["tiempo"][values2[5]]
-                act_config[5] = values2[15]
             if len(values2[6]) > 0:
                 config["palabras"] = niveles["palabras"][values2[6]]
                 act_config[6] = values2[6]
@@ -181,6 +185,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
 
 
 def ventana_shuffle(atril):
+    """  Permite elegir qué fichas del atril intercambiar """
     lista = []
     i = 0
     for letra in atril:

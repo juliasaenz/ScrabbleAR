@@ -12,7 +12,10 @@ turno.set_turno_usuario(bool(random.getrandbits(1)))
 # Tiempo es -1 cuando se cerro la ventana de Tutorial o Inicio
 if tiempo != -1:
     while True:
-        timer()
+        # --- Timer
+        window["tiempo"].update('{}'.format(int(tiempo / 100)))
+        tiempo = tiempo - 1
+
         event, values = window.read(timeout=10)
         # ----- SI ES EL TURNO DEL USUARIO Y NO TERMINO LA PARTIDA
         if jugador.get_cant_bolsa() != 0 and tiempo != 0:
@@ -52,7 +55,10 @@ if tiempo != -1:
                 # --- Si el usuario quiere, guarda la partida
                 elif event == "pausa":
                     if sg.popup_ok_cancel('¿Pausar partida?', **estilo.tt) == "OK":
-                        pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa)
+                        if turno.get_primer_turno():
+                            sg.Popup("No se puede pausar la partida sin haber jugado por lo menos un turno", **estilo.tt)
+                        else:
+                            pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa)
                 # --- Muestra el Top 10 de puntajes
                 elif event == "top":
                     sg.popup("El top 10 de puntajes")
@@ -61,6 +67,7 @@ if tiempo != -1:
                     window.Hide()
                     t = configurar_dificultad(config, niveles, Jugador.bolsa, tiempo, act_config)
                     if t is not None:
+                        print("EL TIEMPO QUE QUEDO ES: ", t)
                         tiempo = t
                     window.UnHide()
                     print("act config: ", act_config)
@@ -74,7 +81,7 @@ if tiempo != -1:
                         Tablero: {4} \n
                         Tiempo: {5} \n
                         Tipos de palabras: {6} \n'''.format(act_config[0], act_config[1], act_config[2], act_config[3],
-                                                            act_config[4], str(act_config[5]), act_config[6]))
+                                                            act_config[4], str(act_config[5]), act_config[6]), **estilo.tt)
                 # --- Muestra las palabras jugadas y el puntaje de cada una
                 elif event == "palabras":
                     sg.Popup(turno.get_lista_palabras(), **estilo.tt)

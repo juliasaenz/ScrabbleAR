@@ -181,6 +181,12 @@ class Turno:
         datos = '\n'.join(self._lista_palabras)
         return datos
 
+    def guardar_lista_palabras(self):
+        return self._lista_palabras
+
+    def set_lista_palabras(self, lista):
+        self._lista_palabras = lista
+
     # ReiniciarValores
     def reinicio(self, nom):
         if len(self._palabra) > 0:

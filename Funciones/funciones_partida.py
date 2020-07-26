@@ -2,6 +2,7 @@
 
 from Funciones.Ventanas_secundarias import ventana_shuffle
 import PySimpleGUI as sg
+import estilo
 import json
 
 
@@ -9,12 +10,10 @@ def letra_actual(event, turno, jugador):
     """ La letra del atril seleccionada por el usuario """
     turno.set_letra_actual(jugador.get_atril()[int(event)])
     turno.set_pos_actual(event)
-    #print("Letra actual: ", turno.get_letra_actual())
 
 
 def poner_ficha(event, turno, tabla, window):
     """ Ubica una ficha en el tablero """
-    #print("Casillero no bloqueado: ", event)
     turno.agregar_casillero(event)
     turno.set_letras(turno.get_letra_actual())
     turno.add_atril_usada(turno.get_pos_actual())
@@ -24,8 +23,8 @@ def poner_ficha(event, turno, tabla, window):
 
 
 def shuffle(turno, tabla, jugador, window, config, diccionario, compu):
-    """ Cambia todas las fichas del atril y saltea el turno """
-    # esto se puede hacer solo tres veces en la partida
+    """ Cambia las fichas del atril seleccionadas por el usuario y saltea el turno,
+    se puede hacer 3 veces por partida """
     a_cambiar = ventana_shuffle(jugador.get_atril())
     if len(a_cambiar) > 0:
         jugador.shuffle(a_cambiar)
@@ -46,13 +45,13 @@ def shuffle(turno, tabla, jugador, window, config, diccionario, compu):
 
 
 def turno_compu(turno, tabla, compu, window, config, diccionario):
-    """ La computadora elige la mejor palabra posible y la posiciona en un lugar aleatorio"""
+    """ La computadora elige palabra y la posiciona según el nivel """
     window.Read(timeout=1)
     # -- Arma la palabra
     compu.jugada(tabla, diccionario, config, turno.get_primer_turno())
     if turno.get_primer_turno():
         turno.jugue_primer_turno()
-    # -- Busca donde dibujarla y la dibuja
+    # -- La posiciona en el tablero
     i = 0
     for pos in compu.get_casilleros():
         tabla.actualizar_casillero(compu.get_palabra()[i], pos)
@@ -98,9 +97,9 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
             # si la palabra es válida
             for tupla in turno.get_casilleros_usados():
                 window.FindElement(tupla).Update(button_color=("#FAFAFA", "#D92335"))
-            #print("Puntaje jugador: ", jugador.get_puntaje())
+            # print("Puntaje jugador: ", jugador.get_puntaje())
             tabla.bloquear_casilleros(turno.get_casilleros_usados())
-            jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas())
+            jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),turno.get_casilleros_usados())
             window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))
             for i in range(7):
                 window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
@@ -119,9 +118,14 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
 def terminar_partida(jugador, compu, window, config):
     jugador.terminar_partida(config["puntos"])
     compu.terminar_partida(config["puntos"])
-    score = 'PUNTAJE FINAL \n {}: {} puntos \n {}: {} puntos'.format(jugador.get_nombre(), jugador.get_puntaje(),
-                                                                     compu.get_nombre(), compu.get_puntaje())
-    sg.Popup(score)
+    fin = "¡Es un empate!"
+    if jugador.get_puntaje() > compu.get_puntaje():
+        fin = "¡Ganaste! ¡Felicidades!"
+    elif compu.get_puntaje() > jugador.get_puntaje():
+        fin = "¡Ganó la Computadora!¡Mejor suerte la próxima!"
+    score = """PUNTAJE FINAL \n {}: {} puntos \n {}: {} puntos \n {}""".format(jugador.get_nombre(), jugador.get_puntaje(),
+                                                                           compu.get_nombre(), compu.get_puntaje(), fin)
+    sg.Popup(score, **estilo.tt)
     window.close()
 
 
@@ -139,7 +143,8 @@ def pausar(turno, jugador, compu, tabla, window, config, bolsa):
         "compu": compu.pausar_turno(),
         "bolsa": bolsa,
         "nivel": config,
-        "tablero": tabla.pausar_partida()
+        "tablero": tabla.pausar_partida(),
+        "palabras_jugadas": turno.guardar_lista_palabras()
     }
     json.dump(juego, archivo, ensure_ascii=False, indent=4)
     archivo.close()

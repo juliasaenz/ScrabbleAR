@@ -39,6 +39,7 @@ class Jugador:
         self._atril = []
         self._cambios = 3
         self.armar_atril()
+        self._casilleros_usados = []
 
     # DIBUJAR
     def dibujar(self):
@@ -124,16 +125,20 @@ class Jugador:
         return len(self.bolsa)
 
     # Fin de turno
-    def fin_de_turno(self, puntos, usadas):
+    def fin_de_turno(self, puntos, usadas, cas):
         self.actualizar_puntaje(puntos)
-        # self.sacar_fichas(letras)
+        self.add_casilleros_usados(cas)
         self.reponer_atril(usadas)
+
+    def add_casilleros_usados(self, cas):
+        self._casilleros_usados = self._casilleros_usados + cas
 
     # Pausar Turno
     def pausar_turno(self):
         d_jugador = {"nombre": self._nombre,
                      "puntaje": self._puntaje, "atril": self._atril,
-                     "cambios": self._cambios}
+                     "cambios": self._cambios,
+                     "casilleros": self._casilleros_usados}
         return d_jugador
 
     def continuar_turno(self, datos):

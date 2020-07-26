@@ -62,7 +62,7 @@ class Tablero:
         for x in range(self._dimension):
             self._matriz.append([])
             for y in range(self._dimension):
-                self._matriz[x].append(self._iniciar_casillero(self._tipos[randrange(len(self._tipos) - 1)]))
+                self._matriz[x].append(self._iniciar_casillero(self._tipos[x][y]))
 
     # Matriz -- actualizar
     def actualizar_casillero(self, letra, pos):

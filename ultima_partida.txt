@@ -1,31 +1,87 @@
 {
     "jugador": {
         "nombre": "Tu nombre",
-        "puntaje": 0,
+        "puntaje": 17,
         "atril": [
-            "s",
+            "y",
+            "n",
+            "c",
+            "c",
             "o",
-            "a",
-            "l",
-            "e",
-            "j",
-            "o"
+            "m",
+            "e"
         ],
-        "cambios": 3
+        "cambios": 3,
+        "casilleros": [
+            [
+                14,
+                0
+            ],
+            [
+                14,
+                1
+            ],
+            [
+                14,
+                2
+            ]
+        ]
     },
     "compu": {
         "nombre": "Computadora",
-        "puntaje": 0,
+        "puntaje": 19,
         "atril": [
-            "r",
-            "w",
-            "c",
+            "l",
             "e",
-            "d",
-            "e",
-            "n"
+            "f",
+            "t",
+            "m",
+            "o",
+            "d"
         ],
-        "cambios": 3
+        "cambios": 3,
+        "casilleros": [
+            [
+                7,
+                7
+            ],
+            [
+                7,
+                8
+            ],
+            [
+                7,
+                9
+            ],
+            [
+                7,
+                10
+            ],
+            [
+                7,
+                11
+            ],
+            [
+                9,
+                2
+            ],
+            [
+                9,
+                3
+            ],
+            [
+                9,
+                4
+            ],
+            [
+                9,
+                5
+            ],
+            [
+                9,
+                6
+            ]
+        ]
     },
     "bolsa": [
         "a",
@@ -46,8 +102,6 @@
         "e",
         "e",
         "e",
-        "e",
-        "e",
         "i",
         "i",
         "i",
@@ -60,8 +114,6 @@
         "o",
         "o",
         "o",
-        "o",
-        "u",
         "u",
         "u",
         "u",
@@ -76,22 +128,13 @@
         "d",
         "d",
         "d",
-        "f",
         "l",
         "l",
-        "l",
-        "m",
-        "m",
         "p",
-        "p",
-        "g",
         "g",
         "h",
         "h",
         "v",
-        "c",
-        "c",
-        "c",
         "r",
         "r",
         "r",
@@ -101,15 +144,15 @@
         "s",
         "s",
         "s",
+        "j",
         "k",
         "ñ",
         "q",
         "t",
         "t",
         "t",
-        "t",
+        "w",
         "x",
-        "y",
         "z"
     ],
     "nivel": {
@@ -134,7 +177,7 @@
             "h": 4,
             "v": 4,
             "y": 4,
-            "j": 8,
+            "j": 6,
             "k": 8,
             "ñ": 8,
             "z": 8,
@@ -142,7 +185,7 @@
             "w": 10,
             "x": 10
         },
-        "tiempo": 100,
+        "tiempo": 300,
         "cantidad": {
             "a": 12,
             "e": 12,
@@ -178,24 +221,263 @@
             3
         ],
         "tipos": [
-            "normal",
-            "normal",
-            "normal",
-            "normal",
-            "normal",
-            "normal",
-            "normal",
-            "normal",
-            "normal",
-            "normal",
-            "triple_palabra",
-            "doble_palabra",
-            "triple_letra",
-            "doble_letra",
-            "menos_uno",
-            "menos_dos",
-            "menos_tres"
-        ]
+            [
+                "triple_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "triple_palabra"
+            ],
+            [
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "triple_letra",
+                "normal",
+                "normal",
+                "doble_letra",
+                "normal",
+                "normal",
+                "triple_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_letra",
+                "doble_letra",
+                "doble_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "doble_letra",
+                "normal",
+                "doble_letra",
+                "normal",
+                "doble_letra",
+                "normal",
+                "doble_letra",
+                "normal",
+                "doble_letra",
+                "normal",
+                "doble_letra",
+                "normal",
+                "doble_letra",
+                "normal",
+                "doble_letra"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_letra",
+                "doble_letra",
+                "doble_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "triple_letra",
+                "normal",
+                "normal",
+                "normal",
+                "triple_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "doble_letra",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal"
+            ],
+            [
+                "normal",
+                "doble_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_palabra",
+                "normal"
+            ],
+            [
+                "triple_palabra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "doble_letra",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "normal",
+                "triple_palabra"
+            ]
+        ],
+        "compu": "facil"
     },
     "tablero": [
         [
@@ -325,6 +607,40 @@
             "",
             "",
             "",
+            "c",
+            "o",
+            "c",
+            "e",
+            "r",
+            "",
+            "",
+            ""
+        ],
+        [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        [
+            "",
+            "",
+            "e",
+            "g",
+            "u",
+            "e",
+            "s",
             "",
             "",
             "",
@@ -403,43 +719,9 @@
             ""
         ],
         [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        [
-            "",
-            "",
-            "",
+            "p",
+            "a",
+            "l",
             "",
             "",
             "",
@@ -453,5 +735,10 @@
             "",
             ""
         ]
+    ],
+    "palabras_jugadas": [
+        "Computadora - cocer: 11",
+        "Tu nombre - pal: 17",
+        "Computadora - egues: 8"
     ]
 }

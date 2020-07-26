@@ -67,16 +67,42 @@ compu = {
     "medio": "medio",
     "difícil": "dificil"
 }
+tab = []
+for x in range(15):
+    tab.append([])
+    for y in range(15):
+        if x == y or x+y == 14:
+            if x == 7:
+                tab[x].append("normal")
+            elif x == 4 or x == 9:
+                tab[x].append("triple_letra")
+            elif x == 6 or x == 8:
+                tab[x].append("doble_letra")
+            elif x == 0 or x == 14:
+                tab[x].append("triple_palabra")
+            else:
+                tab[x].append("doble_palabra")
+        elif x == 7 and y != 7:
+            if y % 2 == 0:
+                tab[x].append("doble_letra")
+            else:
+                tab[x].append("normal")
+        elif y == 7 and x != 7:
+            if x % 2 == 0:
+                tab[x].append("doble_letra")
+            else:
+                tab[x].append("normal")
+        elif (x+y == 21 or x+y == 7) and (x == 0 or x == 14 or y == 0 or y == 14):
+            tab[x].append("triple_palabra")
+        else:
+            tab[x].append("normal")
+    print(tab[x])
 
 # TABLERO ------- cambiar
 tipos = {
-    "fácil": ["normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal",
-              "triple_palabra", "doble_palabra", "triple_letra", "doble_letra", "menos_uno", "menos_dos", "menos_tres"],
-    "medio": ["normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal",
-              "triple_palabra", "doble_palabra", "triple_letra", "doble_letra", "menos_uno", "menos_dos", "menos_tres"],
-    "difícil": ["normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal",
-                "triple_palabra", "doble_palabra", "triple_letra", "doble_letra", "menos_uno", "menos_dos",
-                "menos_tres"]
+    "fácil": tab,
+    "medio": tab,
+    "difícil": tab
 }
 
 # Categorias de palabras
@@ -101,6 +127,3 @@ nivel = {
 n = open("../Archivos/nivel", "w", encoding='utf-8')
 json.dump(nivel, n, ensure_ascii=False, indent=4)
 n.close()
-
-
-

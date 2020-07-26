@@ -18,6 +18,7 @@ event, values = window.read()
 
 # ------
 act_config = []
+continuar = False
 
 try:
     if event is None:
@@ -25,7 +26,7 @@ try:
     if event == "Ok":
         window.close()
         inicio = inicio()
-
+        turno = Turno()
         window = sg.Window("ScrabbleAR").Layout(inicio)
         event, values = window.read()
     if event == "Nueva Partida":
@@ -76,6 +77,7 @@ try:
         # TABLERO ---
         tabla = Tablero(config["tipos"])
     elif event == "Continuar":
+        continuar = True
         archivo = open("ultima_partida.txt", "r", encoding="UTF-8")
         partida = json.load(archivo)
         config = partida["nivel"]
@@ -92,10 +94,10 @@ try:
         jugador.continuar_turno(partida["jugador"])
         compu.continuar_turno(partida["compu"])
         tabla.continuar_partida(partida["tablero"])
+        turno.set_lista_palabras(partida["palabras_jugadas"])
 
     col = [[sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
-           [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
                       **estilo.tt)],
            [sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
@@ -108,6 +110,7 @@ try:
            [sg.Button("Shuffle", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Button("Limpiar", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Ok("Terminar Turno", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+           [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Ok("Terminar Partida", button_color=("#FAFAFA", "#151514"), **estilo.tt)]
            ]
 
@@ -126,28 +129,30 @@ try:
     window = sg.Window("ScrabbleAR", ventana_juego, grab_anywhere=True)
 
     # bloquear las usadas
-    window.Read(timeout=0)
+    '''window.Read(timeout=0)
     for x in range(15):
         for y in range(15):
             if tabla.esta_bloqueado((x, y)):
                 try:
                     window.FindElement((x, y)).Update(button_color=("white", "black"))
                 except TypeError:
-                    print(x, y)
+                    print(x, y)'''
+
+    if continuar:
+        window.Read(timeout=0)
+        for pos in partida["jugador"]["casilleros"]:
+            window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#D92335"))
+            print(int(pos[0]), pos[1])
+        for pos in partida["compu"]["casilleros"]:
+            window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#4B3588"))
+            print(int(pos[0]), pos[1])
+
 except NameError:
     # Si se cierra en la ventana de inicio o de tutorial
     tiempo = -1
 
-turno = Turno()
 try:
     tiempo = config["tiempo"] * 100
 except NameError:
     tiempo = -1
 
-
-def timer():
-    """ Actualiza el temporizador """
-    global tiempo
-    tiempo = tiempo - 1
-    # --------- Display timer in window --------
-    window["tiempo"].update('{}'.format(int(tiempo / 100)))

@@ -122,6 +122,7 @@ class Computadora(Jugador):
                             casilleros.clear()
                 self._puntos = self._max
                 print("fin: ", self._casilleros)
+        self.add_casilleros_usados(self._casilleros)
         return self._casilleros
 
     def mejor_opcion(self, casilleros, matriz, puntos):
