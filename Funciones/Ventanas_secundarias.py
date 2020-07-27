@@ -225,8 +225,3 @@ def ventana_shuffle(atril):
             break
 
 
-def top_10():
-    leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")
-    partidas = json.load(leaderboard)
-    leaderboard.close()
-    lista = []

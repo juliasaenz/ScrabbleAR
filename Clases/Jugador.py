@@ -157,6 +157,6 @@ class Jugador:
             'nombre': self._nombre,
             'puntaje': self._puntaje,
             'fecha': date.today().strftime("%d/%m/%Y"),
-            'nivel: ': nivel
+            'nivel': nivel
         }
         return jugador

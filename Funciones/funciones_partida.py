@@ -182,3 +182,19 @@ def que_color(tipo):
     else:
         return "#FAFAFA"
 
+
+def top_10():
+    try:
+        leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")
+        partidas = json.load(leaderboard)
+        leaderboard.close()
+        lista_10 = "TOP 10: \n"
+        i = 1
+        for juego in partidas.values():
+            texto = "{0}: {1}  -  Puntaje: {2}  -  Fecha: {3}  -  Nivel: {4}".format(str(i), juego['nombre'], juego['puntaje'],
+                                                                         juego['fecha'], juego['nivel'])
+            i = i + 1
+            lista_10 = lista_10 + "\n\n" + texto
+        sg.Popup(lista_10, **estilo.tt)
+    except FileNotFoundError:
+        sg.Popup("Todavia no se guardó ninguna partida")
