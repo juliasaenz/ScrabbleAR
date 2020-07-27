@@ -77,6 +77,10 @@ try:
         # TABLERO ---
         tabla = Tablero(config["tipos"])
     elif event == "Continuar":
+        # NIVEL----
+        nivel = open("Archivos/nivel", "r", encoding="utf-8")
+        niveles = json.load(nivel)
+        #
         continuar = True
         archivo = open("ultima_partida.txt", "r", encoding="UTF-8")
         partida = json.load(archivo)
@@ -94,7 +98,9 @@ try:
         jugador.continuar_turno(partida["jugador"])
         compu.continuar_turno(partida["compu"])
         tabla.continuar_partida(partida["tablero"])
+        turno.set_turno_usuario(partida["turno"])
         turno.set_lista_palabras(partida["palabras_jugadas"])
+        act_config = partida["act_config"]
 
     col = [[sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
@@ -128,17 +134,8 @@ try:
 
     window = sg.Window("ScrabbleAR", ventana_juego, grab_anywhere=True)
 
-    # bloquear las usadas
-    '''window.Read(timeout=0)
-    for x in range(15):
-        for y in range(15):
-            if tabla.esta_bloqueado((x, y)):
-                try:
-                    window.FindElement((x, y)).Update(button_color=("white", "black"))
-                except TypeError:
-                    print(x, y)'''
-
     if continuar:
+        turno.jugue_primer_turno()
         window.Read(timeout=0)
         for pos in partida["jugador"]["casilleros"]:
             window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#D92335"))

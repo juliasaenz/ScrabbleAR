@@ -8,7 +8,8 @@ from Inicio import*
 
 # Quien empieza
 try:
-    turno.set_turno_usuario(bool(random.getrandbits(1)))
+    if not continuar:
+        turno.set_turno_usuario(bool(random.getrandbits(1)))
 except NameError:
     print("Se cerró en la ventana de Tutorial")
 
@@ -61,7 +62,7 @@ if tiempo != -1:
                         if turno.get_primer_turno():
                             sg.Popup("No se puede pausar la partida sin haber jugado por lo menos un turno", **estilo.tt)
                         else:
-                            pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa)
+                            pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa, act_config)
                 # --- Muestra el Top 10 de puntajes
                 elif event == "top":
                     sg.popup("El top 10 de puntajes")

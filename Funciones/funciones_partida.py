@@ -132,7 +132,7 @@ def terminar_partida(jugador, compu, window, config):
     window.close()
 
 
-def pausar(turno, jugador, compu, tabla, window, config, bolsa):
+def pausar(turno, jugador, compu, tabla, window, config, bolsa, act_config):
     """ Guarda los datos de los jugadores, el trablero, la bolsa y el nivel en un archivo"""
     if turno.es_turno_usuario():
         for pos in turno.get_casilleros_usados():
@@ -147,7 +147,9 @@ def pausar(turno, jugador, compu, tabla, window, config, bolsa):
         "bolsa": bolsa,
         "nivel": config,
         "tablero": tabla.pausar_partida(),
-        "palabras_jugadas": turno.guardar_lista_palabras()
+        "palabras_jugadas": turno.guardar_lista_palabras(),
+        "act_config": act_config,
+        "turno": turno.es_turno_usuario()
     }
     json.dump(juego, archivo, ensure_ascii=False, indent=4)
     archivo.close()
