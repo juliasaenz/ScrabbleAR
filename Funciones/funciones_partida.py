@@ -55,7 +55,7 @@ def turno_compu(turno, tabla, compu, window, config, diccionario):
     i = 0
     for pos in compu.get_casilleros():
         tabla.actualizar_casillero(compu.get_palabra()[i], pos)
-        window.FindElement(pos).Update(compu.get_palabra()[i], button_color=("#FAFAFA", "#4B3588"))
+        window.FindElement(pos).Update(compu.get_palabra()[i], button_color=("#FAFAFA", "#06586A"))
         i = i + 1
     # ---
     tabla.bloquear_casilleros(compu.get_casilleros())
@@ -96,7 +96,7 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
         else:
             # si la palabra es válida
             for tupla in turno.get_casilleros_usados():
-                window.FindElement(tupla).Update(button_color=("#FAFAFA", "#D92335"))
+                window.FindElement(tupla).Update(button_color=("#FAFAFA", "#6A0642"))
             # print("Puntaje jugador: ", jugador.get_puntaje())
             tabla.bloquear_casilleros(turno.get_casilleros_usados())
             jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),
@@ -157,20 +157,21 @@ def pausar(turno, jugador, compu, tabla, window, config, bolsa, act_config):
 
 
 def que_color(tipo):
+    """ Recibe un String con el tipo de casillero y devuelve el color correspondiente """
     if tipo == "doble_letra":
-        return "#7CDC64"
+        return "#75E540"
     elif tipo == "triple_letra":
-        return "#1DCBB1"
+        return "#E5CB40"
     elif tipo == "doble_palabra":
-        return "#0F7B96"
+        return "#E59940"
     elif tipo == "triple_palabra":
-        return "#234E78"
+        return "#E54040"
     elif tipo == "menos_uno":
-        return "#EFD934"
+        return "#40E5E5"
     elif tipo == "menos_dos":
-        return "#EDA30F"
+        return "#4078E5"
     elif tipo == "menos_tres":
-        return "#F35F2B"
+        return "#E540DE"
     else:
         return "#FAFAFA"
 

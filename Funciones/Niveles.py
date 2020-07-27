@@ -114,7 +114,7 @@ for x in range(15):
                 tab2[x].append("doble_palabra")
         elif x == 7 and y != 7:
             if y % 2 == 0:
-                tab2[x].append("doble_letra")
+                tab2[x].append("menos_uno")
             else:
                 tab2[x].append("normal")
         elif y == 7 and x != 7:

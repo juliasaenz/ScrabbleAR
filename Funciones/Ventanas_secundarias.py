@@ -21,7 +21,7 @@ def tutorial():
 def inicio():
     """El inicio"""
     interfaz = [[sg.InputText("Tu nombre", **estilo.tt)],
-                [sg.Listbox(values=('fácil', "medio", "difícil", "customizar"), size=(30, 4), **estilo.tt)],
+                [sg.Listbox(values=('fácil', "medio", "difícil", "customizar", "aleatorio"), size=(30, 5), **estilo.tt)],
                 [sg.Button("Nueva Partida", **estilo.tt), sg.Button("Continuar", **estilo.tt)]
                 ]
     return [[sg.Frame(layout=interfaz, title="Inicio", **estilo.bt)]]

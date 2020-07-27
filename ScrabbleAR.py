@@ -96,6 +96,8 @@ if tiempo != -1:
                 # --- Muestra las palabras jugadas y el puntaje de cada una
                 elif event == "palabras":
                     sg.Popup(turno.get_lista_palabras(), **estilo.tt)
+                elif event == "guia":
+                    sg.Popup("Guia!")
                 # --- Termina la partida
                 elif event == "Terminar Partida":
                     if sg.popup_ok_cancel('¿Terminar partida?', **estilo.tt) == "OK":

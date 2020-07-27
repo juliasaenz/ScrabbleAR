@@ -2,6 +2,7 @@
 
 import estilo
 import random
+from random import randrange
 from Clases.Tablero import Tablero
 from Clases.Jugador import Jugador
 from Clases.Computadora import Computadora
@@ -49,9 +50,37 @@ try:
                 act_config.append("fácil")
 
             if len(values[1]) != 0 and values[1][0] == 'customizar':
-                t = configurar_dificultad(config, niveles, Jugador.bolsa, 0)
+                t = configurar_dificultad(config, niveles, Jugador.bolsa, 0, act_config)
                 if t is not None:
                     tiempo = t
+        elif values[1][0] == 'aleatorio':
+            act_config.append("aleatorio")
+            opciones = ["fácil","medio","difícil"]
+            config = {}
+            # compu
+            aux = opciones[randrange(3)]
+            config["compu"] = niveles["compu"][aux]
+            act_config.append(aux)
+            # cant
+            aux = opciones[randrange(3)]
+            config["cantidad"] = niveles["letras"][aux][aux]
+            act_config.append(aux)
+            # puntos
+            aux = opciones[randrange(3)]
+            config["puntos"] = niveles["puntos"][aux][aux]
+            act_config.append(aux)
+            # tablero
+            aux = opciones[randrange(3)]
+            config["tipos"] = niveles["tipos"][aux]
+            act_config.append(aux)
+            # tiempo
+            aux = opciones[randrange(3)]
+            config["tiempo"] = niveles["tiempo"][aux]
+            act_config.append(aux)
+            # palabras
+            aux = opciones[randrange(3)]
+            config["palabras"] = niveles["palabras"][aux]
+            act_config.append(aux)
         else:
             config = {
                 "puntos": niveles["puntos"][values[1][0]][values[1][0]],
@@ -77,12 +106,13 @@ try:
         # TABLERO ---
         tabla = Tablero(config["tipos"])
     elif event == "Continuar":
+        window.close()
         # NIVEL----
         nivel = open("Archivos/nivel", "r", encoding="utf-8")
         niveles = json.load(nivel)
         #
         continuar = True
-        archivo = open("ultima_partida.txt", "r", encoding="UTF-8")
+        archivo = open("Archivos/ultima_partida.txt", "r", encoding="UTF-8")
         partida = json.load(archivo)
         config = partida["nivel"]
         # DICCIONARIO----
@@ -103,19 +133,15 @@ try:
         act_config = partida["act_config"]
 
     col = [[sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
-           [sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
-           [sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
-                      **estilo.tt)],
            [sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
            [sg.Button("Palabras Jugadas", key="palabras", button_color=("#FAFAFA", "#151514"),
                       **estilo.tt)],
-           [sg.Text('\n')], [sg.Text('\n')],
+           [sg.Button("Guía", key="guia", button_color=("#FAFAFA", "#151514"),
+                      **estilo.tt)],
+           [sg.Text('\n')], [sg.Text('\n')], [sg.Text('\n')],
            [sg.Frame(layout=[[sg.Text('{}'.format(config["tiempo"]), key="tiempo", **estilo.tp)]],
                      title="Tiempo", key="tiempo_f", **estilo.tt)],
            [sg.Text('\n')], [sg.Text('\n')], [sg.Text('\n')],
-           [sg.Button("Shuffle", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
-           [sg.Button("Limpiar", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
-           [sg.Ok("Terminar Turno", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Ok("Terminar Partida", button_color=("#FAFAFA", "#151514"), **estilo.tt)]
            ]
@@ -123,27 +149,33 @@ try:
     ventana_juego = [
         [sg.Frame(layout=compu.dibujar(), key=compu.get_nombre(),
                   title="Atril de " + compu.get_nombre(), **estilo.tt), sg.Text("Puntaje: ", **estilo.tt),
-         sg.Text("  0  ", key="p_compu", **estilo.tt)],
+         sg.Text("  0  ", key="p_compu", **estilo.tt),
+         sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt),
+         sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
+         **estilo.tt)],
         [sg.Column(col), sg.Frame(layout=tabla.dibujar(), title="Tablero", **estilo.tt)],
         [],
         [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
                   title="Atril de " + jugador.get_nombre(), **estilo.tt),
          sg.Text("Puntaje: ", **estilo.tt),
-         sg.Text("  0  ", key="p_jugador", **estilo.tt)]
+         sg.Text("  0  ", key="p_jugador", **estilo.tt),
+         sg.Button("Shuffle", button_color=("#FAFAFA", "#151514"), **estilo.tt),
+         sg.Button("Limpiar", button_color=("#FAFAFA", "#151514"), **estilo.tt),
+         sg.Ok("Terminar Turno", button_color=("#FAFAFA", "#151514"), **estilo.tt)
+         ]
     ]
 
     window = sg.Window("ScrabbleAR", ventana_juego, grab_anywhere=True)
-
+    window.Read(timeout=0)
     if continuar:
         turno.jugue_primer_turno()
-        window.Read(timeout=0)
         jugador.add_casilleros_usados(partida["jugador"]["casilleros"])
         compu.add_casilleros_usados(partida["compu"]["casilleros"])
         for pos in partida["jugador"]["casilleros"]:
-            window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#D92335"))
+            window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#6A0642"))
             print(int(pos[0]), pos[1])
         for pos in partida["compu"]["casilleros"]:
-            window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#4B3588"))
+            window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#06586A"))
             print(int(pos[0]), pos[1])
 
 except NameError:
@@ -153,5 +185,6 @@ except NameError:
 try:
     tiempo = config["tiempo"] * 100
 except NameError:
+    # Si se cierra en la ventana de inicio o de tutorial
     tiempo = -1
 
