@@ -137,6 +137,8 @@ try:
     if continuar:
         turno.jugue_primer_turno()
         window.Read(timeout=0)
+        jugador.add_casilleros_usados(partida["jugador"]["casilleros"])
+        compu.add_casilleros_usados(partida["compu"]["casilleros"])
         for pos in partida["jugador"]["casilleros"]:
             window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#D92335"))
             print(int(pos[0]), pos[1])
