@@ -21,7 +21,8 @@ def tutorial():
 def inicio():
     """El inicio"""
     interfaz = [[sg.InputText("Tu nombre", **estilo.tt)],
-                [sg.Listbox(values=('fácil', "medio", "difícil", "customizar", "aleatorio"), size=(30, 5), **estilo.tt)],
+                [sg.Listbox(values=('fácil', "medio", "difícil", "customizar", "aleatorio"), size=(30, 5),
+                            **estilo.tt)],
                 [sg.Button("Nueva Partida", **estilo.tt), sg.Button("Continuar", **estilo.tt)]
                 ]
     return [[sg.Frame(layout=interfaz, title="Inicio", **estilo.bt)]]
@@ -170,7 +171,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
         elif event2 == "config_1":
             c_window.Hide()
             configurar_letras(config["cantidad"])
-
+            act_config[2] = "customizado"
             # bolsa
             bolsa.clear()
             for letra in config["cantidad"].keys():
@@ -181,6 +182,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
         elif event2 == "config_2":
             c_window.Hide()
             configurar_letras(config["puntos"])
+            act_config[3] = "customizado"
             c_window.UnHide()
 
 

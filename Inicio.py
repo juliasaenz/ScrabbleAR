@@ -55,7 +55,7 @@ try:
                     tiempo = t
         elif values[1][0] == 'aleatorio':
             act_config.append("aleatorio")
-            opciones = ["fácil","medio","difícil"]
+            opciones = ["fácil", "medio", "difícil"]
             config = {}
             # compu
             aux = opciones[randrange(3)]
@@ -136,12 +136,12 @@ try:
            [sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
            [sg.Button("Palabras Jugadas", key="palabras", button_color=("#FAFAFA", "#151514"),
                       **estilo.tt)],
-           [sg.Button("Guía", key="guia", button_color=("#FAFAFA", "#151514"),
-                      **estilo.tt)],
-           [sg.Text('\n')], [sg.Text('\n')], [sg.Text('\n')],
            [sg.Frame(layout=[[sg.Text('{}'.format(config["tiempo"]), key="tiempo", **estilo.tp)]],
                      title="Tiempo", key="tiempo_f", **estilo.tt)],
-           [sg.Text('\n')], [sg.Text('\n')], [sg.Text('\n')],
+           [sg.Text('\n')],
+           [sg.Button('', image_data=estilo.red_x_base64, key='g',
+                      button_color=(sg.theme_background_color(),
+                                    sg.theme_background_color()), border_width=0)],
            [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
            [sg.Ok("Terminar Partida", button_color=("#FAFAFA", "#151514"), **estilo.tt)]
            ]
@@ -152,7 +152,7 @@ try:
          sg.Text("  0  ", key="p_compu", **estilo.tt),
          sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt),
          sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
-         **estilo.tt)],
+                   **estilo.tt)],
         [sg.Column(col), sg.Frame(layout=tabla.dibujar(), title="Tablero", **estilo.tt)],
         [],
         [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
@@ -187,4 +187,3 @@ try:
 except NameError:
     # Si se cierra en la ventana de inicio o de tutorial
     tiempo = -1
-
