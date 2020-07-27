@@ -7,7 +7,10 @@ from Inicio import*
 # -------------------------------------------
 
 # Quien empieza
-turno.set_turno_usuario(bool(random.getrandbits(1)))
+try:
+    turno.set_turno_usuario(bool(random.getrandbits(1)))
+except NameError:
+    print("Se cerró en la ventana de Tutorial")
 
 # Tiempo es -1 cuando se cerro la ventana de Tutorial o Inicio
 if tiempo != -1:
@@ -65,12 +68,19 @@ if tiempo != -1:
                 # --- Accede a la configuración del nivel
                 elif event == "configuracion":
                     window.Hide()
+                    ant = config["tipos"].copy()
                     t = configurar_dificultad(config, niveles, Jugador.bolsa, tiempo, act_config)
+                    # --- Actualizar tiempo, si es necesario
                     if t is not None:
-                        print("EL TIEMPO QUE QUEDO ES: ", t)
                         tiempo = t
+                    # --- Actualizar tablero, si es necesario
+                    if config["tipos"] != ant:
+                        for x in range(15):
+                            for y in range(15):
+                                if not tabla.esta_bloqueado((x, y)):
+                                    tabla.actualizar_tipo((x, y), config["tipos"][x][y])
+                                    window[(x, y)].update(button_color=("black", que_color(config["tipos"][x][y])))
                     window.UnHide()
-                    print("act config: ", act_config)
                 # --- Permite ver la configuración actual del nivel
                 elif event == "Configuración actual":
                     sg.Popup('''Configuración: \n

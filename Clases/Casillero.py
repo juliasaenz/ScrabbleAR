@@ -58,6 +58,9 @@ class Casillero:
     def get_tipo(self):
         return self._tipo
 
+    def set_tipo(self, tip):
+        self._tipo = tip
+
     # Bloquear
     def bloquear(self):
         self._bloqueado = True

@@ -99,7 +99,8 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
                 window.FindElement(tupla).Update(button_color=("#FAFAFA", "#D92335"))
             # print("Puntaje jugador: ", jugador.get_puntaje())
             tabla.bloquear_casilleros(turno.get_casilleros_usados())
-            jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),turno.get_casilleros_usados())
+            jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),
+                                 turno.get_casilleros_usados())
             window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))
             for i in range(7):
                 window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
@@ -123,8 +124,10 @@ def terminar_partida(jugador, compu, window, config):
         fin = "¡Ganaste! ¡Felicidades!"
     elif compu.get_puntaje() > jugador.get_puntaje():
         fin = "¡Ganó la Computadora!¡Mejor suerte la próxima!"
-    score = """PUNTAJE FINAL \n {}: {} puntos \n {}: {} puntos \n {}""".format(jugador.get_nombre(), jugador.get_puntaje(),
-                                                                           compu.get_nombre(), compu.get_puntaje(), fin)
+    score = """PUNTAJE FINAL \n {}: {} puntos \n {}: {} puntos \n {}""".format(jugador.get_nombre(),
+                                                                               jugador.get_puntaje(),
+                                                                               compu.get_nombre(), compu.get_puntaje(),
+                                                                               fin)
     sg.Popup(score, **estilo.tt)
     window.close()
 
@@ -149,3 +152,23 @@ def pausar(turno, jugador, compu, tabla, window, config, bolsa):
     json.dump(juego, archivo, ensure_ascii=False, indent=4)
     archivo.close()
     window.close()
+
+
+def que_color(tipo):
+    if tipo == "doble_letra":
+        return "#7CDC64"
+    elif tipo == "triple_letra":
+        return "#1DCBB1"
+    elif tipo == "doble_palabra":
+        return "#0F7B96"
+    elif tipo == "triple_palabra":
+        return "#234E78"
+    elif tipo == "menos_uno":
+        return "#EFD934"
+    elif tipo == "menos_dos":
+        return "#EDA30F"
+    elif tipo == "menos_tres":
+        return "#F35F2B"
+    else:
+        return "#FAFAFA"
+

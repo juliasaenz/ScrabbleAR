@@ -115,3 +115,6 @@ class Tablero:
                 if arreglo[x][y] != "":
                     self._matriz[x][y].set_letra(arreglo[x][y])
                     self._matriz[x][y].bloquear()
+
+    def actualizar_tipo(self, pos, tip):
+        self._matriz[pos[0]][pos[1]].set_tipo(tip)
