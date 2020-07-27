@@ -1,6 +1,7 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
 from random import randrange
+from datetime import date
 import estilo
 import PySimpleGUI as sg
 
@@ -150,3 +151,12 @@ class Jugador:
         for letra in self._atril:
             if self._puntaje > 0:
                 self._puntaje = self._puntaje - puntos[letra]
+
+    def guardar_partida(self, nivel):
+        jugador = {
+            'nombre': self._nombre,
+            'puntaje': self._puntaje,
+            'fecha': date.today().strftime("%d/%m/%Y"),
+            'nivel: ': nivel
+        }
+        return jugador

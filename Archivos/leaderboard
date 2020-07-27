@@ -1,0 +1,26 @@
+{
+    "3": {
+        "nombre": "Tu nombre",
+        "puntaje": 30,
+        "fecha": "27/07/2020",
+        "nivel: ": "fácil"
+    },
+    "1": {
+        "nombre": "Tu nombre",
+        "puntaje": 27,
+        "fecha": "27/07/2020",
+        "nivel: ": "fácil"
+    },
+    "4": {
+        "nombre": "Tu nombre",
+        "puntaje": 25,
+        "fecha": "27/07/2020",
+        "nivel: ": "fácil"
+    },
+    "2": {
+        "nombre": "Tu nombre",
+        "puntaje": 0,
+        "fecha": "27/07/2020",
+        "nivel: ": "fácil"
+    }
+}

@@ -1,6 +1,7 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
 from Funciones.Ventanas_secundarias import ventana_shuffle
+from Funciones.leaderboard import guardar_partida
 import PySimpleGUI as sg
 import estilo
 import json
@@ -116,19 +117,25 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
         turno.limpiar()
 
 
-def terminar_partida(jugador, compu, window, config):
+def terminar_partida(jugador, compu, window, config, nivel):
     jugador.terminar_partida(config["puntos"])
     compu.terminar_partida(config["puntos"])
-    fin = "¡Es un empate!"
+
+    score = """PUNTAJE FINAL \n {}: {} puntos \n {}: {} puntos""".format(jugador.get_nombre(),
+                                                                         jugador.get_puntaje(),
+                                                                         compu.get_nombre(), compu.get_puntaje())
+
     if jugador.get_puntaje() > compu.get_puntaje():
-        fin = "¡Ganaste! ¡Felicidades!"
+        sg.Popup(score + "\n ¡Ganaste! ¡Felicidades!")
+        if sg.popup_yes_no("¿Guardar puntaje?"):
+            datos = jugador.guardar_partida(nivel)
+            guardar_partida(datos)
+            print("--------------------------------")
+            print(datos)
     elif compu.get_puntaje() > jugador.get_puntaje():
-        fin = "¡Ganó la Computadora!¡Mejor suerte la próxima!"
-    score = """PUNTAJE FINAL \n {}: {} puntos \n {}: {} puntos \n {}""".format(jugador.get_nombre(),
-                                                                               jugador.get_puntaje(),
-                                                                               compu.get_nombre(), compu.get_puntaje(),
-                                                                               fin)
-    sg.Popup(score, **estilo.tt)
+        sg.Popup(score + "\n ¡Ganó la Computadora! ¡Mejor suerte la próxima!")
+    else:
+        sg.Popup(score + "\n ¡Es un empate!", **estilo.tt)
     window.close()
 
 

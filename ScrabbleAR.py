@@ -65,7 +65,7 @@ if tiempo != -1:
                             pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa, act_config)
                 # --- Muestra el Top 10 de puntajes
                 elif event == "top":
-                    sg.popup("El top 10 de puntajes")
+                    top_10()
                 # --- Accede a la configuración del nivel
                 elif event == "configuracion":
                     window.Hide()
@@ -101,11 +101,11 @@ if tiempo != -1:
                 # --- Termina la partida
                 elif event == "Terminar Partida":
                     if sg.popup_ok_cancel('¿Terminar partida?', **estilo.tt) == "OK":
-                        terminar_partida(jugador, compu, window, config)
+                        terminar_partida(jugador, compu, window, config, act_config[0])
             # --- Si ya no es el turno del usuario
             elif not turno.es_turno_usuario():
                 turno_compu(turno, tabla, compu, window, config, diccionario)
         # --- Si no hay más fichas o se acabo el tiempo, termina la partida
         elif jugador.get_cant_bolsa() == 0 or tiempo == 0:
-            terminar_partida(jugador, compu, window, config)
+            terminar_partida(jugador, compu, window, config, act_config[0])
             break

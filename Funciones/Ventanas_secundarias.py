@@ -1,6 +1,7 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
 import PySimpleGUI as sg
+import json
 import estilo
 
 
@@ -138,6 +139,8 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
             c_window.Close()
             if len(values2[0]) > 0:
                 return actualizar_todo_dicc(config, niveles, values2[0], tiempo, bolsa, act_config)
+            else:
+                act_config[0] = "customizado"
             if len(values2[1]) > 0:
                 config["compu"] = niveles["compu"][values2[1]]
                 act_config[1] = values2[1]
@@ -220,3 +223,10 @@ def ventana_shuffle(atril):
             return fichas_a_cambiar
             v_window.Close()
             break
+
+
+def top_10():
+    leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")
+    partidas = json.load(leaderboard)
+    leaderboard.close()
+    lista = []
