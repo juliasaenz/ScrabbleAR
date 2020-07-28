@@ -126,16 +126,16 @@ def terminar_partida(jugador, compu, window, config, nivel):
                                                                          compu.get_nombre(), compu.get_puntaje())
 
     if jugador.get_puntaje() > compu.get_puntaje():
-        sg.Popup(score + "\n ¡Ganaste! ¡Felicidades!")
-        if sg.popup_yes_no("¿Guardar puntaje?"):
+        sg.Popup(score + "\n\n ¡Ganaste! ¡Felicidades!", **estilo.tt)
+        if sg.popup_yes_no("¿Guardar puntaje?", **estilo.tt):
             datos = jugador.guardar_partida(nivel)
             guardar_partida(datos)
             print("--------------------------------")
             print(datos)
     elif compu.get_puntaje() > jugador.get_puntaje():
-        sg.Popup(score + "\n ¡Ganó la Computadora! ¡Mejor suerte la próxima!")
+        sg.Popup(score + "\n\n ¡Ganó la Computadora! ¡Mejor suerte la próxima!", **estilo.tt)
     else:
-        sg.Popup(score + "\n ¡Es un empate!", **estilo.tt)
+        sg.Popup(score + "\n\n ¡Es un empate!", **estilo.tt, **estilo.tt)
     window.close()
 
 
@@ -146,8 +146,8 @@ def pausar(turno, jugador, compu, tabla, window, config, bolsa, act_config):
             window.FindElement(pos).Update("")
         tabla.limpiar_matriz()
         turno.limpiar()
-    sg.Popup("Partida Guardada")
-    archivo = open("ultima_partida.txt", "w", encoding="utf-8")
+    sg.Popup("Partida Guardada", **estilo.tt)
+    archivo = open("Archivos/ultima_partida.txt", "w", encoding="utf-8")
     juego = {
         "jugador": jugador.pausar_turno(),
         "compu": compu.pausar_turno(),
@@ -197,4 +197,4 @@ def top_10():
             lista_10 = lista_10 + "\n\n" + texto
         sg.Popup(lista_10, **estilo.tt)
     except FileNotFoundError:
-        sg.Popup("Todavia no se guardó ninguna partida")
+        sg.Popup("Todavia no se guardó ninguna partida", **estilo.tt)

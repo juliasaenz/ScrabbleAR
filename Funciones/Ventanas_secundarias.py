@@ -139,14 +139,14 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
             c_window.Close()
             if len(values2[0]) > 0:
                 return actualizar_todo_dicc(config, niveles, values2[0], tiempo, bolsa, act_config)
-            else:
-                act_config[0] = "customizado"
             if len(values2[1]) > 0:
                 config["compu"] = niveles["compu"][values2[1]]
                 act_config[1] = values2[1]
+                act_config[0] = "customizado"
             if len(values2[2]) > 0:
                 config["cantidad"] = niveles["letras"][values2[2]][values2[2]]
                 act_config[2] = values2[2]
+                act_config[0] = "customizado"
                 # bolsa
                 bolsa.clear()
                 for letra in config["cantidad"].keys():
@@ -155,11 +155,14 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
             if len(values2[3]) > 0:
                 config["puntos"] = niveles["puntos"][values2[3]][values2[3]]
                 act_config[3] = values2[3]
+                act_config[0] = "customizado"
             if len(values2[4]) > 0:
                 config["tipos"] = niveles["tipos"][values2[4]]
                 act_config[4] = values2[4]
+                act_config[0] = "customizado"
             if len(values2[5]) > 0:
                 act_config[5] = values2[5]
+                act_config[0] = "customizado"
                 if "tiempo" in config.keys():
                     t = (niveles["tiempo"][values2[5]] * 100 - (config["tiempo"] * 100 - tiempo))
                     config["tiempo"] = niveles["tiempo"][values2[5]]
@@ -170,11 +173,13 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
             if len(values2[6]) > 0:
                 config["palabras"] = niveles["palabras"][values2[6]]
                 act_config[6] = values2[6]
+                act_config[0] = "customizado"
             break
         elif event2 == "config_1":
             c_window.Hide()
             configurar_letras(config["cantidad"])
             act_config[2] = "customizado"
+            act_config[0] = "customizado"
             # bolsa
             bolsa.clear()
             for letra in config["cantidad"].keys():
@@ -186,6 +191,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
             c_window.Hide()
             configurar_letras(config["puntos"])
             act_config[3] = "customizado"
+            act_config[0] = "customizado"
             c_window.UnHide()
 
 
