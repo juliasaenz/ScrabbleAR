@@ -38,16 +38,18 @@ def shuffle(turno, tabla, jugador, window, config, diccionario, compu):
             window.FindElement(str(i)).Update(disabled=True)
         for pos in turno.get_casilleros_usados():
             window.FindElement(pos).Update("")
+
+        # Se pasa el turno del usuario y juega la Compu
         turno.reinicio(jugador.get_nombre())
         turno_compu(turno, tabla, compu, window, config, diccionario)
-    # se reinicia el turno
+    # Si se usó 3 veces, se desabilita el botón
     if jugador.get_cambios() == 0:
         window.FindElement("Shuffle").Update(disabled=True)
 
 
 def turno_compu(turno, tabla, compu, window, config, diccionario):
     """ La computadora elige palabra y la posiciona según el nivel """
-    window.Read(timeout=1)
+    window.Read(timeout=2)
     # -- Arma la palabra
     compu.jugada(tabla, diccionario, config, turno.get_primer_turno())
     if turno.get_primer_turno():
@@ -58,20 +60,22 @@ def turno_compu(turno, tabla, compu, window, config, diccionario):
         tabla.actualizar_casillero(compu.get_palabra()[i], pos)
         window.FindElement(pos).Update(compu.get_palabra()[i], button_color=("#FAFAFA", "#06586A"))
         i = i + 1
-    # ---
+    # --- Actualiza los valores
     tabla.bloquear_casilleros(compu.get_casilleros())
     compu.actualizar_puntaje(compu.definir_puntos(tabla.get_matriz(), config["puntos"], compu.get_casilleros()))
     window.FindElement("p_compu").Update(str(compu.get_puntaje()))
     turno.set_palabra(compu.get_palabra())
     turno.set_puntaje(compu.get_puntaje_palabra())
     compu.sacar_y_reponer_atril()
+
+    # Pasa a ser el turno del usuario
     turno.reinicio(compu.get_nombre())
     for i in range(7):
         window.FindElement(str(i)).Update(disabled=False)
 
 
 def limpiar(turno, tabla, window):
-    """ Saca las fichas del tablero y las vuelve a activar en el atril """
+    """ Saca las fichas no bloqueadas del tablero y las vuelve a activar en el atril """
     for pos in turno.get_casilleros_usados():
         window.FindElement(pos).Update("")
     tabla.limpiar_matriz()
@@ -86,7 +90,6 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
     if turno.validar_turno():
         # si la palabra no es válida
         if resultado == 100:
-            # print("Palabra equivocada!!")
             sg.popup_timed("No es una palabra válida", background_color="black")
             tabla.limpiar_matriz()
             for i in range(7):
@@ -98,7 +101,8 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
             # si la palabra es válida
             for tupla in turno.get_casilleros_usados():
                 window.FindElement(tupla).Update(button_color=("#FAFAFA", "#6A0642"))
-            # print("Puntaje jugador: ", jugador.get_puntaje())
+
+            # actualiza elementos
             tabla.bloquear_casilleros(turno.get_casilleros_usados())
             jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),
                                  turno.get_casilleros_usados())
@@ -106,18 +110,17 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
             for i in range(7):
                 window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
             turno.reinicio(jugador.get_nombre())
-            turno.jugue_primer_turno()
+            if turno.get_primer_turno():
+                turno.jugue_primer_turno()
     else:
-        tabla.limpiar_matriz()
-        for i in range(7):
-            window.FindElement(str(i)).Update(disabled=False)
-        for pos in turno.get_casilleros_usados():
-            window.FindElement(pos).Update("")
+        limpiar(turno, tabla, window)
         sg.Popup("Una ficha debe estar en el casillero del medio")
-        turno.limpiar()
 
 
 def terminar_partida(jugador, compu, window, config, nivel):
+    """ Se cuentan los puntos finales y se muestra el ganador,
+    si el usuario gana, le da la opción de guardar el puntaje"""
+
     jugador.terminar_partida(config["puntos"])
     compu.terminar_partida(config["puntos"])
 
@@ -127,11 +130,10 @@ def terminar_partida(jugador, compu, window, config, nivel):
 
     if jugador.get_puntaje() > compu.get_puntaje():
         sg.Popup(score + "\n\n ¡Ganaste! ¡Felicidades!", **estilo.tt)
+        # Opción de guardar el puntaje
         if sg.popup_yes_no("¿Guardar puntaje?", **estilo.tt):
             datos = jugador.guardar_partida(nivel)
             guardar_partida(datos)
-            print("--------------------------------")
-            print(datos)
     elif compu.get_puntaje() > jugador.get_puntaje():
         sg.Popup(score + "\n\n ¡Ganó la Computadora! ¡Mejor suerte la próxima!", **estilo.tt)
     else:
@@ -146,8 +148,11 @@ def pausar(turno, jugador, compu, tabla, window, config, bolsa, act_config):
             window.FindElement(pos).Update("")
         tabla.limpiar_matriz()
         turno.limpiar()
+
     sg.Popup("Partida Guardada", **estilo.tt)
     archivo = open("Archivos/ultima_partida.txt", "w", encoding="utf-8")
+
+    # Guarda todos los datos relevantes de la partida y los guarda en un JSON
     juego = {
         "jugador": jugador.pausar_turno(),
         "compu": compu.pausar_turno(),
@@ -184,6 +189,9 @@ def que_color(tipo):
 
 
 def top_10():
+    """ Abre un archivo JSON con los 10 mejores puntajes guardados, ordenados de mayor a menor
+    y lo muestra en forma de PopUp"""
+
     try:
         leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")
         partidas = json.load(leaderboard)
@@ -191,10 +199,12 @@ def top_10():
         lista_10 = "TOP 10: \n"
         i = 1
         for juego in partidas.values():
-            texto = "{0}: {1}  -  Puntaje: {2}  -  Fecha: {3}  -  Nivel: {4}".format(str(i), juego['nombre'], juego['puntaje'],
-                                                                         juego['fecha'], juego['nivel'])
+            texto = "{0}: {1}  -  Puntaje: {2}  -  Fecha: {3}  -  Nivel: {4}".format(str(i), juego['nombre'],
+                                                                                     juego['puntaje'],
+                                                                                     juego['fecha'], juego['nivel'])
             i = i + 1
             lista_10 = lista_10 + "\n\n" + texto
         sg.Popup(lista_10, **estilo.tt)
     except FileNotFoundError:
+        # Si no existe el archivo
         sg.Popup("Todavia no se guardó ninguna partida", **estilo.tt)

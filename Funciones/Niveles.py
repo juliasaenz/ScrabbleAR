@@ -105,13 +105,13 @@ for x in range(15):
             if x == 7:
                 tab2[x].append("normal")
             elif x == 4 or x == 9:
-                tab2[x].append("triple_letra")
+                tab2[x].append("doble_palabra")
             elif x == 6 or x == 8:
                 tab2[x].append("doble_letra")
             elif x == 0 or x == 14:
                 tab2[x].append("triple_palabra")
             else:
-                tab2[x].append("doble_palabra")
+                tab2[x].append("triple_letra")
         elif x == 7 and y != 7:
             if y % 2 == 0:
                 tab2[x].append("menos_uno")
@@ -124,6 +124,8 @@ for x in range(15):
                 tab2[x].append("normal")
         elif (x+y == 21 or x+y == 7) and (x == 0 or x == 14 or y == 0 or y == 14):
             tab2[x].append("triple_palabra")
+        elif ((x == 0 or x == 14) and (y == 4 or y == 10)) or ((y == 0 or y == 14) and (x == 4 or x == 10)):
+            tab2[x].append("menos_dos")
         else:
             tab2[x].append("normal")
 

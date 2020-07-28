@@ -14,14 +14,12 @@ def guardar_partida(jugador):
             clave = jugador['nombre'] + str(i)
             i = i + 1
 
-        print("esta es la clave: ",clave)
         partidas[clave] = jugador
 
         partidas = dict(sorted(partidas.items(), reverse=True,
                                key=lambda x: getitem(x[1], 'puntaje')))
 
         if len(partidas) > 10:
-            print("aca tengo que sacar a alguno")
             min_p = 9999
             min_c = 9999
             for clave, datos in partidas.items():

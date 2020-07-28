@@ -20,7 +20,7 @@ def tutorial():
 
 
 def inicio():
-    """El inicio"""
+    """Ventana de inicio"""
     interfaz = [[sg.InputText("Tu nombre", **estilo.tt)],
                 [sg.Listbox(values=('fácil', "medio", "difícil", "customizar", "aleatorio"), size=(30, 5),
                             **estilo.tt)],
@@ -79,6 +79,7 @@ def configurar_letras(dicc):
         if event4 == "Listo":
             try:
                 values4 = {int(k): int(v) for k, v in values4.items()}
+                # Suma los valores del arreglo y si todos valen 0, no permite guardar los cambios
                 if sum(values4.values()) == 0:
                     sg.Popup("Todas las letras no pueden ser 0")
                 else:
@@ -89,13 +90,15 @@ def configurar_letras(dicc):
                     extra_window.Close()
                     break
             except ValueError:
-                sg.Popup("Por favo solo ingrese números")
+                # Si se ingresa un valor que no sea un número
+                sg.Popup("Por favor solo ingrese números")
 
 
 def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
     """ La configuración de la dificultad: por niveles o personalizada """
     lista = ['', "fácil", "medio", "difícil"]
 
+    # Frame configuración manual
     configurar = [[sg.Text("Dificultad Computadora: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
                   [sg.Text("Cantidad fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None),
                    sg.Button("Configurar "
@@ -108,6 +111,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
                   [sg.Text("Tipos de palabras: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)]
                   ]
 
+    # Ventana de configuración
     c_layout = [
         [sg.Text("Seleccionar nivel: ", **estilo.tt),
          sg.Combo(['', "fácil", "medio", "difícil"], **estilo.tt, default_value=None)],
@@ -125,7 +129,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
             c_window.Close()
             break
         elif event2 == "Configuración actual":
-            print("act config: ", act_config)
+            # Muestra la configuración actual
             sg.Popup('''Configuración: \n
                 Nivel: {0} \n
                 Dificultad computadora: {1} \n
@@ -138,12 +142,15 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
         elif event2 == "Confirmar cambios":
             c_window.Close()
             if len(values2[0]) > 0:
+                # Si se cambió el nivel
                 return actualizar_todo_dicc(config, niveles, values2[0], tiempo, bolsa, act_config)
             if len(values2[1]) > 0:
+                # Si se cambió la dificultad de la Computadora
                 config["compu"] = niveles["compu"][values2[1]]
                 act_config[1] = values2[1]
                 act_config[0] = "customizado"
             if len(values2[2]) > 0:
+                # Si se cambió la cantidad de fichas
                 config["cantidad"] = niveles["letras"][values2[2]][values2[2]]
                 act_config[2] = values2[2]
                 act_config[0] = "customizado"
@@ -153,29 +160,34 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
                     for veces in range(config["cantidad"][letra]):
                         bolsa.append(letra)
             if len(values2[3]) > 0:
+                # Si se cambió el puntaje de las fichas
                 config["puntos"] = niveles["puntos"][values2[3]][values2[3]]
                 act_config[3] = values2[3]
                 act_config[0] = "customizado"
             if len(values2[4]) > 0:
+                # Si se cambió el tablero
                 config["tipos"] = niveles["tipos"][values2[4]]
                 act_config[4] = values2[4]
                 act_config[0] = "customizado"
             if len(values2[5]) > 0:
+                # Si se cambió el tiempo de la partida
                 act_config[5] = values2[5]
                 act_config[0] = "customizado"
                 if "tiempo" in config.keys():
+                    # Resta al tiempo nuevo el tiempo ya jugado
                     t = (niveles["tiempo"][values2[5]] * 100 - (config["tiempo"] * 100 - tiempo))
                     config["tiempo"] = niveles["tiempo"][values2[5]]
-                    print("a ver si es esto lo que me esta causando errores: ", niveles["tiempo"][values2[5]], t)
                     return t
                 else:
                     config["tiempo"] = niveles["tiempo"][values2[5]]
             if len(values2[6]) > 0:
+                # Si se cambió el tipo de palabras permitidas
                 config["palabras"] = niveles["palabras"][values2[6]]
                 act_config[6] = values2[6]
                 act_config[0] = "customizado"
             break
         elif event2 == "config_1":
+            # Configuración manual de cantidad de letras
             c_window.Hide()
             configurar_letras(config["cantidad"])
             act_config[2] = "customizado"
@@ -188,6 +200,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
 
             c_window.UnHide()
         elif event2 == "config_2":
+            # Configuración manual de puntos de letras
             c_window.Hide()
             configurar_letras(config["puntos"])
             act_config[3] = "customizado"

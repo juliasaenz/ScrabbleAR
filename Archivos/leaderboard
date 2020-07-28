@@ -1,8 +1,38 @@
 {
+    "Tu nombre4": {
+        "nombre": "Tu nombre",
+        "puntaje": 97,
+        "fecha": "28/07/2020",
+        "nivel": "fácil"
+    },
+    "JuliaXD": {
+        "nombre": "JuliaXD",
+        "puntaje": 61,
+        "fecha": "28/07/2020",
+        "nivel": "fácil"
+    },
+    "Tu nombre": {
+        "nombre": "Tu nombre",
+        "puntaje": 57,
+        "fecha": "28/07/2020",
+        "nivel": "fácil"
+    },
+    "Tu nombre3": {
+        "nombre": "Tu nombre",
+        "puntaje": 55,
+        "fecha": "28/07/2020",
+        "nivel": "fácil"
+    },
     "Juph": {
         "nombre": "Juph",
         "puntaje": 51,
         "fecha": "27/07/2020",
+        "nivel": "fácil"
+    },
+    "Tu nombre5": {
+        "nombre": "Tu nombre",
+        "puntaje": 44,
+        "fecha": "28/07/2020",
         "nivel": "fácil"
     },
     "Tu nombre1": {
@@ -23,10 +53,10 @@
         "fecha": "27/07/2020",
         "nivel": "fácil"
     },
-    "Tu nombre": {
-        "nombre": "Tu nombre",
-        "puntaje": 0,
+    "Juph0": {
+        "nombre": "Juph",
+        "puntaje": 28,
         "fecha": "28/07/2020",
-        "nivel": "customizado"
+        "nivel": "fácil"
     }
 }

@@ -58,7 +58,7 @@ if tiempo != -1:
                     sg.Popup("Reglas")
                 # --- Si el usuario quiere, guarda la partida
                 elif event == "pausa":
-                    if sg.popup_ok_cancel('¿Pausar partida?', **estilo.tt) == "OK":
+                    if sg.popup_ok_cancel('¿Pausar partida? \n Se cerrará la partida y podrás continuar luego', **estilo.tt) == "OK":
                         if turno.get_primer_turno():
                             sg.Popup("No se puede pausar la partida sin haber jugado por lo menos un turno", **estilo.tt)
                         else:
