@@ -230,7 +230,6 @@ def ventana_shuffle(atril):
         if event3 == sg.WIN_CLOSED or event3 == "Cancelar":
             v_window.Close()
             return []
-            break
         elif event3 == "Limpiar":
             for i in range(7):
                 v_window.FindElement(str(i)).Update(disabled=False)
@@ -239,8 +238,8 @@ def ventana_shuffle(atril):
             v_window.FindElement(event3).Update(disabled=True)
             fichas_a_cambiar.append(event3)
         elif event3 == "Ok":
+            v_window.close()
             return fichas_a_cambiar
-            v_window.Close()
-            break
+
 
 
