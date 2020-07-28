@@ -1,3 +1,6 @@
+""" Código sacado de la página de PYSIMPLEGUI
+"""
+
 # Base64 Encoder - encodes a folder of PNG files and creates a .py file with definitions
 import PySimpleGUI as sg
 import os
