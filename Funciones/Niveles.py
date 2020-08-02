@@ -51,7 +51,8 @@ puntos = {
                          "k": 6, "ñ": 6, "z": 6,
                          "q": 8, "w": 8, "x": 8
                          }),
-    "difícil": dict(difícil={"a": 0, "e": 0, "i": 0, "o": 0, "u": 0, "s": 0, "n": 0, "l": 0, "r": 0, "t": 0,
+    "difícil": dict(difícil={"a": 0, "e": 0, "i": 0, "o": 0, "u": 0, "s": 0,
+                             "n": 1, "l": 1, "r": 1, "t": 1,
                              "c": 1, "d": 1, "g": 1,
                              "m": 2, "b": 2, "p": 2,
                              "f": 3, "h": 3, "v": 3, "y": 3,
@@ -71,7 +72,7 @@ tab = []
 for x in range(15):
     tab.append([])
     for y in range(15):
-        if x == y or x+y == 14:
+        if x == y or x + y == 14:
             if x == 7:
                 tab[x].append("normal")
             elif x == 4 or x == 9:
@@ -92,7 +93,7 @@ for x in range(15):
                 tab[x].append("doble_letra")
             else:
                 tab[x].append("normal")
-        elif (x+y == 21 or x+y == 7) and (x == 0 or x == 14 or y == 0 or y == 14):
+        elif (x + y == 21 or x + y == 7) and (x == 0 or x == 14 or y == 0 or y == 14):
             tab[x].append("triple_palabra")
         else:
             tab[x].append("normal")
@@ -101,7 +102,7 @@ tab2 = []
 for x in range(15):
     tab2.append([])
     for y in range(15):
-        if x == y or x+y == 14:
+        if x == y or x + y == 14:
             if x == 7:
                 tab2[x].append("normal")
             elif x == 4 or x == 9:
@@ -122,18 +123,56 @@ for x in range(15):
                 tab2[x].append("menos_uno")
             else:
                 tab2[x].append("normal")
-        elif (x+y == 21 or x+y == 7) and (x == 0 or x == 14 or y == 0 or y == 14):
+        elif (x + y == 21 or x + y == 7) and (x == 0 or x == 14 or y == 0 or y == 14):
             tab2[x].append("triple_palabra")
         elif ((x == 0 or x == 14) and (y == 4 or y == 10)) or ((y == 0 or y == 14) and (x == 4 or x == 10)):
+            tab2[x].append("menos_tres")
+        elif (x == 9 or x == 12 or x == 5 or x == 2) and (y == 9 or y == 12 or y == 5 or y == 2):
             tab2[x].append("menos_dos")
+        elif (x == 0 or y == 0 or x == 14 or y == 14) and ((y + x) % 2 == 0):
+            tab2[x].append("doble_letra")
         else:
             tab2[x].append("normal")
+
+tab3 = []
+for x in range(15):
+    tab3.append([])
+    for y in range(15):
+        if x == y or x + y == 14:
+            if x == 7:
+                tab3[x].append("normal")
+            elif x == 4 or x == 10:
+                tab3[x].append("doble_palabra")
+            elif x == 6 or x == 8:
+                tab3[x].append("triple_letra")
+            elif x == 0 or x == 14:
+                tab3[x].append("triple_palabra")
+            else:
+                tab3[x].append("menos_dos")
+        elif x == 7 and y != 7:
+            if y % 2 == 0:
+                tab3[x].append("doble_letra")
+            else:
+                tab3[x].append("menos_uno")
+        elif y == 7 and x != 7:
+            if x % 2 == 0:
+                tab3[x].append("doble_letra")
+            else:
+                tab3[x].append("menos_uno")
+        elif ((x == 0 or x == 14) and (y == 4 or y == 10)) or ((y == 0 or y == 14) and (x == 4 or x == 10)):
+            tab3[x].append("doble_palabra")
+        elif (x == 9 or x == 12 or x == 5 or x == 2) and (y == 9 or y == 12 or y == 5 or y == 2):
+            tab3[x].append("triple_letra")
+        elif (x == 0 or y == 0 or x == 14 or y == 14) and ((y + x) % 2 == 0):
+            tab3[x].append("menos_tres")
+        else:
+            tab3[x].append("normal")
 
 # TABLERO ------- cambiar
 tipos = {
     "fácil": tab,
     "medio": tab2,
-    "difícil": tab
+    "difícil": tab3
 }
 
 # Categorias de palabras

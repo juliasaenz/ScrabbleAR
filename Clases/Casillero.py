@@ -38,21 +38,21 @@ class Casillero:
     # Dibujar
     def dibujar(self, clave):
         if self._tipo == "doble_letra":
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#75E540"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#75E540"), border_width=0)
         elif self._tipo == "triple_letra":
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E5CB40"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E5CB40"), border_width=0)
         elif self._tipo == "doble_palabra":
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E59940"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E59940"), border_width=0)
         elif self._tipo == "triple_palabra":
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E54040"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E54040"), border_width=0)
         elif self._tipo == "menos_uno":
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#40E5E5"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#40E5E5"), border_width=0)
         elif self._tipo == "menos_dos":
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#4078E5"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#4078E5"), border_width=0)
         elif self._tipo == "menos_tres":
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E540DE"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#E540DE"), border_width=0)
         else:
-            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#FAFAFA"))
+            return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#FAFAFA"), border_width=0)
 
     # Tipo
     def get_tipo(self):
@@ -126,6 +126,6 @@ class Casillero:
         elif self._tipo == "menos_dos":
             return self.menos_dos(puntos)
         elif self._tipo == "menos_tres":
-            return self.menos_tres()
+            return self.menos_tres(puntos)
         else:
             return puntos[self._letra]
