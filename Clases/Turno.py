@@ -5,46 +5,66 @@ from Funciones.funciones_palabras import palabra_es_valida
 
 class Turno:
     """
-    VARIABLES
-    _letras: str → letras usadas en el turno (sin orden)
-    _palabra: str → la palabra que se forma
-    _casilleros_usados: set tuple → guarda las posiciones de los casilleros usados
-    _letra_actual: str → guarda el valor de la letra actual
-    _pos_actual: str → el último valor del atril presionado
-    _atril_usadas: array int → las claves del atril usadas
-    _orientacion: str → la orientación de la palabra
-    _turno_usuario_: bool → True si es el turno del usuario
+    VARIABLES DE INSTANCIA
+    :str _letras: letras usadas en el turno (sin orden)
+    :str _palabra: str: la palabra que se forma
+    :set _casilleros_usados: guarda las posiciones de los casilleros usados
+    :str _letra_actual: guarda el valor de la letra actual
+    :str _pos_actual: el último valor del atril presionado
+    :str _orientacion: la orientación de la palabra
+    :bool _turno_usuario_: True si es el turno del usuario
+    :str[] _lista_palabras: lista de palabras jugadas en el la partida
+    :int _puntaje: los puntos de la palabra jugada en el punto
+    :bool primer_turno: True hasta que se juege el primer turno
 
     MÉTODOS
-    set_letra_actual: cambia el valor de _letra_actual
-    get_letra_actual: devuelve el valor de letra actual → str
-    set_pos_actual: cambia el valor de _pos_actual
-    get_pos_actual: devuelve el valor de _pos_actual → str
-    agregar_casillero: agrega la tupla mandada a _casilleros_usados
-    sacar_casillero: saca la tupla mandada de _casilleros_usados
-    get_casilleros_usados: devuelve lista de las tuplas → list tuple
-    definir_palabra: arma la palabra a partir de las tuplas mandadas
-    get_palabra: devuelve _palabra → str
-    definir_puntos: calcula los puntos de la palabra y lo devuelve → int
-    evaluar_palabra: se fija si la palabra es válida y los puntos, si el válida devuelve los puntos y si no devuelve 100 → int
-    limpiar: resetea todos los valores menos el tiempo
-    get_orientación: devuelve la orientacion → str
-    set_letras: agrega la letra actual a _letras
-    get_letras: devuelve _letras → str
-    countdown: el contador empieza
-    get_tiempo: devuelve _tiempo → int
-    es_turno_usuario: devuelve True si es el turno del usuario → bool
-    reinicio: reinicia todas las variables para el cambio de turno y cambia de un turno a otro
-    fin → por ahora no hace nada
+    :get_primer_turno() → self._primer_turno
+    :jugue_primer_turno(): pone self._primer_turno en False
+    :validar_turno(): devuelve True si es el primer turno y la palabra ubicada tiene una letra en el casillero del
+    medio, o si ya no es el primer turno → bool
+    :set_letra_actual(str): actualiza self._letra_actual
+    :get_letra_actual(): → self._letra_actual
+    :set_pos_actual(tuple) → actualiza self._pos_actual
+    :get_pos_actual() → self._pos_actual
+    :agregar_casillero(tuple): agrega una posicion de casillero a self._casilleros_usados, si es el segundo elemento
+    agregado atualiza la orientación
+    :sacar_casillero(tuple): saca el casillero  pasado de self._casilleros_usados
+    :get_casilleros_usados() → self._casilleros_usados
+    :set_casilleros_usados(): actualiza self._casilleros_usados
+    :definir_palabra(Tablero): ordena el arreglo de posiciones usadas segun la orientación y une las letras en cada
+    casillero para formar la palabra
+    :get_palabra() → self._palabra
+    :set_palabra(str): actualiza self._palabra
+    :definir_puntos(Tablero, dict): recibe el tablero y el diccionario de puntos por letra, recorre cada casillero y
+    devuelve los puntos de la palabra → int
+    :evaluar_palabra(Tabero, dict, dict): recibe el tablero, el diccionario de palabras válidas y el diccionario de
+    puntos por letra. Evalua si la palabra ingresada es válida y calcula el puntaje. Si no es válida la palabra devuelve
+    100, sino el devulelve el puntaje → int
+    :limpiar(): limpia o vacía todos los valores de turno
+    :get_orientacion() → self._orientacion
+    :set_letras(str): agrega la letra pasada por parametro a self._letras
+    :get_letras() → self._letras
+    :add_atril_usada(int): agrega el numero pasado a las claves del atril usadas
+    :get_atril_usadas() → self._atril_usadas
+    :es_turno_usuario() → self._turno_usuario
+    :set_turno_usuario(bool): actualiza self._turno_usuario
+    :set_puntaje(int): actualiza self._puntaje
+    :add_lista_palabras(str, int, str): recibe la palabra, los puntos y el nombre del jugador y los agrega a
+    self._lista_palabras
+    :get_lista_palabras(): devuelve la lista palabras como un string → str
+    :guardar_lista_palabras() → self._lista_palabras
+    :set_lista_palabras(str[]): actualiza self._lista_palabras
+    :reinicio(str): cambia el estado de self._turno_usuario, agrega la nueva palabra jugada a self._lista_palabras y
+    reinicia las variables de turno
     """
 
     def __init__(self):
         self._letras = ""
+        self._palabra = ""
         self._casilleros_usados = set()
         self._letra_actual = ""
         self._atril_usadas = []
         self._pos_actual = ""
-        self._palabra = ""
         self._orientacion = ""
         self._turno_usuario = True
         self._lista_palabras = []

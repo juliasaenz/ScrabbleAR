@@ -12,19 +12,27 @@ class Computadora(Jugador):
     """
     Extiende → Jugador por lo que tiene todos sus variables y métodos
 
-    VARIABLES
+    VARIABLES DE INSTANCIA
+    :str _palabra: guarda la palabra elegida por la computadora cada turno
+    :tuple[] _casilleros: arreglo de posiciones de los casilleros usados en el turno
+    :str[] _atril_usadas:arreglo de las letras usadas del atril
+    :int _puntos: puntos acumulados en un turno
+    :int _max: longitud de la palabra mas larga posible en un turno
 
-    _palabra: str → la palabra que va a jugar
-    _casilleros array tuple → el arreglo de tuplas de posición en las que se va a dibujar la palabra
-
-    MÉTODOS
-    armar_palabra: con las fichas de su atril, guarda la palabra más larga posible en _palabra
-    get_palabra: devuelve _palabra → str
-    ubicar_palabra: recibe la matriz de Tablero, elige una posición al azar, se fija que no este bloqueada y luego si sus adyacentes están libres. Devuelve arreglo de tuplas → array tuple
-    _chequear_casilleros: recibe un casillero y la matriz de Tablero y se fija si todos los casilleros adyacentes estan libres
-    get_casilleros: devuelve _casilleros → array tuple
-    devolver_palabra: devuelve la palabra generada → str
-    dibujar: dibuja arreglo de botones desactivados → array sg.Button
+    MÉTODOS :dibujar(): dibuja el atril → [sg.Button()] :_reponer_atril(): reemplaza las fichas del atril usadas
+    :_sacar_fichas(): saca del atril las letras usadas en la palabra final :sacar_y_reponer_atril()_: actualiza el
+    atril, y las variables de turno (self._palabra, self._puntos, self._max) :get_palabra() → self._palabra
+    :get_puntaje_palabra() → self._puntos :get_casilleros() → self._casilleros :_armar_palabra(dict,int[],
+    str): recibe un diccionario de palabras válidas, el arreglo de categorias de palabras válido y el nivel. Según el
+    nivel devuelve la mejor palabra posible con las fichas del atril :_ubicar_palabra(Tablero, str, boolean,
+    dict): recibe el tablero, el nivel, si ya paso el primer turno y el diccionario de puntos por letra y según el
+    nivel ubica la palabra. Niveles fácil y medio ubica en una posición aleatoria disponible, en el nivel difícil lo
+    ubica en la mejor posición posible. Devuelve los casilleros que usa → self._casilleros :_mejor_opcion(tuple[],
+    Casillero[][], dict): recibe un arreglo de posibles posiciones para la palabra, lo ubica en la matriz de
+    Casilleros, calcula el puntaje y si es más alto que el guardado actualmente, guarda esa posición
+    :_chequear_casilleros(tuple[], tuple, Tablero): recibe una posición e intenta posicionar de forma horizontal la
+    palabra en el Tablero :definir_puntos(Tablero, dict, tuple[]): recibe el Tablero, el diccionario de puntos y los
+    casilleros usados y calcula los puntos de ubicar la palabra en esa posición
     """
 
     def __init__(self):
@@ -44,20 +52,13 @@ class Computadora(Jugador):
         atril.append(lista)
         return atril
 
-    def reponer_atril(self):
+    def _reponer_atril(self):
         while len(Jugador.bolsa) > 0 and len(self._atril) < 7:
             cual = randrange(len(Jugador.bolsa))
             self._atril.append(Jugador.bolsa[cual - 1])
             Jugador.bolsa.pop(cual - 1)
 
-    def sacar_y_reponer_atril(self):
-        self.sacar_fichas()
-        self.reponer_atril()
-        self._palabra = ""
-        self._puntos = 0
-        self._max = -1
-
-    def sacar_fichas(self):
+    def _sacar_fichas(self):
         # print("asi estaba el atril: ", self.get_atril())
         for letra in self._palabra:
             try:
@@ -65,16 +66,29 @@ class Computadora(Jugador):
             except ValueError:
                 print("esta letra me esta causando problemas: ", letra)
 
+    def sacar_y_reponer_atril(self):
+        self._sacar_fichas()
+        self._reponer_atril()
+        self._palabra = ""
+        self._puntos = 0
+        self._max = -1
+
+    # Palabra y puntaje
     def get_palabra(self):
         return self._palabra
 
     def get_puntaje_palabra(self):
         return self._puntos
 
+    def get_casilleros(self):
+        return self._casilleros
+
     # ------ Armar palabras
 
-    def armar_palabra(self, diccionario, tipos, dificultad):
-        """ Devuelve la palabra más larga que puede formar con el atril"""
+    def _armar_palabra(self, diccionario, tipos, dificultad):
+        """ Devuelve la palabra que puede formar con el atril, dependiendo del nivel
+        - Fácil: la mejor palabra de máximo 5 letras
+        - Medio y difícil: la mejor palabra de máximo 7 letras """
         palabras = set()
         if dificultad == "facil":
             for i in range(2, len(self._atril) + 1):
@@ -95,7 +109,7 @@ class Computadora(Jugador):
         palabras.clear()
 
     # Busca donde guardar la palabra de la compu
-    def ubicar_palabra(self, matriz, dificultad, primer_turno, puntos):
+    def _ubicar_palabra(self, matriz, dificultad, primer_turno, puntos):
         """ Devuelve un arreglo de posiciones en los que entra la palabra"""
         casilleros = []
         if primer_turno:
@@ -118,14 +132,19 @@ class Computadora(Jugador):
                             self._chequear_casilleros(casilleros, (x, y), matriz)
                             if len(casilleros) == len(self._palabra):
                                 # print("Opcion: ", casilleros, "pal: ", self._palabra)
-                                self.mejor_opcion(casilleros, matriz, puntos)
+                                self._mejor_opcion(casilleros, matriz, puntos)
                             casilleros.clear()
                 self._puntos = self._max
                 print("fin: ", self._casilleros)
         self.add_casilleros_usados(self._casilleros)
         return self._casilleros
 
-    def mejor_opcion(self, casilleros, matriz, puntos):
+    def jugada(self, matriz, diccionario, nivel, primer_turno):
+        self._armar_palabra(diccionario, nivel["palabras"], nivel["compu"])
+        self._ubicar_palabra(matriz, nivel["compu"], primer_turno, nivel["puntos"])
+
+    # Funciones auxiliares para elegir la posición
+    def _mejor_opcion(self, casilleros, matriz, puntos):
         for p in range(len(self._palabra)):
             matriz.actualizar_casillero(self._palabra[p], casilleros[p])
         punt = self.definir_puntos(matriz.get_matriz(), puntos, casilleros)
@@ -143,9 +162,6 @@ class Computadora(Jugador):
             pos = (pos[0], pos[1] + 1)
             self._chequear_casilleros(casilleros, pos, matriz)
 
-    def get_casilleros(self):
-        return self._casilleros
-
     def definir_puntos(self, matriz, puntos, casilleros):
         puntaje = 0
         for pos in casilleros:
@@ -158,6 +174,3 @@ class Computadora(Jugador):
         print("puntos compu: ", self._puntos)
         return puntaje
 
-    def jugada(self, matriz, diccionario, nivel, primer_turno):
-        self.armar_palabra(diccionario, nivel["palabras"], nivel["compu"])
-        self.ubicar_palabra(matriz, nivel["compu"], primer_turno, nivel["puntos"])

@@ -7,27 +7,27 @@ from Clases.Casillero import Casillero
 
 class Tablero:
     """
-
-    VARIABLES
-    _dimension: int → la dimensión del tablero
-    _matriz: array Casillero→ arreglo de Casilleros
-    _posiciones: array tuple → arreglo de tuplas de posición
-    _tipos: array str → arreglo de str de tipos
+    VARIABLES DE INSTANCIA
+    :int _dimension: cantidad de casilleros de alto y ancho que tiene el tablero
+    :Casillero[][] _matriz: arreglo de casilleros de tamaño _dimension x _dimension
+    :tuple[][] _posiciones: arreglo de tuplas de posición de tamaño _dimension x _dimension
+    :str[][] tipos: arreglo de strings que especifican el tipo de casillero de tamaño _dimension x _dimension
 
     MÉTODOS
-    iniciar_casillero: crea un objeto casillero → Casillero
-    iniciar_matriz: llena _matriz de casilleros
-    actualizar_casillero: cambia el valor de _letra del casillero indicado
-    get_casillero: devuelve el valor de letra en el casillero indicado → str
-    get_matriz: devuelve la _matriz de casilleros → array Casillero
-    limpiar_matriz: resetea todos los casilleros no bloqueados
-    armar_posiciones: lllena _posiciones con las tuplas de posición
-    get_posiciones: devuelve el arreglo de posiciones → array tuple
-    bloquear_casillero: bloquear en el casillero indicado pasa a True
-    esta_bloqueado: devuelve si el casillero está bloqueado → bool
-    dibujar: dibuja el tablero de botones → array sg.Button
-    pausar_partida: guarda en un arreglo los caracteres ocupados
-    continuar: actualiza la matriz con los valores en el archivo
+    :dibujar(clave): devuelve un arreglo de _dimension x _dimension de Casilleros → [sg.Button()]
+    :_iniciar_casillero(str): recibe el tipo de casillero y crea un casillero → Casillero
+    :_iniciar_matriz(): llena a self._matriz con Casilleros
+    :get_matriz() → self._matriz
+    :limpiar_matriz(): resetea todos los casilleros no bloqueados
+    :armar_posiciones(): llena self._posiciones
+    :get_posiciones() → self._posiciones
+    :actualizar_casillero(str, tuple): recibe la letra y posición del casillero y lo actualiza con el nuevo valor
+    :get_casillero(tuple): recibe una posicion y devuelve la letra en el casillero correspondiente → str
+    :bloquear_casilleros(tuple[]): bloquea los casilleros con las posiciones pasadas
+    :esta_bloqueado(tuple): recibe posición y devuelve si ese casillero esta bloqueado → bool
+    :pausar_partida: guarda todos valores de los casilleros en una matriz y la devuelve → str[][]
+    :continuar_partida(str[][]): recibe un arreglo del tamaño del tablero y para cada letra, ocupa el Casillero correspondiente y lo bloquea
+    :actualizar_tipo(tuple, str): recibe una posición y un nuevo tipo y actualiza el casillero correspondiente
 
     ACLARACIÓN IMPORTANTE
     Todos los cambios a Casilleros, hacerlo mediante métodos de Tablero
@@ -65,12 +65,6 @@ class Tablero:
                 self._matriz[x].append(self._iniciar_casillero(self._tipos[x][y]))
 
     # Matriz -- actualizar
-    def actualizar_casillero(self, letra, pos):
-        self._matriz[pos[0]][pos[1]].set_letra(letra)
-
-    def get_casillero(self, pos):
-        return self._matriz[pos[0]][pos[1]].get_letra()
-
     def get_matriz(self):
         return self._matriz
 
@@ -90,6 +84,13 @@ class Tablero:
 
     def get_posiciones(self):
         return self._posiciones
+
+    # Letra
+    def actualizar_casillero(self, letra, pos):
+        self._matriz[pos[0]][pos[1]].set_letra(letra)
+
+    def get_casillero(self, pos):
+        return self._matriz[pos[0]][pos[1]].get_letra()
 
     # Bloquear casilleros
     def bloquear_casilleros(self, casilleros):

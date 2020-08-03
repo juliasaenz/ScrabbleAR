@@ -6,28 +6,27 @@ import estilo
 
 class Casillero:
     """
-    VARIABLES DE INTANCIA
-
-    _tipo: str → el tipo de casillero que es
-    _bloqueada: bool → si el casillero se usó en otro turno es True
-    _letra: str → La letra que lo ocupa
+    VARIABLES DE INSTANCIA
+    :str _tipo: el tipo de casillero que es
+    :str _letra: la letra que ocupa ese casillero
+    :bool _bloqueado: los casilleros usados al fin del turno se bloquean y no pueden modificarse
 
     MÉTODOS
-
-    set_letra: cambia el valor de letra
-    get_letra: devuelve el valor de la letra → str
-    get_tipo:devuelve el tipo del casillero → str
-    bloquear: variable bloquear se vuelve true
-    esta_bloqueado: devuelve si está bloqueado → bool
-    devolver_puntos: devuelve los puntos del casillero → int
-        doble_letra → int
-        triple_letra → int
-        doble_palabra → int
-        triple_palabra → int
-        menos_uno → int
-        menos_dos → int
-        menos_tres → int
-    dibujar → dibuja el botón → sg.Button
+    :dibujar(clave): recibe la clave del botón y devuelve el botón según el tipo de casillero → sg.Button()
+    :set-tipo(str): actualiza self_tipo
+    :get_tipo: → self._tipo
+    :set_letra(str): actualiza self._letra
+    :get_letra(): → self._letra
+    :bloquear(): pone self._bloqueado en True
+    :esta_bloqueado(): → self._bloqueado
+    :devolver_puntos(dict, str): recibe la palabra final y un diccionario con los puntajes de cada letra y devuelve el puntaje del casillero → int
+    :doble_letra(dict) → int
+    :triple_letra(dict) → int
+    :doble_palabra(dict) → int
+    :triple_palabra(dict) → int
+    :menos_uno(dict) → int
+    :menos_dos(dict) → int
+    :menos_tres(dict) → int
     """
 
     def __init__(self, tipo_="normal"):
@@ -55,11 +54,19 @@ class Casillero:
             return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#FAFAFA"), border_width=0)
 
     # Tipo
+    def set_tipo(self, tip):
+        self._tipo = tip
+
     def get_tipo(self):
         return self._tipo
 
-    def set_tipo(self, tip):
-        self._tipo = tip
+        # Letra
+
+    def set_letra(self, letra):
+        self._letra = letra
+
+    def get_letra(self):
+        return self._letra
 
     # Bloquear
     def bloquear(self):
@@ -67,13 +74,6 @@ class Casillero:
 
     def esta_bloqueado(self):
         return self._bloqueado
-
-    # Letra
-    def set_letra(self, letra):
-        self._letra = letra
-
-    def get_letra(self):
-        return self._letra
 
     # Casilleros Especiales
     def doble_letra(self, puntos):
