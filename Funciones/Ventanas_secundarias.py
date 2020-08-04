@@ -3,6 +3,7 @@
 import PySimpleGUI as sg
 import json
 import estilo
+from Funciones.tableros_extra import tablero_aleatorio
 
 
 def tutorial():
@@ -97,6 +98,7 @@ def configurar_letras(dicc):
 def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
     """ La configuración de la dificultad: por niveles o personalizada """
     lista = ['', "fácil", "medio", "difícil"]
+    listab = ['', "fácil", "medio", "difícil", "sorpresa"]
 
     # Frame configuración manual
     configurar = [[sg.Text("Dificultad Computadora: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
@@ -106,7 +108,7 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
                   [sg.Text("Puntaje fichas: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None),
                    sg.Button("Configurar "
                              "individualmente", key="config_2", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
-                  [sg.Text("Tablero: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
+                  [sg.Text("Tablero: ", **estilo.tt), sg.Combo(listab, **estilo.tt, default_value=None)],
                   [sg.Text("Tiempo: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)],
                   [sg.Text("Tipos de palabras: ", **estilo.tt), sg.Combo(lista, **estilo.tt, default_value=None)]
                   ]
@@ -166,7 +168,10 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
                 act_config[0] = "customizado"
             if len(values2[4]) > 0:
                 # Si se cambió el tablero
-                config["tipos"] = niveles["tipos"][values2[4]]
+                if values2[4] == "sorpresa":
+                    config["tipos"] = tablero_aleatorio()
+                else:
+                    config["tipos"] = niveles["tipos"][values2[4]]
                 act_config[4] = values2[4]
                 act_config[0] = "customizado"
             if len(values2[5]) > 0:
