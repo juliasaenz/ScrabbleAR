@@ -1,6 +1,6 @@
 {
     "tiempo": {
-        "fácil": 300,
+        "fácil": 180,
         "medio": 120,
         "difícil": 60
     },
@@ -42,7 +42,7 @@
                 "e": 11,
                 "i": 6,
                 "o": 8,
-                "u": 6,
+                "u": 5,
                 "b": 3,
                 "n": 5,
                 "d": 4,
@@ -204,17 +204,17 @@
             [
                 "triple_palabra",
                 "normal",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "doble_letra",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "normal",
                 "triple_palabra"
             ],
@@ -236,21 +236,21 @@
                 "normal"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "doble_palabra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "doble_letra",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "doble_palabra",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "normal",
@@ -270,7 +270,7 @@
                 "normal"
             ],
             [
-                "normal",
+                "triple_letra",
                 "normal",
                 "normal",
                 "normal",
@@ -284,12 +284,12 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "triple_letra"
             ],
             [
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "doble_palabra",
@@ -299,12 +299,12 @@
                 "doble_palabra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "normal",
                 "normal",
@@ -318,7 +318,7 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "doble_letra",
@@ -338,7 +338,7 @@
                 "doble_letra"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "normal",
                 "normal",
@@ -352,12 +352,12 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "triple_letra",
@@ -367,12 +367,12 @@
                 "triple_letra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal"
             ],
             [
-                "normal",
+                "triple_letra",
                 "normal",
                 "normal",
                 "normal",
@@ -386,7 +386,7 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "triple_letra"
             ],
             [
                 "normal",
@@ -406,21 +406,21 @@
                 "normal"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "doble_palabra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "doble_letra",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "doble_palabra",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "normal",
@@ -442,17 +442,17 @@
             [
                 "triple_palabra",
                 "normal",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "doble_letra",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "normal",
                 "triple_palabra"
             ]

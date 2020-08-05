@@ -50,7 +50,7 @@ try:
             for i in range(7):
                 act_config.append("fácil")
             # --- Si el se eligio customizar, abre la ventana de customización de nivel
-            # Todo aquel casillero que no rellene, quedará como nivel fácil
+            # Todoo aquel casillero que no rellene, quedará como nivel fácil
             if len(values[1]) != 0 and values[1][0] == 'customizar':
                 t = configurar_dificultad(config, niveles, Jugador.bolsa, 0, act_config)
                 if t is not None:
@@ -142,19 +142,22 @@ try:
             sg.Popup("¡ERROR! No hay ninguna partida guardada", **estilo.tt)
 
     # --- Columna de botones
-    col = [[sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
-           [sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
-           [sg.Button("Palabras Jugadas", key="palabras", button_color=("#FAFAFA", "#151514"),
-                      **estilo.tt)],
-           [sg.Frame(layout=[[sg.Text('{}'.format(config["tiempo"]), key="tiempo", **estilo.tp)]],
-                     title="Tiempo", key="tiempo_f", **estilo.tt)],
-           [sg.Text('\n')],
-           [sg.Button('', image_data=estilo.red_x_base64, key='g',
-                      button_color=(sg.theme_background_color(),
-                                    sg.theme_background_color()), border_width=0)],
-           [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
-           [sg.Ok("Terminar Partida", button_color=("#FAFAFA", "#151514"), **estilo.tt)]
-           ]
+    try:
+        col = [[sg.Text("NIVEL: {}".format(act_config[0].upper()), key="nivel", **estilo.tt)],
+               [sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+               [sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
+               [sg.Button("Palabras Jugadas", key="palabras", button_color=("#FAFAFA", "#151514"),
+                          **estilo.tt)],
+               [sg.Frame(layout=[[sg.Text('{}'.format(config["tiempo"]), key="tiempo", **estilo.tp)]],
+                         title="Tiempo", key="tiempo_f", **estilo.tt)],
+               [sg.Button('', image_data=estilo.red_x_base64, key='g',
+                          button_color=(sg.theme_background_color(),
+                                        sg.theme_background_color()), border_width=0)],
+               [sg.Button("Pausar Partida", key="pausa", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
+               [sg.Ok("Terminar Partida", button_color=("#FAFAFA", "#151514"), **estilo.tt)]
+               ]
+    except IndexError:
+        sg.Popup("Se cerró la aplicación antes de tiempo")
 
     # --- Layut del juego
     ventana_juego = [
@@ -187,10 +190,8 @@ try:
         compu.add_casilleros_usados(partida["compu"]["casilleros"])
         for pos in partida["jugador"]["casilleros"]:
             window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#6A0642"))
-            print(int(pos[0]), pos[1])
         for pos in partida["compu"]["casilleros"]:
             window.FindElement((int(pos[0]), int(pos[1]))).Update(button_color=("white", "#06586A"))
-            print(int(pos[0]), pos[1])
 
 except NameError:
     # Si se cierra en la ventana de inicio o de tutorial

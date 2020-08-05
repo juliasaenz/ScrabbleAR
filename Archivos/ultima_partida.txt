@@ -1,15 +1,15 @@
 {
     "jugador": {
         "nombre": "Tu nombre",
-        "puntaje": 21,
+        "puntaje": 5,
         "atril": [
-            "l",
-            "l",
-            "w",
             "a",
-            "o",
+            "r",
+            "u",
+            "h",
             "e",
-            "a"
+            "c",
+            "g"
         ],
         "cambios": 3,
         "casilleros": [
@@ -18,44 +18,44 @@
                 7
             ],
             [
-                7,
-                8
+                8,
+                7
+            ],
+            [
+                9,
+                7
             ]
         ]
     },
     "compu": {
         "nombre": "Computadora",
-        "puntaje": 35,
+        "puntaje": 14,
         "atril": [
-            "t",
-            "h",
-            "a",
-            "i",
-            "u",
-            "n",
-            "g"
+            "e",
+            "e",
+            "e",
+            "m",
+            "b",
+            "p",
+            "u"
         ],
         "cambios": 3,
         "casilleros": [
             [
-                11,
+                8,
                 1
             ],
             [
-                11,
+                8,
                 2
             ],
             [
-                11,
+                8,
                 3
             ],
             [
-                11,
+                8,
                 4
-            ],
-            [
-                11,
-                5
             ]
         ]
     },
@@ -69,8 +69,7 @@
         "a",
         "a",
         "a",
-        "e",
-        "e",
+        "a",
         "e",
         "e",
         "e",
@@ -82,6 +81,8 @@
         "i",
         "i",
         "i",
+        "i",
+        "o",
         "o",
         "o",
         "o",
@@ -94,7 +95,7 @@
         "u",
         "u",
         "b",
-        "b",
+        "n",
         "n",
         "n",
         "n",
@@ -107,13 +108,10 @@
         "f",
         "l",
         "l",
-        "m",
+        "l",
         "m",
         "p",
-        "p",
-        "g",
         "h",
-        "v",
         "c",
         "c",
         "c",
@@ -121,21 +119,23 @@
         "r",
         "r",
         "r",
-        "r",
         "s",
         "s",
         "s",
         "s",
         "s",
         "s",
+        "j",
         "k",
         "ñ",
         "q",
         "t",
         "t",
         "t",
-        "y",
-        "z"
+        "t",
+        "w",
+        "x",
+        "y"
     ],
     "nivel": {
         "puntos": {
@@ -167,7 +167,7 @@
             "w": 10,
             "x": 10
         },
-        "tiempo": 300,
+        "tiempo": 180,
         "cantidad": {
             "a": 12,
             "e": 12,
@@ -206,17 +206,17 @@
             [
                 "triple_palabra",
                 "normal",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "doble_letra",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "normal",
                 "triple_palabra"
             ],
@@ -238,21 +238,21 @@
                 "normal"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "doble_palabra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "doble_letra",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "doble_palabra",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "normal",
@@ -272,7 +272,7 @@
                 "normal"
             ],
             [
-                "normal",
+                "triple_letra",
                 "normal",
                 "normal",
                 "normal",
@@ -286,12 +286,12 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "triple_letra"
             ],
             [
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "doble_palabra",
@@ -301,12 +301,12 @@
                 "doble_palabra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "normal",
                 "normal",
@@ -320,7 +320,7 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "doble_letra",
@@ -340,7 +340,7 @@
                 "doble_letra"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "normal",
                 "normal",
@@ -354,12 +354,12 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "triple_letra",
@@ -369,12 +369,12 @@
                 "triple_letra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal"
             ],
             [
-                "normal",
+                "triple_letra",
                 "normal",
                 "normal",
                 "normal",
@@ -388,7 +388,7 @@
                 "normal",
                 "normal",
                 "normal",
-                "normal"
+                "triple_letra"
             ],
             [
                 "normal",
@@ -408,21 +408,21 @@
                 "normal"
             ],
             [
-                "normal",
+                "menos_uno",
                 "normal",
                 "doble_palabra",
                 "normal",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "doble_letra",
                 "normal",
-                "normal",
+                "menos_dos",
                 "normal",
                 "normal",
                 "doble_palabra",
                 "normal",
-                "normal"
+                "menos_uno"
             ],
             [
                 "normal",
@@ -444,17 +444,17 @@
             [
                 "triple_palabra",
                 "normal",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "doble_letra",
+                "menos_uno",
                 "normal",
+                "triple_letra",
                 "normal",
-                "normal",
-                "normal",
-                "normal",
+                "menos_uno",
                 "normal",
                 "triple_palabra"
             ]
@@ -589,73 +589,73 @@
             "",
             "",
             "",
+            "g",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        [
+            "",
+            "v",
             "e",
-            "x",
+            "z",
+            "a",
             "",
             "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        [
-            "",
-            "j",
-            "u",
             "i",
-            "c",
-            "e",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "l",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
             "",
             "",
             "",
@@ -719,8 +719,8 @@
         ]
     ],
     "palabras_jugadas": [
-        "Tu nombre - ex: 21",
-        "Computadora - juice: 35"
+        "Tu nombre - gil: 5",
+        "Computadora - veza: 14"
     ],
     "act_config": [
         "fácil",

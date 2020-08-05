@@ -9,7 +9,7 @@ tablero: {
 
 # Tiempo de la partida
 tiempo = {
-    "fácil": 300,
+    "fácil": 180,
     "medio": 120,
     "difícil": 60
 }
@@ -21,7 +21,7 @@ letras = {
                          "g": 2, "h": 2, "v": 1, "c": 4, "r": 5, "s": 6,
                          "j": 1, "k": 1, "ñ": 1, "q": 1, "t": 4, "w": 1, "x": 1, "y": 1, "z": 1
                          }),
-    "medio": dict(medio={"a": 11, "e": 11, "i": 6, "o": 8, "u": 6,
+    "medio": dict(medio={"a": 11, "e": 11, "i": 6, "o": 8, "u": 5,
                          "b": 3, "n": 5, "d": 4, "f": 1, "l": 4, "m": 3, "p": 2,
                          "g": 2, "h": 2, "v": 1, "c": 4, "r": 5, "s": 7,
                          "j": 1, "k": 1, "ñ": 1, "q": 1, "t": 4, "w": 1, "x": 1, "y": 1, "z": 1
@@ -95,6 +95,12 @@ for x in range(15):
                 tab[x].append("normal")
         elif (x + y == 21 or x + y == 7) and (x == 0 or x == 14 or y == 0 or y == 14):
             tab[x].append("triple_palabra")
+        elif ((x == 0 or x == 14) and (y == 4 or y == 10)) or ((y == 0 or y == 14) and (x == 4 or x == 10)):
+            tab[x].append("triple_letra")
+        elif (x == 9 or x == 12 or x == 5 or x == 2) and (y == 9 or y == 12 or y == 5 or y == 2):
+            tab[x].append("menos_dos")
+        elif (x == 0 or y == 0 or x == 14 or y == 14) and ((y + x) % 2 == 0):
+            tab[x].append("menos_uno")
         else:
             tab[x].append("normal")
 
