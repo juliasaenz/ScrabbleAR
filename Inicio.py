@@ -24,7 +24,7 @@ continuar = False
 try:
     if event is None:
         window.close()
-    if event == "Ok":
+    if event == "JUGAR" or event == "go":
         window.close()
         # ----- INICIO
         inicio = inicio()
