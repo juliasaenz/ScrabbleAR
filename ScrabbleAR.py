@@ -82,6 +82,7 @@ if tiempo != -1:
                                     tabla.actualizar_tipo((x, y), config["tipos"][x][y])
                                     window[(x, y)].update(button_color=("black", que_color(config["tipos"][x][y])))
                     window.UnHide()
+                    print("configurashion: ",act_config[0])
                     window.FindElement("nivel").Update("NIVEL: {}".format(act_config[0].upper()))
                 # --- Permite ver la configuración actual del nivel
                 elif event == "Configuración actual":

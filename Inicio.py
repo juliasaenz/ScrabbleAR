@@ -143,7 +143,7 @@ try:
 
     # --- Columna de botones
     try:
-        col = [[sg.Text("NIVEL: {}".format(act_config[0].upper()), key="nivel", **estilo.tt)],
+        col = [[sg.Text("NIVEL: {}".format(act_config[0].upper()), key="nivel", **estilo.tt, size=(20, 1))],
                [sg.Button("Reglas", button_color=("#FAFAFA", "#151514"), **estilo.tt)],
                [sg.Button("Configuración actual", **estilo.tt, button_color=("#FAFAFA", "#151514"))],
                [sg.Button("Palabras Jugadas", key="palabras", button_color=("#FAFAFA", "#151514"),
