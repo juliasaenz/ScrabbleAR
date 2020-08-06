@@ -183,9 +183,9 @@ tipos = {
 
 # Categorias de palabras
 categorias = {
-    "fácil": [1, 2, 3],
-    "medio": [2, 3],
-    "difícil": [2, 3]
+    "fácil": [1, 2],
+    "medio": [2],
+    "difícil": [2]
 }
 
 """Diccionario de elementos que configuran un nivel"""

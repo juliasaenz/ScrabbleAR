@@ -3,6 +3,7 @@ ScrabbleAR
 Trabajo final de seminario de Python 2020
 
 Alumna: Saenz Julia
+Grupo 28
 
 Instalación y uso:
 - Descargar el repositorio
@@ -10,6 +11,9 @@ Instalación y uso:
 - PySimpleGUI versión 4.19.0
 - Pattern versión 3.6
 - Python versión 3.6
+
+*Las imágenes fueron diseñadas en Figma por Julia Saenz para este trabajo
+
 
 
 NIVELES:

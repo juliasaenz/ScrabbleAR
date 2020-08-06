@@ -24,8 +24,6 @@ if tiempo != -1:
         # ----- SI ES EL TURNO DEL USUARIO Y NO TERMINO LA PARTIDA
         if jugador.get_cant_bolsa() != 0 and tiempo != 0:
             if turno.es_turno_usuario():
-                if event != "__TIMEOUT__":
-                    print("event: ", event)
                 if event is None:
                     break
                 # --- si toco un boton del tablero
@@ -48,14 +46,27 @@ if tiempo != -1:
                 # --- Elige que letras intercambiar y pasa de turno
                 elif event == "Shuffle":
                     window.Hide()
-                    shuffle(turno, tabla, jugador, window, config, diccionario, compu)
+                    shuffle(turno, tabla, jugador, window)
                     window.UnHide()
+                    window.FindElement("turno").Update("Computadora")
+                    turno_compu(turno, tabla, compu, window, config, diccionario)
+                    window.FindElement("turno").Update(jugador.get_nombre())
                 # --- Si la palabra es correcta, termina el turno
                 elif event == "Terminar Turno":
                     terminar_turno(turno, tabla, jugador, window, diccionario, config)
                 # --- Muestra las reglas del juego
-                elif event == "Reglas":
-                    sg.Popup("Reglas")
+                if event == "Reglas":
+                    sg.Popup('''
+                    Este es un juego basado en el Scrabble. \n
+                    - Cada jugador debe formar palabras con las letras de su atril para conseguir
+                    la mayor cantidad de puntos posibles. 
+                    - El juego continua hasta que no haya más fichas o hasta que se termine el tiempo.
+                    - El jugador con mayor puntaje al final de la partida será el ganador.
+                    - El tablero cuenta con casilleros especiales que pueden sumar o restar puntos.
+                    - Durante la partida el jugador podrá usar el Shuffle para cambiar una o más de las 
+                    fichas en el atril, pero también perderá ese turno.
+                    - En cualquier momento el jugador puede elegir Pausar la partida, esto cerrará la partida
+                    ''', title="Reglas", **estilo.tt)
                 # --- Si el usuario quiere, guarda la partida
                 elif event == "pausa":
                     if sg.popup_ok_cancel('¿Pausar partida? \n Se cerrará la partida y podrás continuar luego', **estilo.tt) == "OK":
@@ -82,7 +93,6 @@ if tiempo != -1:
                                     tabla.actualizar_tipo((x, y), config["tipos"][x][y])
                                     window[(x, y)].update(button_color=("black", que_color(config["tipos"][x][y])))
                     window.UnHide()
-                    print("configurashion: ",act_config[0])
                     window.FindElement("nivel").Update("NIVEL: {}".format(act_config[0].upper()))
                 # --- Permite ver la configuración actual del nivel
                 elif event == "Configuración actual":
@@ -98,15 +108,15 @@ if tiempo != -1:
                 # --- Muestra las palabras jugadas y el puntaje de cada una
                 elif event == "palabras":
                     sg.Popup(turno.get_lista_palabras(), **estilo.tt)
-                elif event == "guia":
-                    sg.Popup("Guia!")
                 # --- Termina la partida
                 elif event == "Terminar Partida":
                     if sg.popup_ok_cancel('¿Terminar partida?', **estilo.tt) == "OK":
                         terminar_partida(jugador, compu, window, config, act_config[0])
             # --- Si ya no es el turno del usuario
             elif not turno.es_turno_usuario():
+                window.FindElement("turno").Update("Computadora")
                 turno_compu(turno, tabla, compu, window, config, diccionario)
+                window.FindElement("turno").Update(jugador.get_nombre())
         # --- Si no hay más fichas o se acabo el tiempo, termina la partida
         elif jugador.get_cant_bolsa() == 0 or tiempo == 0:
             terminar_partida(jugador, compu, window, config, act_config[0])

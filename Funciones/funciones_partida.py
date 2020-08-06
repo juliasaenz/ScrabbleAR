@@ -2,6 +2,7 @@
 
 from Funciones.Ventanas_secundarias import ventana_shuffle
 from Funciones.leaderboard import guardar_partida
+from random import randrange
 import PySimpleGUI as sg
 import estilo
 import json
@@ -23,7 +24,7 @@ def poner_ficha(event, turno, tabla, window):
     window.FindElement(turno.get_pos_actual()).Update(disabled=True)
 
 
-def shuffle(turno, tabla, jugador, window, config, diccionario, compu):
+def shuffle(turno, tabla, jugador, window):
     """ Cambia las fichas del atril seleccionadas por el usuario y saltea el turno,
     se puede hacer 3 veces por partida """
     a_cambiar = ventana_shuffle(jugador.get_atril())
@@ -41,7 +42,6 @@ def shuffle(turno, tabla, jugador, window, config, diccionario, compu):
 
         # Se pasa el turno del usuario y juega la Compu
         turno.reinicio(jugador.get_nombre())
-        turno_compu(turno, tabla, compu, window, config, diccionario)
     # Si se usó 3 veces, se desabilita el botón
     if jugador.get_cambios() == 0:
         window.FindElement("Shuffle").Update(disabled=True)
@@ -49,7 +49,8 @@ def shuffle(turno, tabla, jugador, window, config, diccionario, compu):
 
 def turno_compu(turno, tabla, compu, window, config, diccionario):
     """ La computadora elige palabra y la posiciona según el nivel """
-    window.Read(timeout=2)
+    tarda = randrange(300, 2000)
+    window.Read(timeout=tarda)
     # -- Arma la palabra
     compu.jugada(tabla, diccionario, config, turno.get_primer_turno())
     if turno.get_primer_turno():

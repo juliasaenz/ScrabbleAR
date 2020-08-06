@@ -41,9 +41,9 @@ def existe_palabra(palabra, diccionario):
 
 def palabra_es_valida(palabra, diccionario, lista):
     """ Se ingresa la palabra y la cantidad de categorias para chequear
-    nivel fácil = ingresar 1,2,3
-    nivel medio = ingresar 1,2  //  1,3  //  2,3
-    nivel díficil = ingresar 1 // 2 // 3"""
+    nivel fácil = ingresar 1, 2
+    nivel medio = ingresar 2
+    nivel díficil = ingresar 2  """
     es = False
     lista_sus = ["NC", "NN", "NCS", "NCP", "NNS", "NP", "NNP", "W"]
     lista_adj = ["AO", "JJ", "AQ", "DI", "DT"]
