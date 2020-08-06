@@ -59,12 +59,8 @@ class Computadora(Jugador):
             Jugador.bolsa.pop(cual - 1)
 
     def _sacar_fichas(self):
-        # print("asi estaba el atril: ", self.get_atril())
         for letra in self._palabra:
-            try:
-                self._atril.remove(letra)
-            except ValueError:
-                print("esta letra me esta causando problemas: ", letra)
+            self._atril.remove(letra)
 
     def sacar_y_reponer_atril(self):
         self._sacar_fichas()
@@ -131,11 +127,9 @@ class Computadora(Jugador):
                         if not matriz.esta_bloqueado((x, y)):
                             self._chequear_casilleros(casilleros, (x, y), matriz)
                             if len(casilleros) == len(self._palabra):
-                                # print("Opcion: ", casilleros, "pal: ", self._palabra)
                                 self._mejor_opcion(casilleros, matriz, puntos)
                             casilleros.clear()
                 self._puntos = self._max
-                print("fin: ", self._casilleros)
         self.add_casilleros_usados(self._casilleros)
         return self._casilleros
 
@@ -151,7 +145,6 @@ class Computadora(Jugador):
         for p in range(len(self._palabra)):
             matriz.actualizar_casillero("", casilleros[p])
         if punt > self._max:
-            # print("este esta mejor: ", punt, " - ", self._max, " ", casilleros, " ", self._palabra)
             self._max = punt
             self._casilleros = casilleros.copy()
 
@@ -169,8 +162,6 @@ class Computadora(Jugador):
                 puntaje = puntaje + matriz[pos[0]][pos[1]].devolver_puntos(puntos, self._palabra)
             except KeyError:
                 print(matriz[pos[0]][pos[1]])
-        # print("puntaje: ", puntaje)
         self._puntos = puntaje
-        print("puntos compu: ", self._puntos)
         return puntaje
 

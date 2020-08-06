@@ -124,7 +124,6 @@ class Turno:
     def definir_palabra(self, matriz):
         if self._orientacion == "horizontal":
             self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[1])
-            # print("casilleros ordenados: ",self._casilleros_usados)
         elif self._orientacion == "vertical":
             self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[0])
         for pos in self._casilleros_usados:
