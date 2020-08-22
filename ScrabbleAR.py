@@ -1,6 +1,6 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
-from Inicio import*
+from nue_inicio import*
 
 # -------------------------------------------
 #                  JUEGO
@@ -39,7 +39,7 @@ if tiempo != -1:
                         turno.set_pos_actual("")
                 # --- si toco un boton del atril
                 elif event in "0123456":
-                    letra_actual(event, turno, jugador)
+                    letra_actual(event, turno, jugador, window)
                 # --- Limpiar letras en el tablero
                 elif event == "Limpiar":
                     limpiar(turno, tabla, window)
@@ -69,14 +69,17 @@ if tiempo != -1:
                     ''', title="Reglas", **estilo.tt)
                 # --- Si el usuario quiere, guarda la partida
                 elif event == "pausa":
-                    if sg.popup_ok_cancel('¿Pausar partida? \n Se cerrará la partida y podrás continuar luego', **estilo.tt) == "OK":
+                    if sg.popup_ok_cancel('¿Guardar partida? \n Se cerrará la partida y podrás continuar luego', **estilo.tt) == "OK":
                         if turno.get_primer_turno():
-                            sg.Popup("No se puede pausar la partida sin haber jugado por lo menos un turno", **estilo.tt)
+                            sg.Popup("No se puede guardar la partida sin haber jugado por lo menos un turno", **estilo.tt)
                         else:
                             pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa, act_config)
                 # --- Muestra el Top 10 de puntajes
                 elif event == "top":
                     top_10()
+                # --- Pausar partida
+                elif event == "pp":
+                    sg.Popup("Juego en pausa", **estilo.tt)
                 # --- Accede a la configuración del nivel
                 elif event == "configuracion":
                     window.Hide()

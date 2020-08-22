@@ -8,10 +8,15 @@ import estilo
 import json
 
 
-def letra_actual(event, turno, jugador):
+def letra_actual(event, turno, jugador, window):
     """ La letra del atril seleccionada por el usuario """
     turno.set_letra_actual(jugador.get_atril()[int(event)])
     turno.set_pos_actual(event)
+    for pos in range(7):
+        if pos == int(event):
+            window.FindElement(event).Update(button_color=("#FAFAFA", "gray"))
+        else:
+            window.FindElement(str(pos)).Update(button_color=("black", "#FAFAFA"))
 
 
 def poner_ficha(event, turno, tabla, window):
@@ -21,6 +26,7 @@ def poner_ficha(event, turno, tabla, window):
     turno.add_atril_usada(turno.get_pos_actual())
     tabla.actualizar_casillero(turno.get_letra_actual(), event)
     window.FindElement(event).Update(turno.get_letra_actual())
+    window.FindElement(turno.get_pos_actual()).Update(button_color=("black", "#FAFAFA"))
     window.FindElement(turno.get_pos_actual()).Update(disabled=True)
 
 
@@ -90,29 +96,32 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
     resultado = turno.evaluar_palabra(tabla.get_matriz(), diccionario, config)
     if turno.validar_turno():
         # si la palabra no es válida
-        if resultado == 100:
-            sg.popup_timed("No es una palabra válida", background_color="black")
-            tabla.limpiar_matriz()
-            for i in range(7):
-                window.FindElement(str(i)).Update(disabled=False)
-            for pos in turno.get_casilleros_usados():
-                window.FindElement(pos).Update("")
-            turno.limpiar()
+        if len(turno.get_atril_usadas()) < 2:
+            sg.popup_timed("Ingrese por lo menos 2 letras", background_color="black", **estilo.tt)
         else:
-            # si la palabra es válida
-            for tupla in turno.get_casilleros_usados():
-                window.FindElement(tupla).Update(button_color=("#FAFAFA", "#6A0642"))
+            if resultado == 100:
+                sg.popup_timed("No es una palabra válida", background_color="black", **estilo.tt)
+                tabla.limpiar_matriz()
+                for i in range(7):
+                    window.FindElement(str(i)).Update(disabled=False)
+                for pos in turno.get_casilleros_usados():
+                    window.FindElement(pos).Update("")
+                turno.limpiar()
+            else:
+                # si la palabra es válida
+                for tupla in turno.get_casilleros_usados():
+                    window.FindElement(tupla).Update(button_color=("#FAFAFA", "#6A0642"))
 
-            # actualiza elementos
-            tabla.bloquear_casilleros(turno.get_casilleros_usados())
-            jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),
+                # actualiza elementos
+                tabla.bloquear_casilleros(turno.get_casilleros_usados())
+                jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),
                                  turno.get_casilleros_usados())
-            window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))
-            for i in range(7):
-                window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
-            turno.reinicio(jugador.get_nombre())
-            if turno.get_primer_turno():
-                turno.jugue_primer_turno()
+                window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))
+                for i in range(7):
+                    window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
+                turno.reinicio(jugador.get_nombre())
+                if turno.get_primer_turno():
+                    turno.jugue_primer_turno()
     else:
         limpiar(turno, tabla, window)
         sg.Popup("Una ficha debe estar en el casillero del medio")
@@ -138,7 +147,7 @@ def terminar_partida(jugador, compu, window, config, nivel):
     elif compu.get_puntaje() > jugador.get_puntaje():
         sg.Popup(score + "\n\n ¡Ganó la Computadora! ¡Mejor suerte la próxima!", **estilo.tt)
     else:
-        sg.Popup(score + "\n\n ¡Es un empate!", **estilo.tt, **estilo.tt)
+        sg.Popup(score + "\n\n ¡Es un empate!", **estilo.tt)
     window.close()
 
 

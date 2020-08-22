@@ -215,6 +215,7 @@ class Turno:
         self._casilleros_usados.clear()
         self._casilleros_usados = set()
         self._puntaje = 0
+        self._atril_usadas.clear()
         if self._turno_usuario:
             self._turno_usuario = False
         else:
