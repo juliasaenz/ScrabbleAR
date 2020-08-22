@@ -1,9 +1,9 @@
 ScrabbleAR
 
-Trabajo final de seminario de Python 2020
+Este juego es el trabajo final de la materia Seminario de Python de la Facultad de Informatica de la UNLP, cursada en 2020
 
 Alumna: Saenz Julia
-Grupo 28
+Grupo: 28
 
 Instalación y uso:
 - Descargar el repositorio
@@ -14,9 +14,32 @@ Instalación y uso:
 
 *Las imágenes fueron diseñadas en Figma por Julia Saenz para este trabajo
 
+------- INSTRUCCIONES --------
 
+El juego se basa en las reglas del Scrabble tradicional: ambos jugadores deben utilizar letras, cada una con un puntaje, de una bolsa (en este caso un arreglo de fichas) para formar palabras y ubicarlas en un tablero con el fin de sumar puntos.
+    A cada jugador se le dan al azar 7 letras de la bolsa y se elige uno de los dos para comenzar la partida. En el primer turno una de las fichas debe ser colocada en el casillero del medio, y en cualquier otro turno las palabras pueden ser ubicadas en cualquier parte del tablero.
+    Las fichas pueden disponerse de forma horizontal o vertical y cuando se tenga la palabra se debe presionar el botón de “Terminar Turno”.Si la palabra ingresada es válida se sumarán los puntos acumulados y se pasará al turno del otro jugador; en caso de no serlo, se sacarán las fichas ingresadas del tablero y se le permitirá intentar otra combinación de fichas.
+    El tablero cuenta con casilleros especiales que cambian el puntaje de una ficha o palabra. Estos casilleros especiales son:
+Doble Letra: duplica el valor de la ficha en ese casillero
+Triple Letra: triplica el calor de la ficha en ese casillero
+Doble Palabra: duplica el valor de toda la palabra
+Triple Palabra: triplica el valor de toda la palabra
+Menos Uno: resta 1 punto a la ficha en ese casillero
+Menos Dos: resta 2 puntos a la ficha en ese casillero
+Menos Tres: resta 3 puntos a la ficha en ese casillero
 
-NIVELES:
+    El juego termina cuando se acaba el tiempo o cuando se terminan las fichas de la bolsa. Se restan los puntos correspondientes a las fichas que siguen en el atril y el ganador es aquel que haya acumulado más puntos. En caso de que el puntaje sea uno de los 10 mejores, tendrá la opción de guardarlo en el “Top 10”.
+    En cualquier momento de la partida puede decidir “Guardar Partida” lo que cerrará y guardará esa partida, que luego puede ser retomada eligiendo “Continuar” en el inicio. Solo se guardará la última partida, por lo que si sobreescribe un juego, no podrá recuperarlo.
+
+En el Inicio y a lo largo de la partida es posible configurar la dificultad del juego, ya sea con los niveles Fácil, Medio o Difícil predeterminados, o combinando su propio nivel customizado. El nivel varía:
+La dificultad de la Computadora
+La cantidad de fichas en la bolsa
+El puntaje de cada ficha
+El tablero
+El tiempo de juego
+Los tipos de palabras válidos
+
+Cada nivel tiene esta configuración:
 
 Fácil
 - Dificultad computadora: elige la mejor palabra de máximo 5 letras y la posiciona en un lugar aleatorio del tablero
