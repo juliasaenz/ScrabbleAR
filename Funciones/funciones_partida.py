@@ -100,7 +100,10 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
             sg.popup_timed("Ingrese por lo menos 2 letras", background_color="black", **estilo.tt)
         else:
             if resultado == 100:
-                sg.popup_timed("No es una palabra válida", background_color="black", **estilo.tt)
+                if turno.definir_palabra(tabla.get_matriz()) == "_novalido_":
+                    sg.popup_timed("No se pueden poner fichas en diagonal", background_color="black", **estilo.tt)
+                else:
+                    sg.popup_timed("No es una palabra válida", background_color="black", **estilo.tt)
                 tabla.limpiar_matriz()
                 for i in range(7):
                     window.FindElement(str(i)).Update(disabled=False)

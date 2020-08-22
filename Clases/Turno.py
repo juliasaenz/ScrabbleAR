@@ -110,6 +110,8 @@ class Turno:
                 self._orientacion = "horizontal"
             elif casilleros[0][1] == casilleros[1][1]:
                 self._orientacion = "vertical"
+            else:
+                self._orientacion = "no valida"
 
     def sacar_casillero(self, pos):
         self._casilleros_usados.discard(pos)
@@ -122,12 +124,15 @@ class Turno:
 
     # PALABRA
     def definir_palabra(self, matriz):
-        if self._orientacion == "horizontal":
-            self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[1])
-        elif self._orientacion == "vertical":
-            self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[0])
-        for pos in self._casilleros_usados:
-            self._palabra = self._palabra + matriz[pos[0]][pos[1]].get_letra()
+        if self._orientacion != "no valida":
+            if self._orientacion == "horizontal":
+                self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[1])
+            elif self._orientacion == "vertical":
+                self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[0])
+            for pos in self._casilleros_usados:
+                self._palabra = self._palabra + matriz[pos[0]][pos[1]].get_letra()
+        else:
+            return "_novalido_"
 
     def get_palabra(self):
         return self._palabra
