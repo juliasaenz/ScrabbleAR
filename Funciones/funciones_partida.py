@@ -117,8 +117,9 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
 
                 # actualiza elementos
                 tabla.bloquear_casilleros(turno.get_casilleros_usados())
-                jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]), turno.get_atril_usadas(),
-                                 turno.get_casilleros_usados())
+                jugador.fin_de_turno(turno.definir_puntos(tabla.get_matriz(), config["puntos"]),
+                                     turno.get_atril_usadas(),
+                                     turno.get_casilleros_usados())
                 window.FindElement("p_jugador").Update(str(jugador.get_puntaje()))
                 for i in range(7):
                     window.FindElement(str(i)).Update(jugador.get_ficha(i), disabled=True)
@@ -222,3 +223,19 @@ def top_10():
     except FileNotFoundError:
         # Si no existe el archivo
         sg.Popup("Todavia no se guardó ninguna partida", **estilo.tt)
+
+
+def reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla,
+                     niveles):
+    del window
+    del config
+    del tiempo
+    del Jugador
+    del turno
+    del jugador
+    del compu
+    del diccionario
+    del act_config
+    del continuar
+    del tabla
+    del niveles

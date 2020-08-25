@@ -1,26 +1,21 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
-import estilo
-import random
+
 from random import randrange
+import estilo
+import json
 from Clases.Tablero import Tablero
 from Clases.Jugador import Jugador
 from Clases.Computadora import Computadora
 from Clases.Turno import Turno
 from Funciones.funciones_palabras import palabras_sin_tilde
-from Funciones.Ventanas_secundarias import tutorial, inicio, configurar_dificultad, ventana_shuffle
-from Funciones.funciones_partida import *
+from Funciones.Ventanas_secundarias import tutorial, inicio, configurar_dificultad
 import PySimpleGUI as sg
 
 # ------ TUTORIAL
 tutorial = tutorial()
 window = sg.Window("ScrabbleAR").Layout(tutorial)
 event, values = window.read()
-
-# ------
-act_config = []
-continuar = False
-
 
 if event is None:
     window.close()
@@ -30,6 +25,10 @@ if event == "JUGAR" or event == "go":
     inicio = inicio()
     turno = Turno()
     window = sg.Window("ScrabbleAR").Layout(inicio)
+
+# ------
+act_config = []
+continuar = False
 
 while True:
     event, values = window.read()
@@ -205,7 +204,7 @@ try:
          sg.Text(" {} ".format(jugador.get_puntaje()), key="p_compu", **estilo.tt),
          sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt),
          sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
-                   **estilo.tt)],
+                   **estilo.tt), sg.Text("Fichas restantes: {}".format(len(Jugador.bolsa)), key="bolsa", **estilo.tt)],
         [sg.Column(col), sg.Frame(layout=tabla.dibujar(), title="", **estilo.tt, border_width=None)],
         [],
         [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),

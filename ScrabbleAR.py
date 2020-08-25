@@ -1,24 +1,36 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
-from nue_inicio import*
+# from nue_inicio import*
+import random
+from Funciones.funciones_partida import *
+from Funciones.Ventanas_secundarias import *
+from Inicio import correr_inicio, correr_tutorial
+
+if correr_tutorial():
+    # Inicio
+    try:
+        window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
+    except TypeError:
+        tiempo = -1
+    # Quien Empieza
+    try:
+        if not continuar:
+            turno.set_turno_usuario(bool(random.getrandbits(1)))
+    except NameError:
+        print("Se cerró en la ventana de Tutorial")
+else:
+    tiempo = -1
 
 # -------------------------------------------
 #                  JUEGO
 # -------------------------------------------
 
-# Quien empieza
-try:
-    if not continuar:
-        turno.set_turno_usuario(bool(random.getrandbits(1)))
-except NameError:
-    print("Se cerró en la ventana de Tutorial")
-
-jugador.set_puntaje(40)
 # Tiempo es -1 cuando se cerro la ventana de Tutorial o Inicio
 if tiempo != -1:
     while True:
         # --- Timer
         window["tiempo"].update('{}'.format(int(tiempo / 100)))
+        window["bolsa"].update('{}'.format("Fichas restantes: {}".format(len(Jugador.bolsa))))
         tiempo = tiempo - 1
 
         event, values = window.read(timeout=10)
@@ -70,9 +82,11 @@ if tiempo != -1:
                     ''', title="Reglas", **estilo.tt)
                 # --- Si el usuario quiere, guarda la partida
                 elif event == "pausa":
-                    if sg.popup_ok_cancel('¿Guardar partida? \n Se cerrará la partida y podrás continuar luego', **estilo.tt) == "OK":
+                    if sg.popup_ok_cancel('¿Guardar partida? \n Se cerrará la partida y podrás continuar luego',
+                                          **estilo.tt) == "OK":
                         if turno.get_primer_turno():
-                            sg.Popup("No se puede guardar la partida sin haber jugado por lo menos un turno", **estilo.tt)
+                            sg.Popup("No se puede guardar la partida sin haber jugado por lo menos un turno",
+                                     **estilo.tt)
                         else:
                             pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa, act_config)
                 # --- Muestra el Top 10 de puntajes
@@ -108,7 +122,8 @@ if tiempo != -1:
                         Tablero: {4} \n
                         Tiempo: {5} \n
                         Tipos de palabras: {6} \n'''.format(act_config[0], act_config[1], act_config[2], act_config[3],
-                                                            act_config[4], str(act_config[5]), act_config[6]), **estilo.tt)
+                                                            act_config[4], str(act_config[5]), act_config[6]),
+                             **estilo.tt)
                 # --- Muestra las palabras jugadas y el puntaje de cada una
                 elif event == "palabras":
                     sg.Popup(turno.get_lista_palabras(), **estilo.tt)
@@ -116,6 +131,9 @@ if tiempo != -1:
                 elif event == "Terminar Partida":
                     if sg.popup_ok_cancel('¿Terminar partida?', **estilo.tt) == "OK":
                         terminar_partida(jugador, compu, window, config, act_config[0])
+                        Jugador.bolsa.clear()
+                        reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles)
+                        window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
             # --- Si ya no es el turno del usuario
             elif not turno.es_turno_usuario():
                 window.FindElement("turno").Update("Computadora")
@@ -124,4 +142,7 @@ if tiempo != -1:
         # --- Si no hay más fichas o se acabo el tiempo, termina la partida
         elif jugador.get_cant_bolsa() == 0 or tiempo == 0:
             terminar_partida(jugador, compu, window, config, act_config[0])
-            break
+            Jugador.bolsa.clear()
+            reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar,
+                             tabla, niveles)
+            window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
