@@ -13,6 +13,7 @@ try:
 except NameError:
     print("Se cerró en la ventana de Tutorial")
 
+jugador.set_puntaje(40)
 # Tiempo es -1 cuando se cerro la ventana de Tutorial o Inicio
 if tiempo != -1:
     while True:

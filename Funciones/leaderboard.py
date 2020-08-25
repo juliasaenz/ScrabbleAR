@@ -2,6 +2,23 @@ import json
 from operator import getitem
 
 
+def entra_en_top(puntaje):
+    try:
+        leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")
+        partidas = json.load(leaderboard)
+        if len(partidas) < 10:
+            return True
+        else:
+            for partida in partidas.keys():
+                if partidas[partida]["puntaje"] < puntaje:
+                    return True
+            else:
+                return False
+        leaderboard.close()
+    except FileNotFoundError:
+        return True
+
+
 def guardar_partida(jugador):
     try:
         leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")

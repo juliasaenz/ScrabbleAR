@@ -1,7 +1,7 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
 from Funciones.Ventanas_secundarias import ventana_shuffle
-from Funciones.leaderboard import guardar_partida
+from Funciones.leaderboard import guardar_partida, entra_en_top
 from random import randrange
 import PySimpleGUI as sg
 import estilo
@@ -144,9 +144,10 @@ def terminar_partida(jugador, compu, window, config, nivel):
     if jugador.get_puntaje() > compu.get_puntaje():
         sg.Popup(score + "\n\n ¡Ganaste! ¡Felicidades!", **estilo.tt)
         # Opción de guardar el puntaje
-        if sg.popup_yes_no("¿Guardar puntaje?", **estilo.tt):
-            datos = jugador.guardar_partida(nivel)
-            guardar_partida(datos)
+        if entra_en_top(jugador.get_puntaje()):
+            if sg.popup_yes_no("¿Guardar puntaje?", **estilo.tt):
+                datos = jugador.guardar_partida(nivel)
+                guardar_partida(datos)
     elif compu.get_puntaje() > jugador.get_puntaje():
         sg.Popup(score + "\n\n ¡Ganó la Computadora! ¡Mejor suerte la próxima!", **estilo.tt)
     else:

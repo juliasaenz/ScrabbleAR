@@ -88,8 +88,15 @@ def configurar_letras(dicc):
         if event4 == "Listo":
             try:
                 values4 = {int(k): int(v) for k, v in values4.items()}
+                print(values4)
                 # Suma los valores del arreglo y si todos valen 0, no permite guardar los cambios
-                if sum(values4.values()) == 0:
+                valido = True
+                for val in values4.values():
+                    if val < 0 or val > 99:
+                        valido = False
+                if not valido:
+                    sg.Popup("No se pueden ingresar valores menores a 0 o mayores a 99")
+                elif sum(values4.values()) == 0:
                     sg.Popup("Todas las letras no pueden ser 0")
                 else:
                     i = 0
