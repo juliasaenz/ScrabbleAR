@@ -108,9 +108,14 @@ class Computadora(Jugador):
     def _ubicar_palabra(self, matriz, dificultad, primer_turno, puntos):
         """ Devuelve un arreglo de posiciones en los que entra la palabra"""
         casilleros = []
+        orientacion_actual = randrange(0, 2)
         if primer_turno:
             pos = (7, 7)
-            self._chequear_casilleros(casilleros, pos, matriz)
+            if orientacion_actual == 0:
+                self._chequear_casilleros(casilleros, pos, matriz)
+            else:
+                self._chequear_casilleros_vertical(casilleros, pos, matriz)
+            print("casilleros primer turno: ", casilleros)
             self._casilleros = casilleros
         else:
             pos = (randrange(15), randrange(15))
@@ -118,13 +123,20 @@ class Computadora(Jugador):
             if dificultad == "facil" or dificultad == "medio":
                 while len(casilleros) != len(self._palabra):
                     casilleros.clear()
-                    self._chequear_casilleros(casilleros, pos, matriz)
+                    if orientacion_actual == 0:
+                        self._chequear_casilleros(casilleros, pos, matriz)
+                    else:
+                        self._chequear_casilleros_vertical(casilleros, pos, matriz)
                     pos = (randrange(15), randrange(15))
                 self._casilleros = casilleros
             else:
                 for x in range(15):
                     for y in range(15):
                         if not matriz.esta_bloqueado((x, y)):
+                            self._chequear_casilleros_vertical(casilleros, (x, y), matriz)
+                            if len(casilleros) == len(self._palabra):
+                                self._mejor_opcion(casilleros, matriz, puntos)
+                            casilleros.clear()
                             self._chequear_casilleros(casilleros, (x, y), matriz)
                             if len(casilleros) == len(self._palabra):
                                 self._mejor_opcion(casilleros, matriz, puntos)
@@ -154,6 +166,13 @@ class Computadora(Jugador):
             casilleros.append(pos)
             pos = (pos[0], pos[1] + 1)
             self._chequear_casilleros(casilleros, pos, matriz)
+
+    def _chequear_casilleros_vertical(self, casilleros, pos, matriz):
+        """ Busca por la extensión de la palabra si hay suficientes casilleros"""
+        if pos[0] < 15 and pos[1] < 15 and len(casilleros) < len(self._palabra) and (not matriz.esta_bloqueado(pos)):
+            casilleros.append(pos)
+            pos = (pos[0] + 1, pos[1])
+            self._chequear_casilleros_vertical(casilleros, pos, matriz)
 
     def definir_puntos(self, matriz, puntos, casilleros):
         puntaje = 0
