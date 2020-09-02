@@ -127,8 +127,18 @@ class Turno:
         if self._orientacion != "no valida":
             if self._orientacion == "horizontal":
                 self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[1])
+                base = self._casilleros_usados[0][1]
+                for pos in self._casilleros_usados[1:]:
+                    if pos[1] != base + 1:
+                        return "_novalido_"
+                    base = pos[1]
             elif self._orientacion == "vertical":
                 self._casilleros_usados = sorted(self._casilleros_usados, key=lambda tupla: tupla[0])
+                base = self._casilleros_usados[0][0]
+                for pos in self._casilleros_usados[1:]:
+                    if pos[0] != base + 1:
+                        return "_novalido_"
+                    base = pos[0]
             for pos in self._casilleros_usados:
                 self._palabra = self._palabra + matriz[pos[0]][pos[1]].get_letra()
         else:

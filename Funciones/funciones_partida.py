@@ -101,7 +101,7 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
         else:
             if resultado == 100:
                 if turno.definir_palabra(tabla.get_matriz()) == "_novalido_":
-                    sg.popup_timed("No se pueden poner fichas en diagonal", background_color="black", **estilo.tt)
+                    sg.popup_timed("No se pueden poner fichas en diagonal \nni tener espacio entre fichas", background_color="black", **estilo.tt)
                 else:
                     sg.popup_timed("No es una palabra válida", background_color="black", **estilo.tt)
                 tabla.limpiar_matriz()

@@ -4,3 +4,4 @@
 *.pyc
 .idea/workspace.xml
 Clases/__pycache__/Computadora.cpython-36.pyc
+*.pyc
