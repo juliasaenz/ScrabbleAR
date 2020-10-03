@@ -14,6 +14,7 @@ import PySimpleGUI as sg
 
 
 def correr_tutorial():
+    """ Abre la ventana de Tutorial """
     from Funciones.Ventanas_secundarias import tutorial
     # ------ TUTORIAL
     tutorial = tutorial()
@@ -29,6 +30,7 @@ def correr_tutorial():
 
 
 def correr_inicio():
+    """ Abre la ventana de inicio y, de ser necesario, inicializa las variables de la partida """
     from random import randrange
     import estilo
     import json

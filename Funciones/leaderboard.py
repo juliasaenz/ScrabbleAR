@@ -3,6 +3,7 @@ from operator import getitem
 
 
 def entra_en_top(puntaje):
+    """ Calcula si el puntaje de la partida es mayor al último de los mejores 10 puntajes """
     try:
         leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")
         partidas = json.load(leaderboard)
@@ -20,6 +21,7 @@ def entra_en_top(puntaje):
 
 
 def guardar_partida(jugador):
+    """ Guarda el nombre y puntaje del usuario junto con la fecha y el nivel en el Top10 """
     try:
         leaderboard = open("Archivos/leaderboard", "r", encoding="utf-8")
         partidas = json.load(leaderboard)

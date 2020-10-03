@@ -6,27 +6,10 @@ import estilo
 
 class Casillero:
     """
-    VARIABLES DE INSTANCIA
-    :str _tipo: el tipo de casillero que es
-    :str _letra: la letra que ocupa ese casillero
-    :bool _bloqueado: los casilleros usados al fin del turno se bloquean y no pueden modificarse
+    :_tipo: El tipo de casillero que es
+    :_letra: La letra que ocupa ese casillero
+    :_bloqueado: Los casilleros usados al fin del turno se bloquean y no pueden modificarse
 
-    MÉTODOS
-    :dibujar(clave): recibe la clave del botón y devuelve el botón según el tipo de casillero → sg.Button()
-    :set-tipo(str): actualiza self_tipo
-    :get_tipo: → self._tipo
-    :set_letra(str): actualiza self._letra
-    :get_letra(): → self._letra
-    :bloquear(): pone self._bloqueado en True
-    :esta_bloqueado(): → self._bloqueado
-    :devolver_puntos(dict, str): recibe la palabra final y un diccionario con los puntajes de cada letra y devuelve el puntaje del casillero → int
-    :doble_letra(dict) → int
-    :triple_letra(dict) → int
-    :doble_palabra(dict) → int
-    :triple_palabra(dict) → int
-    :menos_uno(dict) → int
-    :menos_dos(dict) → int
-    :menos_tres(dict) → int
     """
 
     def __init__(self, tipo_="normal"):
@@ -36,6 +19,7 @@ class Casillero:
 
     # Dibujar
     def dibujar(self, clave):
+        """ Recibe la clave del botón y devuelve el botón según el tipo de casillero """
         if self._tipo == "doble_letra":
             return sg.Button(self._letra, key=clave, **estilo.bt, button_color=("black", "#75E540"), border_width=0)
         elif self._tipo == "triple_letra":
@@ -55,24 +39,30 @@ class Casillero:
 
     # Tipo
     def set_tipo(self, tip):
+        """ Actualiza el tipo de Casillero """
         self._tipo = tip
 
     def get_tipo(self):
+        """ Devuelve el tipo de Casillero """
         return self._tipo
 
         # Letra
 
     def set_letra(self, letra):
+        """ Actualiza la letra en el Casillero """
         self._letra = letra
 
     def get_letra(self):
+        """ Devuelve la letra en el Casillero """
         return self._letra
 
     # Bloquear
     def bloquear(self):
+        """ Pone self._bloqueado en True """
         self._bloqueado = True
 
     def esta_bloqueado(self):
+        """ Devuelve si el Casillero está bloqueado """
         return self._bloqueado
 
     # Casilleros Especiales

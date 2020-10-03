@@ -5,12 +5,17 @@ from random import randrange
 
 class Celda:
 
+    """
+    :estado: Puede ser 1 o 0
+    :_estado_futuro: Guarda cual será el próximo estado de la Celda
+    """
+
     def __init__(self, estado=randrange(0, 2)):
         self._estado_futuro = 0
         self.estado = estado
 
     def actualizar_celda(self, celdas, i, j):
-        """ Actualiza el estado de la celda """
+        """ Actualiza el estado_futuro de la celda según el estado de sus vecinas """
         vivas = 0
         for c_i in range(i - 1, i + 2):
             for c_j in range(j - 1, j + 2):
@@ -29,24 +34,31 @@ class Celda:
                 self._estado_futuro = 1
 
     def recargar(self):
+        """ Pasa su estado_futuro a su estado actual """
         self.estado = self._estado_futuro
 
 
 class JuegoDeLaVida:
+    """ Objeto basado en el Juego de la Vida de John Conway para armar tableros generativos"""
 
+    """"
+    :celdas: Matriz de Celdas
+    """
     def __init__(self):
         self.celdas = []
         self._iniciar_celdas()
         self.armar_celdas()
 
     def _iniciar_celdas(self):
-        """ iniciar la celda en 0 """
+        """ Arma la matriz de 15x15 """
         for i in range(15):
             self.celdas.append([])
             for j in range(15):
                 self.celdas[i].append(4)
 
     def armar_celdas(self):
+        """ Inicia en cada espacio de la matriz una Celda que vale 0 o 1 aleatoriamente
+        de forma que el patrón sea doblemente simétrico """
         # simetria
         for i in range(7):
             for j in range(7):
@@ -66,6 +78,7 @@ class JuegoDeLaVida:
         self.celdas[7][7] = Celda()
 
     def imprimir(self):
+        """ Imprime el estado de las celdas """
         lin = " 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15"
         for i in range(15):
             lin = lin + "\n"
@@ -76,6 +89,7 @@ class JuegoDeLaVida:
         print("\n")
 
     def actualizar(self):
+        """ Actualiza todas las celdas de la matriz y las recarga """
         for i in range(15):
             for j in range(15):
                 self.celdas[i][j].actualizar_celda(self.celdas, i, j)
@@ -84,6 +98,7 @@ class JuegoDeLaVida:
                 self.celdas[i][j].recargar()
 
     def hay_vivas(self):
+        """ Devuelve si hay en la matriz más de 20 celdas vivas (que valgan 1) """
         vivas = 0
         for i in range(15):
             for j in range(15):
@@ -92,6 +107,13 @@ class JuegoDeLaVida:
 
 
 class Grilla:
+    """
+    :juegos: Lista de Juegos de La Vida
+    :cuantos_necesito: Cual es el máximo número al que necesito llegar en por lo menos una celda
+    :cantidad_juegos: Cantidad de Juegos de La Vida que quiero
+    :cantidad_epocas: Cantidad de épocas para cada Juego de La Vida
+    :_continuar: Si es True, sigue creando Juegos
+    """
 
     def __init__(self, cantidad_juegos_: object, cantidad_epocas_: object) -> object:
         self.juegos = []
@@ -102,6 +124,7 @@ class Grilla:
         self._juegos()
 
     def hay_suficientes(self):
+        """ Se fija si hay por lo menos una celda que, sumando todos los juegos, valga 8 """
         for j in range(len(self.juegos[0].celdas)):
             for k in range(len(self.juegos[0].celdas)):
                 cual = 0
@@ -113,6 +136,9 @@ class Grilla:
         return False
 
     def _juegos(self):
+        """ Crea la cantidad de juegos indicada, atraviesa la cantidad de épocas con cada juego indicada y,
+        si el juego tiene más de 20 celdas vivas, lo agrega al arreglo de juegos. Si luego de esto no se llegá
+        al valor de celda que se busca, se agrega de a un juego al arreglo hasta que se consiga"""
         for i in range(self.cantidad_juegos):
             juego = JuegoDeLaVida()
             for j in range(self.cantidad_epocas):
@@ -132,6 +158,7 @@ class Grilla:
             self._continuar = self.hay_suficientes()
 
     def imprimir(self):
+        """ Imprime la grilla final """
         print(" --- GRILLA FINAL --- ")
         lin = ""
         for j in range(len(self.juegos[0].celdas)):
@@ -149,12 +176,14 @@ class Grilla:
         print(lin)
 
     def _sumar(self, i, j):
+        """ Suma todas las celdas en la misma posición de todos los juegos """
         num = 0
         for juego in self.juegos:
             num = num + juego.celdas[i][j].estado
         return num
 
     def _cambiar(self, num):
+        """ Reinterpreta cada número como un string que indique el tipo de Casillero """
         if num == 1:
             return "doble_letra"
         elif num == 2:
@@ -173,6 +202,7 @@ class Grilla:
             return "triple_palabra"
 
     def grilla_final(self):
+        """ Traduce toda la grilla final de números a strings de tipo de Casillero y devuelve esa matriz """
         final = []
         for i in range(15):
             final.append([])
@@ -183,5 +213,6 @@ class Grilla:
 
 
 def tablero_aleatorio():
+    """ Genera un trablero aleatorio"""
     grilla = Grilla(7, 8)
     return grilla.grilla_final()

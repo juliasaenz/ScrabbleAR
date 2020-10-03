@@ -227,6 +227,7 @@ def top_10():
 
 def reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla,
                      niveles):
+    """ Elimina las variables usadas para reiniciar la partida """
     del window
     del config
     del tiempo

@@ -5,10 +5,11 @@ from pattern.es import lexicon, spelling
 from random import randrange
 import unicodedata
 
-''' Funciones para chequear palabras dependiendo del nivel'''
+''' Funciones para la validación de palabras'''
 
 
 def tiene_estas(palabra):
+    """ Devuelve si la palabra pasada por parámetro incluye un número o signo de puntuación"""
     sacar = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "#", "!", "*", "-", "/", "<", ">", "."]
     hay = False
     for i in sacar:
@@ -18,9 +19,10 @@ def tiene_estas(palabra):
 
 
 def palabras_sin_tilde():
-    """ Esto crea un diccionario que tiene de clave
+    """ Crea un diccionario que tiene de clave
     las palabras sin tilde y de valor la palabra con
-    tilde(en caso de tenerla) """
+    tilde(en caso de tenerla). Solo agrega palabras entre
+    2 y 7 letras que no tengan números o signos de puntuación"""
     palabras = {}
     for palabra in lexicon.keys():
         if 2 <= len(palabra) <= 7 and not tiene_estas(palabra):
@@ -41,9 +43,9 @@ def existe_palabra(palabra, diccionario):
 
 def palabra_es_valida(palabra, diccionario, lista):
     """ Se ingresa la palabra y la cantidad de categorias para chequear
-    nivel fácil = ingresar 1, 2
-    nivel medio = ingresar 2
-    nivel díficil = ingresar 2  """
+    \n nivel fácil = ingresar 1, 2
+    \n nivel medio = ingresar 2
+    \n nivel díficil = ingresar 2  """
     es = False
     lista_sus = ["NC", "NN", "NCS", "NCP", "NNS", "NP", "NNP", "W"]
     lista_adj = ["AO", "JJ", "AQ", "DI", "DT"]

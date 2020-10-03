@@ -1,3 +1,5 @@
+"""ESTO HAY QUE SACAAAARLOOOOO"""
+
 import itertools as it
 from Funciones.funciones_palabras import palabra_es_valida
 from Funciones.funciones_palabras import palabras_sin_tilde

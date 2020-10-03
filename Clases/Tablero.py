@@ -1,36 +1,16 @@
 """ Trabajo para Seminario de Python 2020 - Alumna Saenz Julia """
 
-import PySimpleGUI as sg
-from random import randrange
 from Clases.Casillero import Casillero
 
 
 class Tablero:
     """
-    VARIABLES DE INSTANCIA
-    :int _dimension: cantidad de casilleros de alto y ancho que tiene el tablero
-    :Casillero[][] _matriz: arreglo de casilleros de tamaño _dimension x _dimension
-    :tuple[][] _posiciones: arreglo de tuplas de posición de tamaño _dimension x _dimension
-    :str[][] tipos: arreglo de strings que especifican el tipo de casillero de tamaño _dimension x _dimension
+    Todos los cambios que se quieran a hacer a un Casillero deben hacerse a través de los métodos en Tablero
 
-    MÉTODOS
-    :dibujar(clave): devuelve un arreglo de _dimension x _dimension de Casilleros → [sg.Button()]
-    :_iniciar_casillero(str): recibe el tipo de casillero y crea un casillero → Casillero
-    :_iniciar_matriz(): llena a self._matriz con Casilleros
-    :get_matriz() → self._matriz
-    :limpiar_matriz(): resetea todos los casilleros no bloqueados
-    :armar_posiciones(): llena self._posiciones
-    :get_posiciones() → self._posiciones
-    :actualizar_casillero(str, tuple): recibe la letra y posición del casillero y lo actualiza con el nuevo valor
-    :get_casillero(tuple): recibe una posicion y devuelve la letra en el casillero correspondiente → str
-    :bloquear_casilleros(tuple[]): bloquea los casilleros con las posiciones pasadas
-    :esta_bloqueado(tuple): recibe posición y devuelve si ese casillero esta bloqueado → bool
-    :pausar_partida: guarda todos valores de los casilleros en una matriz y la devuelve → str[][]
-    :continuar_partida(str[][]): recibe un arreglo del tamaño del tablero y para cada letra, ocupa el Casillero correspondiente y lo bloquea
-    :actualizar_tipo(tuple, str): recibe una posición y un nuevo tipo y actualiza el casillero correspondiente
-
-    ACLARACIÓN IMPORTANTE
-    Todos los cambios a Casilleros, hacerlo mediante métodos de Tablero
+    :_dimension: Cantidad de casilleros de alto y ancho que tiene el tablero
+    :_matriz: Arreglo de Casilleros de tamaño _dimension x _dimension
+    :_posiciones: Arreglo de tuplas de posición de tamaño _dimension x _dimension
+    :tipos: Arreglo de strings que especifican el tipo de casillero de tamaño _dimension x _dimension
     """
 
     def __init__(self, tipos):
@@ -43,7 +23,7 @@ class Tablero:
 
     # DIBUJAR
     def dibujar(self):
-        """Dibuja el tablero con PySimpleGUI"""
+        """Devuelve un arreglo de _dimension x _dimension de botones"""
         tablero = []
         for x in range(self._dimension):
             tablero.append([])
@@ -66,9 +46,11 @@ class Tablero:
 
     # Matriz -- actualizar
     def get_matriz(self):
+        """ Devuelve el arreglo de la matriz """
         return self._matriz
 
     def limpiar_matriz(self):
+        """ Elimina de la matriz cualquier ficha que no esté bloqueada"""
         for x in range(self._dimension):
             self._matriz.append([])
             for y in range(self._dimension):
@@ -77,31 +59,37 @@ class Tablero:
 
     # Posiciones del tablero
     def armar_posiciones(self):
-        """ Matriz de posiciones para los botones"""
+        """ Crea una matriz de tuplas con las posiciones para los botones"""
         for x in range(self._dimension):
             for y in range(self._dimension):
                 self._posiciones.append((x, y))
 
     def get_posiciones(self):
+        """ Devuelve la matriz de tuplas de posiciones"""
         return self._posiciones
 
     # Letra
     def actualizar_casillero(self, letra, pos):
+        """ Recibe una letra y una posición y actualiza ese Casillero"""
         self._matriz[pos[0]][pos[1]].set_letra(letra)
 
     def get_casillero(self, pos):
+        """ Recibe una letra y una posición y devuelve ese Casillero"""
         return self._matriz[pos[0]][pos[1]].get_letra()
 
     # Bloquear casilleros
     def bloquear_casilleros(self, casilleros):
+        """ Recibe una letra y una posición y bloquea ese Casillero """
         for pos in casilleros:
             self._matriz[pos[0]][pos[1]].bloquear()
 
     def esta_bloqueado(self, pos):
+        """ Recibe una letra y una posición y devuelve si ese si ese Casillero está bloauqeado"""
         return self._matriz[pos[0]][pos[1]].esta_bloqueado()
 
     # Pausar Partida
     def pausar_partida(self):
+        """ Guarda los valores de la matriz y los devuelve """
         p_matriz = []
         for x in range(self._dimension):
             p_matriz.append([])
@@ -111,6 +99,7 @@ class Tablero:
 
     # continuar
     def continuar_partida(self, arreglo):
+        """ Recibe una matriz con los casilleros ocupados y actualiza el Tablero """
         for x in range(self._dimension):
             for y in range(self._dimension):
                 if arreglo[x][y] != "":
@@ -118,4 +107,5 @@ class Tablero:
                     self._matriz[x][y].bloquear()
 
     def actualizar_tipo(self, pos, tip):
+        """ Recibe una letra y una posición y actualiza el tipo de ese Casillero"""
         self._matriz[pos[0]][pos[1]].set_tipo(tip)

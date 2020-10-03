@@ -10,29 +10,14 @@ from random import randrange
 
 class Computadora(Jugador):
     """
-    Extiende → Jugador por lo que tiene todos sus variables y métodos
+    Extiende Jugador, por lo que tiene todos sus variables y métodos
 
-    VARIABLES DE INSTANCIA
-    :str _palabra: guarda la palabra elegida por la computadora cada turno
-    :tuple[] _casilleros: arreglo de posiciones de los casilleros usados en el turno
-    :str[] _atril_usadas:arreglo de las letras usadas del atril
-    :int _puntos: puntos acumulados en un turno
-    :int _max: longitud de la palabra mas larga posible en un turno
+    :_palabra: Guarda la palabra elegida por la computadora cada turno
+    :_casilleros: Arreglo de posiciones de los casilleros usados en el turno
+    :_atril_usadas: Arreglo de las letras usadas del atril
+    :_puntos: Puntos acumulados en un turno
+    :_max: Longitud de la palabra mas larga posible en un turno
 
-    MÉTODOS :dibujar(): dibuja el atril → [sg.Button()] :_reponer_atril(): reemplaza las fichas del atril usadas
-    :_sacar_fichas(): saca del atril las letras usadas en la palabra final :sacar_y_reponer_atril()_: actualiza el
-    atril, y las variables de turno (self._palabra, self._puntos, self._max) :get_palabra() → self._palabra
-    :get_puntaje_palabra() → self._puntos :get_casilleros() → self._casilleros :_armar_palabra(dict,int[],
-    str): recibe un diccionario de palabras válidas, el arreglo de categorias de palabras válido y el nivel. Según el
-    nivel devuelve la mejor palabra posible con las fichas del atril :_ubicar_palabra(Tablero, str, boolean,
-    dict): recibe el tablero, el nivel, si ya paso el primer turno y el diccionario de puntos por letra y según el
-    nivel ubica la palabra. Niveles fácil y medio ubica en una posición aleatoria disponible, en el nivel difícil lo
-    ubica en la mejor posición posible. Devuelve los casilleros que usa → self._casilleros :_mejor_opcion(tuple[],
-    Casillero[][], dict): recibe un arreglo de posibles posiciones para la palabra, lo ubica en la matriz de
-    Casilleros, calcula el puntaje y si es más alto que el guardado actualmente, guarda esa posición
-    :_chequear_casilleros(tuple[], tuple, Tablero): recibe una posición e intenta posicionar de forma horizontal la
-    palabra en el Tablero :definir_puntos(Tablero, dict, tuple[]): recibe el Tablero, el diccionario de puntos y los
-    casilleros usados y calcula los puntos de ubicar la palabra en esa posición
     """
 
     def __init__(self):
@@ -53,16 +38,19 @@ class Computadora(Jugador):
         return atril
 
     def _reponer_atril(self):
+        """ Repone el atril según la cantidad de fichas que se hayan usado en el turno """
         while len(Jugador.bolsa) > 0 and len(self._atril) < 7:
             cual = randrange(len(Jugador.bolsa))
             self._atril.append(Jugador.bolsa[cual - 1])
             Jugador.bolsa.pop(cual - 1)
 
     def _sacar_fichas(self):
+        """ Saca del atril las fichas usadas para la palabra """
         for letra in self._palabra:
             self._atril.remove(letra)
 
     def sacar_y_reponer_atril(self):
+        """ Saca las fichas del atril, repone fichas y borra el valor de la palabra y puntos """
         self._sacar_fichas()
         self._reponer_atril()
         self._palabra = ""
@@ -71,20 +59,23 @@ class Computadora(Jugador):
 
     # Palabra y puntaje
     def get_palabra(self):
+        """ Devuelve la palabra creada por la Computadora"""
         return self._palabra
 
     def get_puntaje_palabra(self):
+        """ Devuelve el puntaje de la palabra"""
         return self._puntos
 
     def get_casilleros(self):
+        """ Devuelve los casilleros en que utiliza la palabra"""
         return self._casilleros
 
     # ------ Armar palabras
 
     def _armar_palabra(self, diccionario, tipos, dificultad):
         """ Devuelve la palabra que puede formar con el atril, dependiendo del nivel
-        - Fácil: la mejor palabra de máximo 5 letras
-        - Medio y difícil: la mejor palabra de máximo 7 letras """
+        \n - Fácil: la mejor palabra de máximo 5 letras
+        \n - Medio y difícil: la mejor palabra de máximo 7 letras """
         palabras = set()
         if dificultad == "facil":
             for i in range(2, len(self._atril) + 1):
@@ -146,11 +137,13 @@ class Computadora(Jugador):
         return self._casilleros
 
     def jugada(self, matriz, diccionario, nivel, primer_turno):
+        """ Arma la palabra y la ubica en el Tablero """
         self._armar_palabra(diccionario, nivel["palabras"], nivel["compu"])
         self._ubicar_palabra(matriz, nivel["compu"], primer_turno, nivel["puntos"])
 
     # Funciones auxiliares para elegir la posición
     def _mejor_opcion(self, casilleros, matriz, puntos):
+        """ Elige los casilleros que le den más puntos para ubicar la palabra"""
         for p in range(len(self._palabra)):
             matriz.actualizar_casillero(self._palabra[p], casilleros[p])
         punt = self.definir_puntos(matriz.get_matriz(), puntos, casilleros)
@@ -175,6 +168,7 @@ class Computadora(Jugador):
             self._chequear_casilleros_vertical(casilleros, pos, matriz)
 
     def definir_puntos(self, matriz, puntos, casilleros):
+        """ Cuenta la cantidad de puntos que suma una palabra """
         puntaje = 0
         for pos in casilleros:
             try:
