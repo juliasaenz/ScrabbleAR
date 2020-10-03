@@ -55,30 +55,33 @@ def shuffle(turno, tabla, jugador, window):
 
 def turno_compu(turno, tabla, compu, window, config, diccionario):
     """ La computadora elige palabra y la posiciona según el nivel """
-    tarda = randrange(300, 2000)
-    window.Read(timeout=tarda)
-    # -- Arma la palabra
-    compu.jugada(tabla, diccionario, config, turno.get_primer_turno())
-    if turno.get_primer_turno():
-        turno.jugue_primer_turno()
-    # -- La posiciona en el tablero
-    i = 0
-    for pos in compu.get_casilleros():
-        tabla.actualizar_casillero(compu.get_palabra()[i], pos)
-        window.FindElement(pos).Update(compu.get_palabra()[i], button_color=("#FAFAFA", "#06586A"))
-        i = i + 1
-    # --- Actualiza los valores
-    tabla.bloquear_casilleros(compu.get_casilleros())
-    compu.actualizar_puntaje(compu.definir_puntos(tabla.get_matriz(), config["puntos"], compu.get_casilleros()))
-    window.FindElement("p_compu").Update(str(compu.get_puntaje()))
-    turno.set_palabra(compu.get_palabra())
-    turno.set_puntaje(compu.get_puntaje_palabra())
-    compu.sacar_y_reponer_atril()
+    try:
+        tarda = randrange(300, 2000)
+        window.Read(timeout=tarda)
+        # -- Arma la palabra
+        compu.jugada(tabla, diccionario, config, turno.get_primer_turno())
+        if turno.get_primer_turno():
+            turno.jugue_primer_turno()
+        # -- La posiciona en el tablero
+        i = 0
+        for pos in compu.get_casilleros():
+            tabla.actualizar_casillero(compu.get_palabra()[i], pos)
+            window.FindElement(pos).Update(compu.get_palabra()[i], button_color=("#FAFAFA", "#06586A"))
+            i = i + 1
+        # --- Actualiza los valores
+        tabla.bloquear_casilleros(compu.get_casilleros())
+        compu.actualizar_puntaje(compu.definir_puntos(tabla.get_matriz(), config["puntos"], compu.get_casilleros()))
+        window.FindElement("p_compu").Update(str(compu.get_puntaje()))
+        turno.set_palabra(compu.get_palabra())
+        turno.set_puntaje(compu.get_puntaje_palabra())
+        compu.sacar_y_reponer_atril()
 
-    # Pasa a ser el turno del usuario
-    turno.reinicio(compu.get_nombre())
-    for i in range(7):
-        window.FindElement(str(i)).Update(disabled=False)
+        # Pasa a ser el turno del usuario
+        turno.reinicio(compu.get_nombre())
+        for i in range(7):
+            window.FindElement(str(i)).Update(disabled=False)
+    except:
+        print("Se cerró la partida en el turno de la Computadora")
 
 
 def limpiar(turno, tabla, window):
@@ -101,7 +104,8 @@ def terminar_turno(turno, tabla, jugador, window, diccionario, config):
         else:
             if resultado == 100:
                 if turno.definir_palabra(tabla.get_matriz()) == "_novalido_":
-                    sg.popup_timed("No se pueden poner fichas en diagonal \nni tener espacio entre fichas", background_color="black", **estilo.tt)
+                    sg.popup_timed("No se pueden poner fichas en diagonal \nni tener espacio entre fichas",
+                                   background_color="black", **estilo.tt)
                 else:
                     sg.popup_timed("No es una palabra válida", background_color="black", **estilo.tt)
                 tabla.limpiar_matriz()

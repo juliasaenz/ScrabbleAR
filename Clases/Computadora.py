@@ -106,7 +106,6 @@ class Computadora(Jugador):
                 self._chequear_casilleros(casilleros, pos, matriz)
             else:
                 self._chequear_casilleros_vertical(casilleros, pos, matriz)
-            print("casilleros primer turno: ", casilleros)
             self._casilleros = casilleros
         else:
             pos = (randrange(15), randrange(15))

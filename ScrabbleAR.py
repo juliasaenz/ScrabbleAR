@@ -34,6 +34,9 @@ if tiempo != -1:
         tiempo = tiempo - 1
 
         event, values = window.read(timeout=10)
+        if event == sg.WIN_CLOSED:
+            sg.Popup("Se cerró la aplicación. \n Gracias por usar ScrabbleAR")
+            break
         # ----- SI ES EL TURNO DEL USUARIO Y NO TERMINO LA PARTIDA
         if jugador.get_cant_bolsa() != 0 and tiempo != 0:
             if turno.es_turno_usuario():
@@ -89,6 +92,15 @@ if tiempo != -1:
                                      **estilo.tt)
                         else:
                             pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa, act_config)
+                            terminar_partida(jugador, compu, window, config, act_config[0])
+                            Jugador.bolsa.clear()
+                            try:
+                                reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario,
+                                                 act_config,
+                                                 continuar, tabla, niveles)
+                                window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
+                            except TypeError:
+                                break
                 # --- Muestra el Top 10 de puntajes
                 elif event == "top":
                     top_10()
@@ -132,8 +144,12 @@ if tiempo != -1:
                     if sg.popup_ok_cancel('¿Terminar partida?', **estilo.tt) == "OK":
                         terminar_partida(jugador, compu, window, config, act_config[0])
                         Jugador.bolsa.clear()
-                        reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles)
-                        window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
+                        try:
+                            reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario,
+                                             act_config, continuar, tabla, niveles)
+                            window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
+                        except TypeError:
+                            break
             # --- Si ya no es el turno del usuario
             elif not turno.es_turno_usuario():
                 window.FindElement("turno").Update("Computadora")
@@ -143,6 +159,9 @@ if tiempo != -1:
         elif jugador.get_cant_bolsa() == 0 or tiempo == 0:
             terminar_partida(jugador, compu, window, config, act_config[0])
             Jugador.bolsa.clear()
-            reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar,
-                             tabla, niveles)
-            window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
+            try:
+                reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config,
+                                 continuar, tabla, niveles)
+                window, config, tiempo, Jugador, turno, jugador, compu, diccionario, act_config, continuar, tabla, niveles = correr_inicio()
+            except TypeError:
+                break
