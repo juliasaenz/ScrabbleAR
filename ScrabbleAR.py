@@ -92,7 +92,7 @@ if tiempo != -1:
                                      **estilo.tt)
                         else:
                             pausar(turno, jugador, compu, tabla, window, config, Jugador.bolsa, act_config)
-                            terminar_partida(jugador, compu, window, config, act_config[0])
+                            #terminar_partida(jugador, compu, window, config, act_config[0])
                             Jugador.bolsa.clear()
                             try:
                                 reinicio_partida(window, config, tiempo, Jugador, turno, jugador, compu, diccionario,
