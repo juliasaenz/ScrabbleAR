@@ -194,7 +194,7 @@ def correr_inicio():
             except FileNotFoundError:
                 # Si no hay un archivo de partida guardado, salta el PopUp y se cierra el programa
                 sg.Popup("¡ERROR! No hay ninguna partida guardada", **estilo.tt)
-            break
+                correr_inicio()
         else:
             break
 

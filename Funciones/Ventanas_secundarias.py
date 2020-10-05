@@ -20,10 +20,17 @@ def tutorial():
 
 def inicio():
     """Ventana de inicio"""
+    try:
+        nivel = open("Archivos/ultima_partida.txt", "r", encoding="utf-8")
+    except FileNotFoundError:
+        habilitado = True
+    else:
+        nivel.close()
+        habilitado = False
     interfaz = [[sg.InputText("Tu nombre", **estilo.tt)],
                 [sg.Listbox(values=('fácil', "medio", "difícil", "customizar", "aleatorio"), size=(30, 5),
                             **estilo.tt)],
-                [sg.Button("Nueva Partida", **estilo.tt), sg.Button("Continuar", **estilo.tt)]
+                [sg.Button("Nueva Partida", **estilo.tt), sg.Button("Continuar", **estilo.tt, disabled=habilitado)]
                 ]
     return [[sg.Frame(layout=interfaz, title="Inicio", **estilo.bt)]]
 
@@ -48,7 +55,10 @@ def actualizar_todo_dicc(config, niveles, dificultad, tiempo, bolsa, act_config)
     if tiempo in config.keys():
         t = (niveles["tiempo"][dificultad] * 100 - (config["tiempo"] * 100 - tiempo))
         config["tiempo"] = niveles["tiempo"][dificultad]
-        return t
+        if t < 0:
+            return 1
+        else:
+            return t
     else:
         config["tiempo"] = niveles["tiempo"][dificultad]
 
@@ -206,7 +216,10 @@ def configurar_dificultad(config, niveles, bolsa, tiempo, act_config):
                     # Resta al tiempo nuevo el tiempo ya jugado
                     t = (niveles["tiempo"][n] * 100 - (config["tiempo"] * 100 - tiempo))
                     config["tiempo"] = niveles["tiempo"][n]
-                    return t
+                    if t < 0:
+                        return 1
+                    else:
+                        return t
                 else:
                     config["tiempo"] = niveles["tiempo"][n]
             if len(values2[6]) > 0:
