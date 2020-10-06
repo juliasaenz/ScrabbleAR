@@ -223,7 +223,7 @@ def correr_inicio():
         ventana_juego = [
             [sg.Frame(layout=compu.dibujar(), key=compu.get_nombre(),
                       title="Atril de " + compu.get_nombre(), **estilo.tt), sg.Text("Puntaje: ", **estilo.tt),
-             sg.Text(" {} ".format(jugador.get_puntaje()), key="p_compu", **estilo.tt),
+             sg.Text("  {}  ".format(jugador.get_puntaje()), key="p_compu", **estilo.tt),
              sg.Button("Top Ten Puntajes", key="top", button_color=("#FAFAFA", "#151514"), **estilo.tt),
              sg.Button("Configuración", key="configuracion", button_color=("#FAFAFA", "#151514"),
                        **estilo.tt),
@@ -233,7 +233,7 @@ def correr_inicio():
             [sg.Frame(layout=jugador.dibujar(), key=jugador.get_nombre(),
                       title="Atril de " + jugador.get_nombre(), **estilo.tt),
              sg.Text("Puntaje: ", **estilo.tt),
-             sg.Text(" {} ".format(jugador.get_puntaje()), key="p_jugador", **estilo.tt),
+             sg.Text("  {}  ".format(jugador.get_puntaje()), key="p_jugador", **estilo.tt),
              sg.Button("Shuffle", button_color=("#FAFAFA", "#151514"), **estilo.tt),
              sg.Button("Limpiar", button_color=("#FAFAFA", "#151514"), **estilo.tt),
              sg.Button("Pausa", key="pp", button_color=("#FAFAFA", "#151514"), **estilo.tt),
